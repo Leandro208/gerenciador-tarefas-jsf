@@ -59,13 +59,13 @@ public class TarefaBean {
 	public String concluir(Tarefa t) {
 		t.setStatus(StatusEnum.CONCLUIDO);
 		tarefaService.salvar(t);
-		return "";
+		return "listaTarefa.jsf";
 	}
 
 	public String remover(Tarefa t) {
 		tarefaService.remover(t);
 		carregarTarefas();
-		return "";
+		return "listaTarefa.jsf";
 	}
 
 	private void carregarTarefas() {

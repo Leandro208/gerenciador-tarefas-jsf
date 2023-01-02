@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+	<title>Formulario Responsável</title>
+	<link rel="stylesheet" href="assets/css/formTarefa.css" />
+</h:head>
+<h:body class="fundo">
+	<h:form>
+	<p:messages id="messages" closable="true">
+	   		<p:autoUpdate/>
+	   </p:messages>
+	<fieldset>
+	<legend>Formulario Responsável:</legend>
+		<h:panelGrid>
+			<h:panelGroup class="grupo">
+				<h:outputLabel value="Nome:" class="label" />
+				<h:inputText value="#{responsavelBean.responsavel.nome}" class="campo" />
+			</h:panelGroup>
+			<h:panelGroup class="grupo">
+				<h:outputLabel value="E-mail:" class="label" />
+				<h:inputText value="#{responsavelBean.responsavel.email}" class="campo" />
+			</h:panelGroup>
+			<h:panelGroup class="grupo">
+				<h:outputLabel value="Data de nascimento:" class="label" />
+				<h:inputText value="#{responsavelBean.responsavel.dataNascimento}" class="data">
+					<f:convertDateTime pattern="dd/MM/yyyy" />
+				</h:inputText>
+			</h:panelGroup>
+			<h:commandButton action="#{responsavelBean.salvar}" value="Salvar" class="btn"/>
+			<a href="index.jsf">Inicio</a>
+		</h:panelGrid>
+		</fieldset>
+	</h:form>
+</h:body>
+</html>

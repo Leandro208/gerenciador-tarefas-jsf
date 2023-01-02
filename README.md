@@ -10,8 +10,10 @@ A aplicação Java WEB consiste em criar um gerenciador de tarefas onde realiza 
 - Alterar a tarefa
 - Deletar a tarefa
 - listar as tarefas
+- Conclui Tarefa
 
-Foram criadas 3 views, sendo uma inicial que faz o redirecionamento para as outras paginas, uma para cadastrar e editar a tarefa e mais uma para listar, que nessa fica as funcionalidades de remover, editar(onde redireciona para a pagina de cadastro) e concluir.
+Foram criadas 4 views, sendo uma inicial que é onde fica todas as opções na aplicação, uma para cadastrar e editar a tarefa, uma para listar as tarefas, onde nessa fica as funcionalidades de remover, editar(onde redireciona para a pagina de cadastro) e concluir, por ultimo tem a página 
+de cadastrar um novo responsável
 
 #### Itens implementados:
 

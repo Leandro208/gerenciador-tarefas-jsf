@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.Objects;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -30,6 +31,7 @@ public class Responsavel implements Base, Serializable {
 	@Email(message="E-mail deve estar no formato correto.") 
 	private String email;
 	
+	@Column(name="data_nascimento")
 	@NotNull(message="Data de nascimento deve ser definida.") 
 	private Date dataNascimento;
 	

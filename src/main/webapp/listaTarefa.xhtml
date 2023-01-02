@@ -54,21 +54,21 @@
 
 	<div class="card">
 		<p:dataTable var="t" value="#{tarefaBean.listaTarefas}">
-			<p:column headerText="Número:">
+			<p:column headerText="Número">
 				<h:outputText value="#{t.id}" />
 			</p:column>
 
-			<p:column headerText="Titulo:">
+			<p:column headerText="Titulo">
 				<h:outputText value="#{t.titulo}" />
 			</p:column>
 
-			<p:column headerText="Responsável:">
+			<p:column headerText="Responsável">
 				<h:outputText value="#{t.responsavel.nome}" />
 			</p:column>
-			<p:column headerText="Status:">
+			<p:column headerText="Status">
 				<h:outputText value="#{t.status}" />
 			</p:column>
-			<p:column headerText="Ações:">
+			<p:column headerText="Ações">
 				<h:form>
 					<h:commandButton value="Editar" action="#{tarefaBean.editar(t)}">
 					</h:commandButton>
