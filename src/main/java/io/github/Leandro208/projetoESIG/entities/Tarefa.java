@@ -1,0 +1,155 @@
+package io.github.Leandro208.projetoESIG.entities;
+import java.io.Serializable;
+import java.util.Date;
+import java.util.Objects;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.validation.constraints.NotNull;
+
+import org.hibernate.validator.constraints.NotEmpty;
+
+import io.github.Leandro208.projetoESIG.enums.PrioridadeEnum;
+import io.github.Leandro208.projetoESIG.enums.StatusEnum;
+
+
+@Entity
+public class Tarefa implements Base, Serializable {
+
+	private static final long serialVersionUID = 1L;
+	
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private Long id;
+	
+	@NotEmpty(message="Título não pode ser nulo")
+	private String titulo;
+	
+	@NotEmpty(message="Descrição não pode ser nulo")
+	private String descricao;
+
+	@ManyToOne(cascade=CascadeType.MERGE)
+	@JoinColumn(name="id_responsavel")
+	private Responsavel responsavel;
+
+	@Enumerated(EnumType.STRING)
+	private PrioridadeEnum prioridade;
+	
+	@Enumerated(EnumType.STRING)
+	private StatusEnum status;
+	
+	@Temporal(TemporalType.DATE)
+	@NotNull(message="Deadline precisa ser definido")
+	private Date deadline;
+	
+	public Tarefa() {
+		status = StatusEnum.EM_ANDAMENTO;
+	}
+	
+	public Tarefa(Long id, String titulo, String descricao, Responsavel responsavel, PrioridadeEnum prioridade,
+			StatusEnum status, Date data) {
+		super();
+		this.id = id;
+		this.titulo = titulo;
+		this.descricao = descricao;
+		this.responsavel = responsavel;
+		this.prioridade = prioridade;
+		this.status = status;
+		this.deadline = data;
+	}
+	
+	public boolean isFinished() {
+		return status == StatusEnum.CONCLUIDO;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public String getTitulo() {
+
+		return titulo;
+	}
+
+	public void setTitulo(String titulo) {
+		this.titulo = titulo;
+	}
+
+	public String getDescricao() {
+		return descricao;
+	}
+
+	public void setDescricao(String descricao) {
+		this.descricao = descricao;
+	}
+	
+
+	public Responsavel getResponsavel() {
+		return responsavel;
+	}
+
+	public void setResponsavel(Responsavel responsavel) {
+		this.responsavel = responsavel;
+	}
+
+	public Date getDeadline() {
+		return deadline;
+	}
+
+	public void setDeadline(Date data) {
+		this.deadline = data;
+	}
+
+	public PrioridadeEnum getPrioridade() {
+		return prioridade;
+	}
+
+	public void setPrioridade(PrioridadeEnum prioridade) {
+		this.prioridade = prioridade;
+	}
+
+	public StatusEnum getStatus() {
+		return status;
+	}
+
+	public void setStatus(StatusEnum status) {
+		this.status = status;
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(id);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Tarefa other = (Tarefa) obj;
+		return Objects.equals(id, other.id);
+	}
+
+	@Override
+	public String toString() {
+		return "Tarefa [id=" + id + ", titulo=" + titulo + ", descricao=" + descricao + ", responsavel=" + responsavel
+				+ ", prioridade=" + prioridade + ", status=" + status + ", deadline=" + deadline + "]";
+	}
+
+}

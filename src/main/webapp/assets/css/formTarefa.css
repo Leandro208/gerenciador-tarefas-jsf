@@ -1,0 +1,74 @@
+* {
+	margin: 5 auto;
+}
+
+fieldset {
+	width: 80%;
+}
+
+.grupoSelect {
+	position: relative;
+	float: right;
+	align-items: center;
+}
+
+.select {
+	position: relative;
+	border: 1px solid black;
+	width: 185px;
+	height: 30px;
+	right: 3.5%;
+}
+
+.label {
+	font-size: 18px;
+	margin-right: 50px;
+	margin-bottom: 20px;
+}
+
+.campo {
+	border: 1px solid black;
+	width: 500px;
+	height: 30px;
+	margin-left: 27px;
+	margin-top: 20px;
+}
+
+.labelDescricao {
+	font-size: 18px;
+	margin-right: 50px;
+	margin-bottom: 20px;
+	position: relative;
+	bottom: 90px;
+}
+
+.txtArea {
+	width: 500px;
+	height: 100px;
+	border: 1px solid black;
+}
+
+.data {
+	border: 1px solid black;
+	width: 170px;
+	height: 30px;
+	margin-left: 20px;
+	margin-top: 20px;
+}
+
+.data {
+	margin-left: 5px;
+}
+
+.btn {
+	
+	display: flex;
+	font-size: 15px;
+	margin-top: 15px;
+	background-color: white;
+	cursor: pointer;
+	border: 1px solid black;
+	height: 45px;
+	width: 80px;
+	padding-left: 3%;
+}

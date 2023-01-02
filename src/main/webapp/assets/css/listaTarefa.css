@@ -1,0 +1,56 @@
+*{
+	margin: 0 auto ;
+	
+}
+
+.label{
+	font-size: 18px;
+	margin-bottom: 20px;
+	
+}
+
+.campo{
+	border: 1px solid black;
+	width: 500px;
+	height: 30px;
+	margin-left: 27px;
+	margin-top: 20px;
+}
+
+.grupoTitulo {
+	position: relative;
+	right: 9.5%;
+}
+
+.grupoSelect{
+	position: relative;
+	float: left;
+	right: 5%;
+	align-items:  center;
+	
+	
+}
+
+.grupoSelect .select{
+	margin-left: 28px;
+	margin-right: 12px;
+	height: 30px;
+	border: 1px solid black;
+}
+
+
+.btn{
+	
+	font-size: 15px;
+	margin-top: 15px;
+	margin-left: 80px;
+	background-color: white;
+	cursor: pointer;
+	border: 1px solid black;
+}
+
+
+.card{
+	position: relative;
+	top: 25px;
+}

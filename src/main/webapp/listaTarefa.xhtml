@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+	<title>Busca</title>
+	<link rel="stylesheet" href="assets/css/listaTarefa.css" />
+</h:head>
+<h:body>
+	<h:form>
+		<p:messages id="messages" closable="true">
+			<p:autoUpdate />
+		</p:messages>
+
+		<h:panelGrid>
+			<h:panelGroup class="grupoNumero">
+				<h:outputLabel value="Número:" class="label" />
+				<h:inputText value="#{tarefaBean.formConsulta.numero}" class="campo" />
+			</h:panelGroup>
+
+			<h:panelGroup class="grupoTitulo">
+				<h:outputLabel value="Título/Descrição:" class="label" />
+				<h:inputText value="#{tarefaBean.formConsulta.titulo}" class="campo" />
+			</h:panelGroup>
+
+			<h:panelGroup class="grupoSelect">
+				<h:outputLabel value="Responsável:" class="label" />
+				<h:selectOneMenu value="#{tarefaBean.formConsulta.responsavel}"
+					class="select">
+					<f:converter converterId="responsavelConverter" />
+					<f:selectItems value="#{tarefaBean.comboResponsaveis}" />
+				</h:selectOneMenu>
+
+				<h:outputLabel value="Situação:" class="label" />
+				<h:selectOneMenu value="#{tarefaBean.formConsulta.situacao}"
+					class="select">
+					<f:converter converterId="statusConverter" />
+					<f:selectItems value="#{tarefaBean.niveisStatus}" />
+				</h:selectOneMenu>
+
+				<h:commandButton action="#{tarefaBean.listar}" value="Buscar"
+					class="btn" />
+
+				<a href="formTarefa.jsf"><input type="button" value="Cadastrar"
+					style="font-size: 15px; background-color: white; cursor: pointer; border: 1px solid black;" /></a>
+
+			</h:panelGroup>
+
+
+		</h:panelGrid>
+	</h:form>
+
+
+	<div class="card">
+		<p:dataTable var="t" value="#{tarefaBean.listaTarefas}">
+			<p:column headerText="Número:">
+				<h:outputText value="#{t.id}" />
+			</p:column>
+
+			<p:column headerText="Titulo:">
+				<h:outputText value="#{t.titulo}" />
+			</p:column>
+
+			<p:column headerText="Responsável:">
+				<h:outputText value="#{t.responsavel.nome}" />
+			</p:column>
+			<p:column headerText="Status:">
+				<h:outputText value="#{t.status}" />
+			</p:column>
+			<p:column headerText="Ações:">
+				<h:form>
+					<h:commandButton value="Editar" action="#{tarefaBean.editar(t)}">
+					</h:commandButton>
+					<h:commandButton value="Excluir" action="#{tarefaBean.remover(t)}">
+					</h:commandButton>
+					<h:commandButton value="Concluir"
+						action="#{tarefaBean.concluir(t)}" rendered="${!t.finished}">
+					</h:commandButton>
+				</h:form>
+			</p:column>
+		</p:dataTable>
+	</div>
+
+
+</h:body>
+</html>
