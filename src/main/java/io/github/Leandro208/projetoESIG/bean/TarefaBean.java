@@ -76,7 +76,7 @@ public class TarefaBean {
 		List<SelectItem> itensComboNiveisPrioridade = new ArrayList<>();
 		for (PrioridadeEnum p : PrioridadeEnum.values()) {
 			boolean isSelecionado = tarefa.getPrioridade() == p;
-			itensComboNiveisPrioridade.add(new SelectItem(p, p.name(), null, isSelecionado));
+			itensComboNiveisPrioridade.add(new SelectItem(p, p.name(), null, false, false, isSelecionado));
 		}
 		return itensComboNiveisPrioridade;
 	}
@@ -95,7 +95,7 @@ public class TarefaBean {
 		for (Responsavel r : responsaveis) {
 			boolean isSelecionado = tarefa.getResponsavel() != null && tarefa.getResponsavel().getId() != null
 					&& tarefa.getResponsavel().equals(r);
-			itensComboBoxResponsaveis.add(new SelectItem(r, r.getNome(), null, isSelecionado));
+			itensComboBoxResponsaveis.add(new SelectItem(r, r.getNome(), null, false, false, isSelecionado));
 
 		}
 		return itensComboBoxResponsaveis;
