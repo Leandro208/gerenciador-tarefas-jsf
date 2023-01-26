@@ -50,7 +50,8 @@
 			<h:panelGroup class="grupo">
 				<h:outputLabel value="Deadline:" class="label" />
 				<h:inputText value="#{tarefaBean.tarefa.deadline}" class="data">
-					<f:convertDateTime pattern="dd/MM/yyyy" />
+					<f:convertDateTime pattern="dd/MM/yyyy" locale="pt_BR" 
+					timeZone="GMT-3"/>
 				</h:inputText>
 			</h:panelGroup>
 

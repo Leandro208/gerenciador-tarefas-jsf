@@ -1,7 +1,12 @@
 package io.github.Leandro208.projetoESIG.entities;
 import java.io.Serializable;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.Period;
 import java.util.Date;
 import java.util.Objects;
+import java.util.concurrent.TimeUnit;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -37,6 +42,7 @@ public class Tarefa implements Base, Serializable {
 	@NotEmpty(message="Descrição não pode ser nulo")
 	private String descricao;
 
+	//demora do krl
 	@ManyToOne(cascade=CascadeType.MERGE)
 	@JoinColumn(name="id_responsavel")
 	private Responsavel responsavel;
@@ -50,6 +56,7 @@ public class Tarefa implements Base, Serializable {
 	@Temporal(TemporalType.DATE)
 	@NotNull(message="Deadline precisa ser definido")
 	private Date deadline;
+	
 	
 	public Tarefa() {
 		status = StatusEnum.EM_ANDAMENTO;
@@ -69,6 +76,39 @@ public class Tarefa implements Base, Serializable {
 	
 	public boolean isFinished() {
 		return status == StatusEnum.CONCLUIDO;
+	}
+	
+	public String getDias() throws ParseException {
+		
+		
+		
+		if(status.equals(StatusEnum.CONCLUIDO)) {
+			return "Finalizada";
+		}
+		String dias = "";
+		SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+		Date hoje = new Date();
+		String data = df.format(hoje);
+		hoje = df.parse(data);
+		
+		
+		
+		if(hoje.after(deadline)) {
+			dias = "Atrasado ";
+		}
+		
+		Long x = Math.abs(hoje.getTime() - deadline.getTime());
+		Long diferenca = TimeUnit.DAYS.convert(x, TimeUnit.MILLISECONDS);
+		dias += diferenca.toString();
+		
+		if(diferenca==0) {
+			return "Entrega hoje";
+		}
+		else if(diferenca > 1) {
+			dias += " Dias";
+		} else dias += " Dia";
+		
+		return dias;
 	}
 
 	public Long getId() {
@@ -151,5 +191,6 @@ public class Tarefa implements Base, Serializable {
 		return "Tarefa [id=" + id + ", titulo=" + titulo + ", descricao=" + descricao + ", responsavel=" + responsavel
 				+ ", prioridade=" + prioridade + ", status=" + status + ", deadline=" + deadline + "]";
 	}
+	
 
 }

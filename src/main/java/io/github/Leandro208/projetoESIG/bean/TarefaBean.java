@@ -1,5 +1,6 @@
 package io.github.Leandro208.projetoESIG.bean;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 
 import java.util.List;
@@ -100,12 +101,21 @@ public class TarefaBean {
 		}
 		return itensComboBoxResponsaveis;
 	}
-
+	
+	public String corDias(Tarefa t) throws ParseException {
+		String dias = t.getDias();
+		
+		if(dias.contains("Atrasado")) return "red";
+		else if(dias.contains("hoje")) return "#ffd700";
+		else if(dias.equalsIgnoreCase("finalizada")) return "green";
+		else return "black";
+	}
+	
 	private void limpar() {
 		tarefa = new Tarefa();
 		formConsulta = new FormConsultaTarefaDto();
 	}
-
+	
 	public Tarefa getTarefa() {
 		return tarefa;
 	}
