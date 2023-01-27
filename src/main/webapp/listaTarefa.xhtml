@@ -74,13 +74,14 @@
 			
 			<p:column headerText="Ações">
 				<h:form>
-					<h:commandButton value="Editar" action="#{tarefaBean.editar(t)}">
-					</h:commandButton>
-					<h:commandButton value="Excluir" action="#{tarefaBean.remover(t)}">
-					</h:commandButton>
-					<h:commandButton value="Concluir"
-						action="#{tarefaBean.concluir(t)}" rendered="${!t.finished}">
-					</h:commandButton>
+				
+					<p:commandButton ajax="false" id="editar" action="#{tarefaBean.editar(t)}" icon="ui-icon-pencil"/>
+					
+					<p:commandButton ajax="false" id="Excluir" action="#{tarefaBean.remover(t)}" icon="ui-icon-trash"/>
+					
+					<p:commandButton ajax="false" id="Concluir"
+						action="#{tarefaBean.concluir(t)}" rendered="${!t.finished}" icon=" ui-icon-check"/>
+					
 				</h:form>
 			</p:column>
 		</p:dataTable>

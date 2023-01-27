@@ -2,8 +2,6 @@ package io.github.Leandro208.projetoESIG.entities;
 import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.Period;
 import java.util.Date;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
@@ -80,8 +78,6 @@ public class Tarefa implements Base, Serializable {
 	
 	public String getDias() throws ParseException {
 		
-		
-		
 		if(status.equals(StatusEnum.CONCLUIDO)) {
 			return "Finalizada";
 		}
@@ -90,8 +86,6 @@ public class Tarefa implements Base, Serializable {
 		Date hoje = new Date();
 		String data = df.format(hoje);
 		hoje = df.parse(data);
-		
-		
 		
 		if(hoje.after(deadline)) {
 			dias = "Atrasado ";
