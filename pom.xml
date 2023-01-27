@@ -1,25 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
 
-  <groupId>io.github.Leandro208</groupId>
-  <artifactId>projetoESIG</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
-  <packaging>war</packaging>
+	<groupId>io.github.Leandro208</groupId>
+	<artifactId>projetoESIG</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<packaging>war</packaging>
 
-  <name>projetoESIG</name>
-  <!-- FIXME change it to the project's website -->
-  <url>http://www.example.com</url>
+	<name>projetoESIG</name>
+	<!-- FIXME change it to the project's website -->
+	<url>http://www.example.com</url>
 
-  <properties>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <maven.compiler.source>1.8</maven.compiler.source>
-    <maven.compiler.target>1.8</maven.compiler.target>
-  </properties>
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<maven.compiler.source>1.8</maven.compiler.source>
+		<maven.compiler.target>1.8</maven.compiler.target>
+	</properties>
 
-  <dependencies>
+	<dependencies>
 		<!-- PostgreSQL Driver -->
 		<dependency>
 			<groupId>org.postgresql</groupId>
@@ -58,6 +57,19 @@
 			<version>4.11</version>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>javax.servlet-api</artifactId>
+			<version>4.0.1</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>javax.inject</groupId>
+			<artifactId>javax.inject</artifactId>
+			<version>1</version>
+		</dependency>
+
+
 		<!-- JSF library -->
 		<dependency>
 			<groupId>com.sun.faces</groupId>

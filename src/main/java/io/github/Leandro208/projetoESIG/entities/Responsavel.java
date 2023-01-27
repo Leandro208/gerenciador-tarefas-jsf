@@ -31,6 +31,8 @@ public class Responsavel implements Base, Serializable {
 	@Email(message="E-mail deve estar no formato correto.") 
 	private String email;
 	
+	private String senha;
+	
 	@Column(name="data_nascimento")
 	@NotNull(message="Data de nascimento deve ser definida.") 
 	private Date dataNascimento;
@@ -67,6 +69,15 @@ public class Responsavel implements Base, Serializable {
 
 	public void setEmail(String email) {
 		this.email = email;
+	}
+
+	
+	public String getSenha() {
+		return senha;
+	}
+
+	public void setSenha(String senha) {
+		this.senha = senha;
 	}
 
 	public Date getDataNascimento() {

@@ -25,6 +25,12 @@
 				<h:outputLabel value="E-mail:" class="label" />
 				<h:inputText value="#{responsavelBean.responsavel.email}" class="campo" />
 			</h:panelGroup>
+			
+			<h:panelGroup class="grupo">
+				<h:outputLabel value="Senha:" class="label" />
+				<h:inputText value="#{responsavelBean.responsavel.senha}" class="campo" />
+			</h:panelGroup>
+			
 			<h:panelGroup class="grupo">
 				<h:outputLabel value="Data de nascimento:" class="label" />
 				<h:inputText value="#{responsavelBean.responsavel.dataNascimento}" class="data">
@@ -32,8 +38,6 @@
 				</h:inputText>
 			</h:panelGroup>
 			<h:commandButton action="#{responsavelBean.salvar}" value="Salvar" class="btn"/>
-			<a href="index.jsf">Inicio</a><span>|</span>
-			<a href="formTarefa.jsf">Cadastrar uma nova Tarefa</a>
 		</h:panelGrid>
 		</fieldset>
 	</h:form>

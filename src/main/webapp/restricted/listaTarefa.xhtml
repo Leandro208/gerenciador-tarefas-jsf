@@ -5,11 +5,18 @@
 	xmlns:p="http://primefaces.org/ui">
 <h:head>
 	<title>Busca</title>
-	<link rel="icon" type="image/png" href="assets/img/icon.png"/>
-	<link rel="stylesheet" href="assets/css/listaTarefa.css" />
+	<link rel="icon" type="image/png" href="../assets/img/icon.png" />
+	<link rel="stylesheet" href="../assets/css/listaTarefa.css" />
 
 </h:head>
 <h:body>
+	<nav>
+		<h:outputLabel value="Bem vindo #{loginBean.responsavel.nome}" />
+
+		<h:form style="float: right;">
+			<h:commandButton value="Logout" action="#{loginBean.logout}" />
+		</h:form>
+	</nav>
 	<h:form>
 		<p:messages id="messages" closable="true">
 			<p:autoUpdate />
@@ -44,7 +51,8 @@
 				<h:commandButton action="#{tarefaBean.listar}" value="Buscar"
 					class="btn" />
 
-				<a href="formTarefa.jsf"><input type="button" value="Cadastrar"
+				<a href="formTarefa.jsf"><input type="button"
+					value="Cadastrar"
 					style="font-size: 15px; background-color: white; cursor: pointer; border: 1px solid black;" /></a>
 
 			</h:panelGroup>
@@ -79,15 +87,18 @@
 					<p:commandButton ajax="false" action="#{tarefaBean.concluir(t)}"
 						disabled="${t.finished}" icon=" ui-icon-check"
 						style="margin-right:20px;" id="concluir" />
-					<p:tooltip id="toolTipFade" for="concluir" value="Concluir" position="top" />
+					<p:tooltip id="toolTipFade" for="concluir" value="Concluir"
+						position="top" />
 
 					<p:commandButton ajax="false" action="#{tarefaBean.editar(t)}"
 						icon="ui-icon-pencil" title="Editar" id="editar" />
-					<p:tooltip id="toolTipFade2" for="editar" value="Editar" position="top" />
+					<p:tooltip id="toolTipFade2" for="editar" value="Editar"
+						position="top" />
 
 					<p:commandButton ajax="false" action="#{tarefaBean.remover(t)}"
-						icon="ui-icon-trash" title="Remover" id="remover"/>
-					<p:tooltip id="toolTipFade3" for="remover" value="Remover" position="top" />
+						icon="ui-icon-trash" title="Remover" id="remover" />
+					<p:tooltip id="toolTipFade3" for="remover" value="Remover"
+						position="top" />
 
 
 				</h:form>

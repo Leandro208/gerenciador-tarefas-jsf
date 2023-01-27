@@ -20,7 +20,7 @@ public class ResponsavelBean {
 	public String salvar() {
 		responsavelService.salvar(responsavel);
 		limpar();
-		return "";
+		return "login.jsf";
 	}
 
 	private void limpar() {
