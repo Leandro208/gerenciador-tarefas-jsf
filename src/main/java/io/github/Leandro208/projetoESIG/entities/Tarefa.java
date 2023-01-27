@@ -55,6 +55,7 @@ public class Tarefa implements Base, Serializable {
 	@NotNull(message="Deadline precisa ser definido")
 	private Date deadline;
 	
+	private Date dataFinalizacao;
 	
 	public Tarefa() {
 		status = StatusEnum.EM_ANDAMENTO;
@@ -79,7 +80,10 @@ public class Tarefa implements Base, Serializable {
 	public String getDias() throws ParseException {
 		
 		if(status.equals(StatusEnum.CONCLUIDO)) {
-			return "Finalizada";
+			if(dataFinalizacao.after(deadline)) {
+				return "Finalizada com atraso";
+			}
+			return "Finalizada no prazo";
 		}
 		String dias = "";
 		SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
@@ -161,6 +165,14 @@ public class Tarefa implements Base, Serializable {
 
 	public void setStatus(StatusEnum status) {
 		this.status = status;
+	}
+
+	public Date getDataFinalizacao() {
+		return dataFinalizacao;
+	}
+
+	public void setDataFinalizacao(Date dataFinalizacao) {
+		this.dataFinalizacao = dataFinalizacao;
 	}
 
 	@Override

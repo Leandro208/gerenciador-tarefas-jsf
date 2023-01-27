@@ -5,8 +5,8 @@
 	xmlns:p="http://primefaces.org/ui">
 <h:head>
 	<title>Busca</title>
+	<link rel="icon" type="image/png" href="assets/img/icon.png"/>
 	<link rel="stylesheet" href="assets/css/listaTarefa.css" />
-
 
 </h:head>
 <h:body>
@@ -67,21 +67,29 @@
 			<p:column headerText="Responsável">
 				<h:outputText value="#{t.responsavel.nome}" />
 			</p:column>
-			
+
 			<p:column headerText="Prazo">
-				<h:outputText value="#{t.dias}" style="font-weight: bold; color:${tarefaBean.corDias(t)};"/>
+				<h:outputText value="#{t.dias}"
+					style="font-weight: bold; color:${tarefaBean.corDias(t)};" />
 			</p:column>
-			
+
 			<p:column headerText="Ações">
-				<h:form>
-				
-					<p:commandButton ajax="false" id="editar" action="#{tarefaBean.editar(t)}" icon="ui-icon-pencil"/>
-					
-					<p:commandButton ajax="false" id="Excluir" action="#{tarefaBean.remover(t)}" icon="ui-icon-trash"/>
-					
-					<p:commandButton ajax="false" id="Concluir"
-						action="#{tarefaBean.concluir(t)}" rendered="${!t.finished}" icon=" ui-icon-check"/>
-					
+				<h:form style="float: right; margin-right:20px;">
+
+					<p:commandButton ajax="false" action="#{tarefaBean.concluir(t)}"
+						disabled="${t.finished}" icon=" ui-icon-check"
+						style="margin-right:20px;" id="concluir" />
+					<p:tooltip id="toolTipFade" for="concluir" value="Concluir" position="top" />
+
+					<p:commandButton ajax="false" action="#{tarefaBean.editar(t)}"
+						icon="ui-icon-pencil" title="Editar" id="editar" />
+					<p:tooltip id="toolTipFade2" for="editar" value="Editar" position="top" />
+
+					<p:commandButton ajax="false" action="#{tarefaBean.remover(t)}"
+						icon="ui-icon-trash" title="Remover" id="remover"/>
+					<p:tooltip id="toolTipFade3" for="remover" value="Remover" position="top" />
+
+
 				</h:form>
 			</p:column>
 		</p:dataTable>

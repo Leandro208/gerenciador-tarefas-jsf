@@ -57,9 +57,8 @@ public class TarefaBean {
 		return "formTarefa.jsf";
 	}
 
-	public String concluir(Tarefa t) {
-		t.setStatus(StatusEnum.CONCLUIDO);
-		tarefaService.salvar(t);
+	public String concluir(Tarefa t) throws ParseException {
+		tarefaService.concluir(t);
 		return "listaTarefa.jsf";
 	}
 
@@ -106,9 +105,10 @@ public class TarefaBean {
 		String dias = t.getDias();
 		
 		if(dias.contains("Atrasado")) return "red";
+		else if(dias.contains("atraso")) return "orange";
 		else if(dias.contains("hoje")) return "#ffd700";
-		else if(dias.equalsIgnoreCase("finalizada")) return "green";
-		else return "black";
+		else if(dias.contains("prazo")) return "green";
+		else return "blue";
 	}
 	
 	private void limpar() {

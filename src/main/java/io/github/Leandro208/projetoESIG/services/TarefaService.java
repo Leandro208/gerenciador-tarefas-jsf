@@ -1,12 +1,16 @@
 package io.github.Leandro208.projetoESIG.services;
 
 import java.io.Serializable;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import io.github.Leandro208.projetoESIG.dao.GenericDao;
 import io.github.Leandro208.projetoESIG.dto.FormConsultaTarefaDto;
 import io.github.Leandro208.projetoESIG.entities.Tarefa;
+import io.github.Leandro208.projetoESIG.enums.StatusEnum;
 
 public class TarefaService implements BaseService<Tarefa>, Serializable {
 	private static final long serialVersionUID = 1L;
@@ -30,6 +34,15 @@ public class TarefaService implements BaseService<Tarefa>, Serializable {
 	@Override
 	public void remover(Tarefa t) {
 		dao.remover(Tarefa.class, t.getId());
+	}
+	
+	public void concluir(Tarefa t) throws ParseException {
+		t.setStatus(StatusEnum.CONCLUIDO);
+		SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+		t.setDataFinalizacao(new Date());
+		String data = df.format(t.getDataFinalizacao());
+		t.setDataFinalizacao(df.parse(data));
+		dao.salvar(t);
 	}
 
 	public List<Tarefa> buscarTodos(FormConsultaTarefaDto form) {
