@@ -31,29 +31,78 @@ body {
 </h:head>
 <h:body>
 
-	<nav>
-		<h:outputLabel value="Bem vindo #{loginBean.responsavel.nome}" />
+	<nav style="padding-top: 20px;">
+
+		<img alt="Logo" src="../assets/img/icon.png"
+			style="float: left; width: 30px; height: 30px; margin-bottom: 15px;" />
+
+		<h:outputLabel value="#{loginBean.responsavel.funcao}"
+			style="background-color:orange; color:white; border-radius: 30%; 
+			font-size: 15px; margin-left:15px;" />
+
+		<div style="height: 0;">
+			<h:outputLabel
+				style="margin-left: 20px;font-size: 20px;color: purple;"
+				value="#{loginBean.responsavel.nome}" />
+
+			<h:outputLabel value="#User-ID: #{loginBean.responsavel.id}"
+				style="margin-left: 5px;font-size: 12px;opacity: 0.6;" />
+		</div>
 
 		<h:form style="float: right;">
-			<h:commandButton value="Logout" action="#{loginBean.logout}" />
+			<h:commandButton image="../assets/img/logout.png"
+				style="width: 30px;" alt="Logout" action="#{loginBean.logout}" />
 		</h:form>
-
 	</nav>
+
+
 	<div class="container">
 		<div class="box">
-
 			<h:outputLabel style="font-size: 50px;">Gerenciador de Tarefas</h:outputLabel>
 			<br />
-			<p:linkButton href="formTarefa.jsf" value="Cadastrar uma Tarefa"
-				style="font-size: 25px;" />
-			<p:linkButton href="../formResponsavel.jsf"
-				value="Cadastrar um Responsavel" style="font-size: 25px;" />
+			<p:linkButton href="adm/formTarefa.jsf" value="Cadastrar uma Tarefa"
+				style="font-size: 25px;" rendered="${loginBean.responsavel.adm}" />
 			<p:linkButton href="listaTarefa.jsf" value="Listar"
 				style="font-size: 25px;" />
-
-
-
+			<p:commandButton ajax="false" rendered="${loginBean.responsavel.adm}"
+				value="Novo Administrador" type="button"
+				onclick="PF('dlg2').show();" style="font-size: 25px;" />
 		</div>
 	</div>
+
+
+
+	<p:dialog header="Responsáveis" widgetVar="dlg2" modal="true"
+		height="350" width="500">
+		<h:outputText value="Lista completa" />
+
+		<p:dataTable var="r" value="#{responsavelBean.listaReponsaveis}">
+
+			<p:column headerText="Id">
+				<h:outputText value="#{r.id}" />
+			</p:column>
+
+			<p:column headerText="Nome">
+				<h:outputText value="#{r.nome}" />
+			</p:column>
+
+			<p:column headerText="Opção">
+				<h:form>
+					<p:commandButton ajax="false"
+						action="#{responsavelBean.alterarFuncao(r)}" disabled="${r.adm}"
+						icon="ui-icon-gear" id="admin" title="Admin"/>
+					<p:tooltip id="toolTipFade" for="admin" value="Admin"
+						position="top" />
+						
+					<p:commandButton ajax="false"
+						action="#{responsavelBean.alterarFuncao(r)}" disabled="${!r.adm}"
+						icon="ui-icon-person" id="user" title="User"/>
+					<p:tooltip id="toolTipFade1" for="user" value="User"
+						position="top" />
+				</h:form>
+			</p:column>
+		</p:dataTable>
+
+	</p:dialog>
 </h:body>
 </html>

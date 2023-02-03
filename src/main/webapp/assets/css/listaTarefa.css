@@ -9,6 +9,15 @@
 	
 }
 
+.form{
+	margin-top: 50px;
+}
+
+.container{
+	background:#a7b0ba;
+}
+
+
 .campo{
 	border: 1px solid black;
 	width: 500px;

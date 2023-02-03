@@ -2,7 +2,8 @@ package io.github.Leandro208.projetoESIG.filter;
 
 import java.io.IOException;
 
-
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
@@ -15,14 +16,14 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import io.github.Leandro208.projetoESIG.entities.Responsavel;
+import io.github.Leandro208.projetoESIG.enums.Funcao;
 
 public class LoginFilter implements Filter {
-	
-	
+
 	@Override
 	public void init(FilterConfig filterConfig) throws ServletException {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
@@ -38,6 +39,13 @@ public class LoginFilter implements Filter {
 		if(url.contains("/restricted") && (responsavel == null || responsavel.getId() == null)) {
 			res.sendRedirect(req.getServletContext().getContextPath() + "/login.jsf");
 		} 
+		
+		else if(url.contains("/adm") && (responsavel.getFuncao().equals(Funcao.USER))) {
+			res.sendRedirect(req.getServletContext().getContextPath() + "/restricted/index.jsf");
+			
+		} 
+		
+		
 		else {
 			chain.doFilter(request, response);
 		}
@@ -47,7 +55,7 @@ public class LoginFilter implements Filter {
 	@Override
 	public void destroy() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 }

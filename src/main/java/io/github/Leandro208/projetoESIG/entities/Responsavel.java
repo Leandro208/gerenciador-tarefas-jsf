@@ -6,6 +6,8 @@ import java.util.Objects;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -14,6 +16,8 @@ import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
+
+import io.github.Leandro208.projetoESIG.enums.Funcao;
 
 @Entity
 public class Responsavel implements Base, Serializable {
@@ -31,13 +35,20 @@ public class Responsavel implements Base, Serializable {
 	@Email(message="E-mail deve estar no formato correto.") 
 	private String email;
 	
+	@Size(min=6, message="Senha deve ter no minimo 6 caracteres.")
+	@NotBlank(message="Senha não pode estar vazio.")
 	private String senha;
 	
 	@Column(name="data_nascimento")
 	@NotNull(message="Data de nascimento deve ser definida.") 
 	private Date dataNascimento;
 	
-	public Responsavel() {}
+	@Enumerated(EnumType.STRING)
+	private Funcao funcao;
+	
+	public Responsavel() {
+		funcao = Funcao.USER;
+	}
 	
 	public Responsavel(Long id, String nome, String email, Date dataNascimento) {
 		super();
@@ -47,6 +58,10 @@ public class Responsavel implements Base, Serializable {
 		this.dataNascimento = dataNascimento;
 	}
 
+	public boolean isAdm() {
+		return funcao == Funcao.ADM;
+	}
+	
 	public Long getId() {
 		return id;
 	}
@@ -88,6 +103,16 @@ public class Responsavel implements Base, Serializable {
 		this.dataNascimento = dataNascimento;
 	}
 
+	
+	
+	public Funcao getFuncao() {
+		return funcao;
+	}
+
+	public void setFuncao(Funcao funcao) {
+		this.funcao = funcao;
+	}
+
 	@Override
 	public int hashCode() {
 		return Objects.hash(dataNascimento, email, id, nome);
@@ -108,7 +133,9 @@ public class Responsavel implements Base, Serializable {
 
 	@Override
 	public String toString() {
-		return "Responsavel [id=" + id + ", nome=" + nome + ", email=" + email + ", dataNascimento=" + dataNascimento
-				+ "]";
+		return "Responsavel [id=" + id + ", nome=" + nome + ", email=" + email + ", senha=" + senha
+				+ ", dataNascimento=" + dataNascimento + ", funcao=" + funcao + "]";
 	}
+
+	
 }

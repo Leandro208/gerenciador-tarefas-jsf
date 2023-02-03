@@ -10,102 +10,129 @@
 
 </h:head>
 <h:body>
-	<nav>
-		<h:outputLabel value="Bem vindo #{loginBean.responsavel.nome}" />
+	<nav style="padding-top: 20px;">
+
+		<img alt="Logo" src="../assets/img/icon.png"
+			style="float: left; width: 30px; height: 30px; margin-bottom: 15px;" />
+
+		<h:outputLabel value="#{loginBean.responsavel.funcao}"
+			style="background-color:orange; color:white; border-radius: 30%; 
+			font-size: 15px; margin-left:15px;" />
+
+		<div style="height: 0;">
+			<h:outputLabel
+				style="margin-left: 20px;font-size: 20px;color: purple;"
+				value="#{loginBean.responsavel.nome}" />
+
+			<h:outputLabel value="#User-ID: #{loginBean.responsavel.id}"
+				style="margin-left: 5px;font-size: 12px;opacity: 0.6;" />
+		</div>
 
 		<h:form style="float: right;">
-			<h:commandButton value="Logout" action="#{loginBean.logout}" />
+			<h:commandButton image="../assets/img/logout.png"
+				style="width: 30px;" alt="Logout" action="#{loginBean.logout}" />
 		</h:form>
 	</nav>
-	<h:form>
-		<p:messages id="messages" closable="true">
-			<p:autoUpdate />
-		</p:messages>
 
-		<h:panelGrid>
-			<h:panelGroup class="grupoNumero">
-				<h:outputLabel value="Número:" class="label" />
-				<h:inputText value="#{tarefaBean.formConsulta.numero}" class="campo" />
-			</h:panelGroup>
+	<div class="container">
 
-			<h:panelGroup class="grupoTitulo">
-				<h:outputLabel value="Título/Descrição:" class="label" />
-				<h:inputText value="#{tarefaBean.formConsulta.titulo}" class="campo" />
-			</h:panelGroup>
+		<h:form class="form">
+			<p:messages id="messages" closable="true">
+				<p:autoUpdate />
+			</p:messages>
 
-			<h:panelGroup class="grupoSelect">
-				<h:outputLabel value="Responsável:" class="label" />
-				<h:selectOneMenu value="#{tarefaBean.formConsulta.responsavel}"
-					class="select">
-					<f:converter converterId="responsavelConverter" />
-					<f:selectItems value="#{tarefaBean.comboResponsaveis}" />
-				</h:selectOneMenu>
+			<h:panelGrid>
+				<h:panelGroup class="grupoNumero">
+					<h:outputLabel value="Número:" class="label" />
+					<h:inputText value="#{tarefaBean.formConsulta.numero}"
+						class="campo" />
+				</h:panelGroup>
 
-				<h:outputLabel value="Situação:" class="label" />
-				<h:selectOneMenu value="#{tarefaBean.formConsulta.situacao}"
-					class="select">
-					<f:converter converterId="statusConverter" />
-					<f:selectItems value="#{tarefaBean.niveisStatus}" />
-				</h:selectOneMenu>
+				<h:panelGroup class="grupoTitulo">
+					<h:outputLabel value="Título/Descrição:" class="label" />
+					<h:inputText value="#{tarefaBean.formConsulta.titulo}"
+						class="campo" />
+				</h:panelGroup>
 
-				<h:commandButton action="#{tarefaBean.listar}" value="Buscar"
-					class="btn" />
+				<h:panelGroup class="grupoSelect">
+					<h:outputLabel value="Responsável:" class="label" />
+					<h:selectOneMenu value="#{tarefaBean.formConsulta.responsavel}"
+						class="select">
+						<f:converter converterId="responsavelConverter" />
+						<f:selectItems value="#{tarefaBean.comboResponsaveis}" />
+					</h:selectOneMenu>
 
-				<a href="formTarefa.jsf"><input type="button"
-					value="Cadastrar"
-					style="font-size: 15px; background-color: white; cursor: pointer; border: 1px solid black;" /></a>
+					<h:outputLabel value="Situação:" class="label" />
+					<h:selectOneMenu value="#{tarefaBean.formConsulta.situacao}"
+						class="select">
+						<f:converter converterId="statusConverter" />
+						<f:selectItems value="#{tarefaBean.niveisStatus}" />
+					</h:selectOneMenu>
 
-			</h:panelGroup>
+					<h:commandButton action="#{tarefaBean.listar}" value="Buscar"
+						class="btn" />
 
-
-		</h:panelGrid>
-	</h:form>
-
-
-	<div class="card">
-		<p:dataTable var="t" value="#{tarefaBean.listaTarefas}">
-			<p:column headerText="Número">
-				<h:outputText value="#{t.id}" />
-			</p:column>
-
-			<p:column headerText="Titulo">
-				<h:outputText value="#{t.titulo}" />
-			</p:column>
-
-			<p:column headerText="Responsável">
-				<h:outputText value="#{t.responsavel.nome}" />
-			</p:column>
-
-			<p:column headerText="Prazo">
-				<h:outputText value="#{t.dias}"
-					style="font-weight: bold; color:${tarefaBean.corDias(t)};" />
-			</p:column>
-
-			<p:column headerText="Ações">
-				<h:form style="float: right; margin-right:20px;">
-
-					<p:commandButton ajax="false" action="#{tarefaBean.concluir(t)}"
-						disabled="${t.finished}" icon=" ui-icon-check"
-						style="margin-right:20px;" id="concluir" />
-					<p:tooltip id="toolTipFade" for="concluir" value="Concluir"
-						position="top" />
-
-					<p:commandButton ajax="false" action="#{tarefaBean.editar(t)}"
-						icon="ui-icon-pencil" title="Editar" id="editar" />
-					<p:tooltip id="toolTipFade2" for="editar" value="Editar"
-						position="top" />
-
-					<p:commandButton ajax="false" action="#{tarefaBean.remover(t)}"
-						icon="ui-icon-trash" title="Remover" id="remover" />
-					<p:tooltip id="toolTipFade3" for="remover" value="Remover"
-						position="top" />
+					<h:outputLink value="adm/formTarefa.jsf"
+						rendered="${loginBean.responsavel.adm}">
+						<input type="button" value="Cadastrar"
+							style="font-size: 15px; background-color: white; cursor: pointer; border: 1px solid black;" />
+					</h:outputLink>
 
 
-				</h:form>
-			</p:column>
-		</p:dataTable>
+
+				</h:panelGroup>
+
+
+			</h:panelGrid>
+		</h:form>
+
+
+		<div class="card">
+			<p:dataTable var="t" value="#{tarefaBean.listaTarefas}">
+				<p:column headerText="Número">
+					<h:outputText value="#{t.id}" />
+				</p:column>
+
+				<p:column headerText="Titulo">
+					<h:outputText value="#{t.titulo}" />
+				</p:column>
+
+				<p:column headerText="Responsável">
+					<h:outputText value="#{t.responsavel.nome}" />
+				</p:column>
+
+				<p:column headerText="Prazo">
+					<h:outputText value="#{t.dias}"
+						style="font-weight: bold; color:${tarefaBean.corDias(t)};" />
+				</p:column>
+
+				<p:column headerText="Ações">
+					<h:form style="float: right; margin-right:20px;">
+
+						<p:commandButton ajax="false" action="#{tarefaBean.concluir(t)}"
+							disabled="${t.finished}" icon=" ui-icon-check"
+							style="margin-right:20px;" id="concluir" />
+						<p:tooltip id="toolTipFade" for="concluir" value="Concluir"
+							position="top" />
+
+						<p:commandButton ajax="false" action="#{tarefaBean.editar(t)}"
+							icon="ui-icon-pencil" title="Editar" id="editar"
+							rendered="${loginBean.responsavel.adm}" />
+						<p:tooltip id="toolTipFade2" for="editar" value="Editar"
+							position="top" />
+
+						<p:commandButton ajax="false" action="#{tarefaBean.remover(t)}"
+							icon="ui-icon-trash" title="Remover" id="remover"
+							rendered="${loginBean.responsavel.adm}" />
+						<p:tooltip id="toolTipFade3" for="remover" value="Remover"
+							position="top" />
+
+
+					</h:form>
+				</p:column>
+			</p:dataTable>
+		</div>
 	</div>
-
 
 </h:body>
 </html>

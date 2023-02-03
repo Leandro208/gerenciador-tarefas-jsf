@@ -11,13 +11,9 @@ import io.github.Leandro208.projetoESIG.util.Message;
 
 public class GenericDao <T extends Base> implements Serializable {
 
-private static final long serialVersionUID = 1L;
+private static final long serialVersionUID = 1L; 
 	
-	private static EntityManager manager;
-	
-	public GenericDao() {
-		manager = ConnectionFactory.getEntityManager();
-	}
+	private static EntityManager manager = ConnectionFactory.getEntityManager();
 	
 	public T buscarPorId(Class<T> clazz, Long id) {
 		return manager.find(clazz, id);

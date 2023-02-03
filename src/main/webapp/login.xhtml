@@ -8,11 +8,17 @@
 	<link rel="icon" type="image/png" href="assets/img/icon.png" />
 
 </h:head>
-<h:body >
-
+<h:body
+	style="display: flex; 
+		justify-content:center; 
+		align-items: center;
+  justify-content: center;">
 
 	<h:form>
 		<p:messages autoUpdate="true" />
+		<h:outputLabel
+			style="color: purple;font-size: 20px; font-family: cursive;"
+			value="Faça o login ou Registre-se para acessar a aplicação" />
 		<p:panelGrid columns="2">
 
 			<p:outputLabel value="Email" />
@@ -24,10 +30,11 @@
 				requiredMessage="Digite sua senha" />
 
 			<h:panelGroup>
-				<p:commandButton icon="ui-icon-star" value="Login"
+				<p:commandButton value="Login" icon="ui-icon-arrowthickstop-1-e"
 					action="#{loginBean.logar}" ajax="false">
 				</p:commandButton>
-				<p:linkButton href="formResponsavel.jsf" value="Registrar" />
+				<p:linkButton href="formResponsavel.jsf" value="Registrar"
+					icon=" ui-icon-script" />
 			</h:panelGroup>
 		</p:panelGrid>
 	</h:form>
