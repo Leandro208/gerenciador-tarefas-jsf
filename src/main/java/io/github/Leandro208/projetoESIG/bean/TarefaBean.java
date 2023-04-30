@@ -54,7 +54,7 @@ public class TarefaBean {
 
 	public String editar(Tarefa t) {
 		this.tarefa = t;
-		return "formTarefa.jsf";
+		return "adm/formTarefa?faces-redirect=true";
 	}
 
 	public String concluir(Tarefa t) throws ParseException {
@@ -111,7 +111,12 @@ public class TarefaBean {
 		else return "blue";
 	}
 	
-	private void limpar() {
+	public String selecionado(Tarefa t) {
+		this.tarefa = t;
+		return "listaTarefa?faces-redirect=true";
+	}
+	
+	public void limpar() {
 		tarefa = new Tarefa();
 		formConsulta = new FormConsultaTarefaDto();
 	}

@@ -18,6 +18,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.NotEmpty;
 
@@ -38,6 +39,7 @@ public class Tarefa implements Base, Serializable {
 	private String titulo;
 	
 	@NotEmpty(message="Descrição não pode ser nulo")
+	@Size(max = 255, message="A descrição precisa ter no maximo 255 caracteres, escreva uma descrição mais breve.")
 	private String descricao;
 
 	//demora do krl

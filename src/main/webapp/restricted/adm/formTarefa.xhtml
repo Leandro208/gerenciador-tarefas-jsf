@@ -10,21 +10,38 @@
 	<link rel="stylesheet" href="../../assets/css/formTarefa.css" />
 </h:head>
 <h:body class="fundo">
-	<nav>
-		<h:outputLabel value="Bem vindo #{loginBean.responsavel.nome}" />
+	<nav style="padding-top: 20px; margin-bottom: 100px;">
+
+		<a href="../index.jsf"><img alt="Logo" src="../../assets/img/icon.png"
+			style="float: left; width: 30px; height: 30px; margin-bottom: 15px;" /></a>
+
+		<h:outputLabel value="#{loginBean.responsavel.funcao}"
+			style="background-color:orange; color:white; border-radius: 30%; 
+			font-size: 15px; margin-left:15px;" />
+
+		<div style="height: 0;">
+			<h:outputLabel
+				style="margin-left: 20px;font-size: 20px;color: purple;"
+				value="#{loginBean.responsavel.nome}" />
+
+			<h:outputLabel value="#User-ID: #{loginBean.responsavel.id}"
+				style="margin-left: 5px;font-size: 12px;opacity: 0.6;" />
+		</div>
 
 		<h:form style="float: right;">
-			<h:commandButton value="Logout" action="#{loginBean.logout}" />
+			<h:commandButton image="../../assets/img/logout.png"
+				style="width: 30px;" alt="Logout" action="#{loginBean.logout}" />
 		</h:form>
 	</nav>
-
-	<h:form>
+	
+	<div class="container" >
+	<h:form >
 		<p:messages id="messages" closable="true">
 			<p:autoUpdate />
 		</p:messages>
-		<fieldset>
+		<fieldset >
 			<legend>Formulario Tarefa:</legend>
-			<h:panelGrid>
+			<h:panelGrid >
 				<h:panelGroup class="grupo">
 					<h:outputLabel value="Título:" class="label" />
 					<h:inputText value="#{tarefaBean.tarefa.titulo}" class="campo" />
@@ -72,7 +89,7 @@
 			</h:panelGrid>
 		</fieldset>
 	</h:form>
-
+</div>
 
 </h:body>
 </html>

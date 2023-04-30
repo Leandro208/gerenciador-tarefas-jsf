@@ -8,12 +8,23 @@
 	<link rel="icon" type="image/png" href="../assets/img/icon.png" />
 	<link rel="stylesheet" href="../assets/css/listaTarefa.css" />
 
+
+	<style>
+.tarefa div {
+	margin-bottom: 25px;
+}
+
+.tarefa label {
+	font-weight: bold;
+}
+</style>
+
 </h:head>
 <h:body>
 	<nav style="padding-top: 20px;">
 
-		<img alt="Logo" src="../assets/img/icon.png"
-			style="float: left; width: 30px; height: 30px; margin-bottom: 15px;" />
+		<a href="index.jsf"><img alt="Logo" src="../assets/img/icon.png"
+			style="float: left; width: 30px; height: 30px; margin-bottom: 15px;" /></a>
 
 		<h:outputLabel value="#{loginBean.responsavel.funcao}"
 			style="background-color:orange; color:white; border-radius: 30%; 
@@ -107,7 +118,14 @@
 				</p:column>
 
 				<p:column headerText="Ações">
-					<h:form style="float: right; margin-right:20px;">
+					<h:form style="float: right; margin-right:20px;" id="form-op">
+
+						<p:commandButton value="Ver Dados" update="form-op"
+							oncomplete="PF('dlg2').show();">
+							<f:setPropertyActionListener target="#{tarefaBean.tarefa}"
+								value="#{t}" />
+						</p:commandButton>
+
 
 						<p:commandButton ajax="false" action="#{tarefaBean.concluir(t)}"
 							disabled="${t.finished}" icon=" ui-icon-check"
@@ -128,9 +146,50 @@
 							position="top" />
 
 
+						<!-- Dialog com todos os dados da tarefa selecionada -->
+						<p:dialog id="modalDialog"
+							header="Dados da tarefa ##{tarefaBean.tarefa.id}"
+							widgetVar="dlg2" modal="true">
+							<div class="tarefa">
+								<div>
+									<label>Titulo </label>
+									<h:outputText value="#{tarefaBean.tarefa.titulo}" />
+								</div>
+
+								<div>
+									<label>Descrição: </label>
+									<h:outputText value="#{tarefaBean.tarefa.descricao}" />
+								</div>
+								<div>
+									<label>Responsavel: </label>
+									<h:outputText value="#{tarefaBean.tarefa.responsavel.nome}" />
+								</div>
+								<div>
+									<label>Prioridade: </label>
+									<h:outputText value="#{tarefaBean.tarefa.prioridade}" />
+								</div>
+								<div>
+									<label>Deadline: </label>
+									<h:outputText value="#{tarefaBean.tarefa.deadline}" class="data">
+										<f:convertDateTime pattern="dd/MM/yyyy" locale="pt_BR"
+											timeZone="GMT-3" />
+									</h:outputText>
+								</div>
+								<div>
+									<label>Status </label>
+									<h:outputText value="#{tarefaBean.tarefa.status}" />
+								</div>
+							</div>
+
+
+							<p:ajax event="close" listener="#{tarefaBean.limpar}" />
+						</p:dialog>
 					</h:form>
 				</p:column>
 			</p:dataTable>
+
+
+
 		</div>
 	</div>
 
