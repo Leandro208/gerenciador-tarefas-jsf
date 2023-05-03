@@ -99,7 +99,7 @@
 
 
 		<div class="card">
-			<p:dataTable var="t" value="#{tarefaBean.listaTarefas}">
+			<p:dataTable var="t" value="#{tarefaBean.listaTarefas}" id="tabelaTarefa">
 				<p:column headerText="Número">
 					<h:outputText value="#{t.id}" />
 				</p:column>
@@ -138,13 +138,26 @@
 							rendered="${loginBean.responsavel.adm}" />
 						<p:tooltip id="toolTipFade2" for="editar" value="Editar"
 							position="top" />
-
-						<p:commandButton ajax="false" action="#{tarefaBean.remover(t)}"
-							icon="ui-icon-trash" title="Remover" id="remover"
-							rendered="${loginBean.responsavel.adm}" />
+						
+						<!-- Remover tarefa -->
+						<p:commandButton  action="#{tarefaBean.remover(t)}"
+							icon="ui-icon-trash" title="Remover" id="remover" 
+							update="tabelaTarefa" 
+							rendered="${loginBean.responsavel.adm}" >
+							
+							<p:confirm header="Remover tarefa ##{t.id}" message='Tem certeza que deseja remover a tarefa "#{t.titulo}"? '/>
+							
+							</p:commandButton>
 						<p:tooltip id="toolTipFade3" for="remover" value="Remover"
 							position="top" />
 
+
+						<!-- Dialog de confirmação -->
+						
+						<p:confirmDialog global="true" >
+							<p:commandButton value="Sim" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+							<p:commandButton value="Não" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+						</p:confirmDialog>
 
 						<!-- Dialog com todos os dados da tarefa selecionada -->
 						<p:dialog id="modalDialog"

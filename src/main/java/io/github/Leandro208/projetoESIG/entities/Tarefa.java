@@ -42,7 +42,6 @@ public class Tarefa implements Base, Serializable {
 	@Size(max = 255, message="A descrição precisa ter no maximo 255 caracteres, escreva uma descrição mais breve.")
 	private String descricao;
 
-	//demora do krl
 	@ManyToOne(cascade=CascadeType.MERGE)
 	@JoinColumn(name="id_responsavel")
 	private Responsavel responsavel;
