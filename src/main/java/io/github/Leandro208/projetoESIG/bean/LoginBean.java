@@ -57,7 +57,7 @@ public class LoginBean implements Serializable {
 		//se o usuario digitar os componentes errado exibe msg e carrega a pag
 		FacesContext context = FacesContext.getCurrentInstance();
 		context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Usuario ou senha Invalida!", ""));
-
+		
 		return "login?faces-redirect=true";
 	}
 

@@ -10,14 +10,14 @@
 
 
 	<style>
-.tarefa div {
-	margin-bottom: 25px;
-}
-
-.tarefa label {
-	font-weight: bold;
-}
-</style>
+		.tarefa div {
+			margin-bottom: 25px;
+		}
+		
+		.tarefa label {
+			font-weight: bold;
+		}
+	</style>
 
 </h:head>
 <h:body>
@@ -66,9 +66,9 @@
 				</h:panelGroup>
 
 				<h:panelGroup class="grupoSelect">
-					<h:outputLabel value="Responsável:" class="label" />
+					<h:outputLabel value="Responsável:" class="label" rendered="${loginBean.responsavel.adm}"/>
 					<h:selectOneMenu value="#{tarefaBean.formConsulta.responsavel}"
-						class="select">
+						class="select" rendered="${loginBean.responsavel.adm}">
 						<f:converter converterId="responsavelConverter" />
 						<f:selectItems value="#{tarefaBean.comboResponsaveis}" />
 					</h:selectOneMenu>
@@ -99,7 +99,8 @@
 
 
 		<div class="card">
-			<p:dataTable var="t" value="#{tarefaBean.listaTarefas}" id="tabelaTarefa">
+			<p:dataTable var="t" value="#{tarefaBean.listaTarefas}"
+				id="tabelaTarefa">
 				<p:column headerText="Número">
 					<h:outputText value="#{t.id}" />
 				</p:column>
@@ -119,44 +120,48 @@
 
 				<p:column headerText="Ações">
 					<h:form style="float: right; margin-right:20px;" id="form-op">
-
+						
+						<!-- Ver dados tarefa -->
 						<p:commandButton value="Ver Dados" update="form-op"
 							oncomplete="PF('dlg2').show();">
 							<f:setPropertyActionListener target="#{tarefaBean.tarefa}"
 								value="#{t}" />
 						</p:commandButton>
 
-
+						<!-- Concluir tarefa -->
 						<p:commandButton ajax="false" action="#{tarefaBean.concluir(t)}"
 							disabled="${t.finished}" icon=" ui-icon-check"
 							style="margin-right:20px;" id="concluir" />
 						<p:tooltip id="toolTipFade" for="concluir" value="Concluir"
 							position="top" />
-
+						
+						<!-- Editar tarefa -->
 						<p:commandButton ajax="false" action="#{tarefaBean.editar(t)}"
 							icon="ui-icon-pencil" title="Editar" id="editar"
 							rendered="${loginBean.responsavel.adm}" />
 						<p:tooltip id="toolTipFade2" for="editar" value="Editar"
 							position="top" />
-						
+
 						<!-- Remover tarefa -->
-						<p:commandButton  action="#{tarefaBean.remover(t)}"
-							icon="ui-icon-trash" title="Remover" id="remover" 
-							update="tabelaTarefa" 
-							rendered="${loginBean.responsavel.adm}" >
-							
-							<p:confirm header="Remover tarefa ##{t.id}" message='Tem certeza que deseja remover a tarefa "#{t.titulo}"? '/>
-							
-							</p:commandButton>
+						<p:commandButton action="#{tarefaBean.remover(t)}"
+							icon="ui-icon-trash" title="Remover" id="remover"
+							update="tabelaTarefa" rendered="${loginBean.responsavel.adm}">
+
+							<p:confirm header="Remover tarefa ##{t.id}"
+								message='Tem certeza que deseja remover a tarefa "#{t.titulo}"? ' />
+
+						</p:commandButton>
 						<p:tooltip id="toolTipFade3" for="remover" value="Remover"
 							position="top" />
 
 
 						<!-- Dialog de confirmação -->
-						
-						<p:confirmDialog global="true" >
-							<p:commandButton value="Sim" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
-							<p:commandButton value="Não" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+
+						<p:confirmDialog global="true">
+							<p:commandButton value="Sim" styleClass="ui-confirmdialog-yes"
+								icon="ui-icon-check" />
+							<p:commandButton value="Não" styleClass="ui-confirmdialog-no"
+								icon="ui-icon-close" />
 						</p:confirmDialog>
 
 						<!-- Dialog com todos os dados da tarefa selecionada -->
@@ -183,7 +188,8 @@
 								</div>
 								<div>
 									<label>Deadline: </label>
-									<h:outputText value="#{tarefaBean.tarefa.deadline}" class="data">
+									<h:outputText value="#{tarefaBean.tarefa.deadline}"
+										class="data">
 										<f:convertDateTime pattern="dd/MM/yyyy" locale="pt_BR"
 											timeZone="GMT-3" />
 									</h:outputText>
@@ -200,8 +206,6 @@
 					</h:form>
 				</p:column>
 			</p:dataTable>
-
-
 
 		</div>
 	</div>

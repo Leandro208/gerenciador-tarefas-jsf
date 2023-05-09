@@ -10,7 +10,9 @@ import java.util.List;
 import io.github.Leandro208.projetoESIG.dao.GenericDao;
 import io.github.Leandro208.projetoESIG.dto.FormConsultaTarefaDto;
 import io.github.Leandro208.projetoESIG.entities.Tarefa;
+import io.github.Leandro208.projetoESIG.enums.Funcao;
 import io.github.Leandro208.projetoESIG.enums.StatusEnum;
+import io.github.Leandro208.projetoESIG.util.UsuarioUtils;
 
 public class TarefaService implements BaseService<Tarefa>, Serializable {
 	private static final long serialVersionUID = 1L;
@@ -47,6 +49,11 @@ public class TarefaService implements BaseService<Tarefa>, Serializable {
 
 	public List<Tarefa> buscarTodos(FormConsultaTarefaDto form) {
 		List<Tarefa> resultado = new ArrayList<Tarefa>();
+		
+		if(UsuarioUtils.getLogado().getFuncao() == Funcao.USER) {
+			form.setResponsavel(UsuarioUtils.getLogado());
+		}
+		
 		StringBuilder hql = new StringBuilder("select t from Tarefa t  where 1 = 1");
 		if (form.getNumero() != null && form.getNumero() != 0) {
 			hql.append(String.format(" and t.id = %d", form.getNumero()));
