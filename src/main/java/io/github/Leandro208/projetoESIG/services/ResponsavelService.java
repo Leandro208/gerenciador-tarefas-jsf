@@ -6,6 +6,7 @@ import java.util.List;
 
 import io.github.Leandro208.projetoESIG.dao.GenericDao;
 import io.github.Leandro208.projetoESIG.entities.Responsavel;
+import io.github.Leandro208.projetoESIG.util.Criptografar;
 
 public class ResponsavelService implements BaseService<Responsavel>, Serializable{
 
@@ -23,6 +24,7 @@ private static final long serialVersionUID = 1L;
 	}
 	@Override
 	public void salvar(Responsavel r) {
+		r.setSenha(Criptografar.encriptografar(r.getSenha()));
 		dao.salvar(r);
 	}
 	@Override

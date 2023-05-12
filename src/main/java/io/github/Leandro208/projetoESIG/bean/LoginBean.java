@@ -14,6 +14,7 @@ import javax.servlet.http.HttpSession;
 
 import io.github.Leandro208.projetoESIG.entities.Responsavel;
 import io.github.Leandro208.projetoESIG.services.ResponsavelService;
+import io.github.Leandro208.projetoESIG.util.Criptografar;
 
 @ManagedBean
 @SessionScoped
@@ -40,8 +41,9 @@ public class LoginBean implements Serializable {
 			List<Responsavel> res = new ArrayList<>();
 			res = service.buscarTodos();
 			for (Responsavel r : res) {
-				if (email.equalsIgnoreCase(r.getEmail()) && senha.equalsIgnoreCase(r.getSenha())) {
+				if (r.getEmail().equals(email) && r.getSenha().equals(Criptografar.encriptografar(senha))) {
 					responsavel = r;
+					System.out.println("achou");
 				}
 			}
 		
@@ -54,6 +56,7 @@ public class LoginBean implements Serializable {
 
 			return "/restricted/index?faces-redirect=true";
 		}
+		System.out.println("Não achou");
 		//se o usuario digitar os componentes errado exibe msg e carrega a pag
 		FacesContext context = FacesContext.getCurrentInstance();
 		context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Usuario ou senha Invalida!", ""));

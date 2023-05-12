@@ -7,6 +7,7 @@ import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -39,7 +40,7 @@ public class Tarefa implements Base, Serializable {
 	private String titulo;
 	
 	@NotEmpty(message="Descrição não pode ser nulo")
-	@Size(max = 255, message="A descrição precisa ter no maximo 255 caracteres, escreva uma descrição mais breve.")
+	@Column(columnDefinition = "TEXT")
 	private String descricao;
 
 	@ManyToOne(cascade=CascadeType.MERGE)
