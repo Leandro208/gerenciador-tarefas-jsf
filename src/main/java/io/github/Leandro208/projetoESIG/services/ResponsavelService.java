@@ -7,6 +7,7 @@ import java.util.List;
 import io.github.Leandro208.projetoESIG.dao.GenericDao;
 import io.github.Leandro208.projetoESIG.entities.Responsavel;
 import io.github.Leandro208.projetoESIG.util.Criptografar;
+import io.github.Leandro208.projetoESIG.util.Message;
 
 public class ResponsavelService implements BaseService<Responsavel>, Serializable{
 
@@ -23,9 +24,19 @@ private static final long serialVersionUID = 1L;
 		return dao.buscarPorId(Responsavel.class, id);
 	}
 	@Override
-	public void salvar(Responsavel r) {
-		r.setSenha(Criptografar.encriptografar(r.getSenha()));
-		dao.salvar(r);
+	public void salvar(Responsavel responsavel) {
+		
+		List<Responsavel> resp = buscarTodos();
+		for(Responsavel r : resp) {
+			if(r.getEmail().equalsIgnoreCase(responsavel.getEmail())) {
+				Message.warn("Ja existe uma conta cadastrada com esse email!");
+				return;
+			}
+		}
+		
+		
+		responsavel.setSenha(Criptografar.encriptografar(responsavel.getSenha()));
+		dao.salvar(responsavel);
 	}
 	@Override
 	public void remover(Responsavel r) {
