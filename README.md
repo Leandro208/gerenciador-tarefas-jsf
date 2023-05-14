@@ -1,7 +1,3 @@
-## PROJETO ESIG - Orientações
-
-Este projeto web foi desenvolvido como parte do processo seletivo da ESIG
-
 ### Introdução
 
 A aplicação Java WEB consiste em criar um gerenciador de tarefas onde realiza as seguintes funcionalidades:
@@ -24,7 +20,7 @@ de cadastrar um novo responsável
 
 ## Tecnologias utilizadas
 
-- Java7;
+- Java8;
 - JSF;
 - PrimeFaces;
 - PostgreSQL;

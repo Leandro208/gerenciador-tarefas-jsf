@@ -2,7 +2,10 @@ package io.github.Leandro208.projetoESIG.bean;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Calendar;
+
 import java.util.List;
+
 
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
@@ -25,6 +28,8 @@ public class LoginBean implements Serializable {
 	private String email;
 	private String senha;
 	private Responsavel responsavel;
+	
+	private Calendar horaAtual;
 
 	private ResponsavelService service;
 
@@ -33,6 +38,10 @@ public class LoginBean implements Serializable {
 		this.senha = new String("");
 		responsavel = new Responsavel();
 		service = new ResponsavelService();
+		horaAtual = Calendar.getInstance();
+		horaAtual.set(Calendar.SECOND, 0);
+		horaAtual.set(Calendar.MINUTE, 0);
+		horaAtual.set(Calendar.HOUR_OF_DAY, 0);
 
 	}
 
@@ -76,6 +85,13 @@ public class LoginBean implements Serializable {
 		senha = new String("");
 	}
 	
+	public void relogio(){
+        horaAtual.set(Calendar.SECOND, horaAtual.get(Calendar.SECOND)+1);
+    }
+	
+	
+	
+	
 	public String getEmail() {
 		return email;
 	}
@@ -99,5 +115,15 @@ public class LoginBean implements Serializable {
 	public void setResponsavel(Responsavel responsavel) {
 		this.responsavel = responsavel;
 	}
+
+	public Calendar getHoraAtual() {
+		return horaAtual;
+	}
+
+	public void setHoraAtual(Calendar horaAtual) {
+		this.horaAtual = horaAtual;
+	}
+
+	
 
 }

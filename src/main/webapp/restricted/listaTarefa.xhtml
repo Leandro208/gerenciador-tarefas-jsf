@@ -39,10 +39,22 @@
 				style="margin-left: 5px;font-size: 12px;opacity: 0.6;" />
 		</div>
 
-		<h:form style="float: right;">
+		<!-- Relogio -->
+		<div style="margin-left: 80%;">
+			<h:outputLabel value="Tempo de sessão " />
+			<h:outputText id="relogio" value="#{loginBean.horaAtual.time}" >
+				<f:convertDateTime pattern="HH:mm:ss" timeZone="GMT-3" />
+			</h:outputText>
+			<!-- Relógio atualizado acada 1 minuto -->
+			<p:poll interval="1" listener="#{loginBean.relogio}" update="relogio" />
+			<!-- Fim relogio  -->
+			
+			<h:form style="float: right;">
 			<h:commandButton image="../assets/img/logout.png"
 				style="width: 30px;" alt="Logout" action="#{loginBean.logout}" />
 		</h:form>
+		</div>
+		
 	</nav>
 
 	<div class="container">
