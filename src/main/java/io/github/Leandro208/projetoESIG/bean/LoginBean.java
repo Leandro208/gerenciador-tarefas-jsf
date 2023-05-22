@@ -18,6 +18,7 @@ import javax.servlet.http.HttpSession;
 import io.github.Leandro208.projetoESIG.entities.Responsavel;
 import io.github.Leandro208.projetoESIG.services.ResponsavelService;
 import io.github.Leandro208.projetoESIG.util.Criptografar;
+import io.github.Leandro208.projetoESIG.util.Message;
 
 @ManagedBean
 @SessionScoped
@@ -67,10 +68,9 @@ public class LoginBean implements Serializable {
 		}
 		System.out.println("Não achou");
 		//se o usuario digitar os componentes errado exibe msg e carrega a pag
-		FacesContext context = FacesContext.getCurrentInstance();
-		context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Usuario ou senha Invalida!", ""));
+		Message.erro("Usuario não encontrado! Email ou senha errado!");
 		
-		return "login?faces-redirect=true";
+		return null;
 	}
 
 	public String logout() {

@@ -15,7 +15,9 @@
   justify-content: center;">
 
 	<h:form>
-		<p:messages autoUpdate="true" />
+		<p:messages id="messages" closable="true">
+				<p:autoUpdate />
+			</p:messages>
 		<h:outputLabel
 			style="color: purple;font-size: 20px; font-family: cursive;"
 			value="Faça o login ou Registre-se para acessar a aplicação" />
