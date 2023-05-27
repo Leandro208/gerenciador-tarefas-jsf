@@ -31,6 +31,7 @@ body {
 </h:head>
 <h:body>
 
+	<!-- Cabeçalho -->
 	<nav style="padding-top: 20px;">
 
 		<img alt="Logo" src="../assets/img/icon.png"
@@ -52,31 +53,37 @@ body {
 		<!-- Relogio -->
 		<div style="margin-left: 80%;">
 			<h:outputLabel value="Tempo de sessão " />
-			<h:outputText id="relogio" value="#{loginBean.horaAtual.time}" >
+			<h:outputText id="relogio" value="#{loginBean.horaAtual.time}">
 				<f:convertDateTime pattern="HH:mm:ss" timeZone="GMT-3" />
 			</h:outputText>
 			<!-- Relógio atualizado acada 1 minuto -->
 			<p:poll interval="1" listener="#{loginBean.relogio}" update="relogio" />
 			<!-- Fim relogio  -->
-			
+
 			<h:form style="float: right;">
-			<h:commandButton image="../assets/img/logout.png"
-				style="width: 30px;" alt="Logout" action="#{loginBean.logout}" />
-		</h:form>
+				<h:commandButton image="../assets/img/logout.png"
+					style="width: 30px;" alt="Logout" action="#{loginBean.logout}" />
+			</h:form>
 		</div>
-		
+
 	</nav>
 
+	<!-- Fim cabeçalho -->
 
 
 
 	<div class="container">
 		<div class="box">
 			<h:outputLabel style="font-size: 50px;">Gerenciador de Tarefas</h:outputLabel>
-
-			
-
 			<br />
+			<h:panelGroup id="monitor">
+				<h:outputLabel>Abertas: #{tarefaBean.monitor.andamento}</h:outputLabel>
+				<br />
+				<h:outputLabel>Concluidas: #{tarefaBean.monitor.concluidas}</h:outputLabel>
+			</h:panelGroup><br />
+			<!-- Atualizao monitor -->
+			<p:poll interval="2" listener="#{tarefaBean.dashboard}"
+				update="monitor" />
 			<p:linkButton href="adm/formTarefa.jsf" value="Cadastrar uma Tarefa"
 				style="font-size: 25px;" rendered="${loginBean.responsavel.adm}" />
 			<p:linkButton href="listaTarefa.jsf" value="Listar"

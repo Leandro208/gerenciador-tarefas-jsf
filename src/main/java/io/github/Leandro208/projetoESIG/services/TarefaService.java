@@ -7,11 +7,13 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+
 import io.github.Leandro208.projetoESIG.dao.GenericDao;
 import io.github.Leandro208.projetoESIG.dto.FormConsultaTarefaDto;
 import io.github.Leandro208.projetoESIG.entities.Tarefa;
 import io.github.Leandro208.projetoESIG.enums.Funcao;
 import io.github.Leandro208.projetoESIG.enums.StatusEnum;
+import io.github.Leandro208.projetoESIG.util.MonitorTarefas;
 import io.github.Leandro208.projetoESIG.util.UsuarioUtils;
 
 public class TarefaService implements BaseService<Tarefa>, Serializable {
@@ -37,7 +39,7 @@ public class TarefaService implements BaseService<Tarefa>, Serializable {
 	public void remover(Tarefa t) {
 		dao.remover(Tarefa.class, t.getId());
 	}
-	
+
 	public void concluir(Tarefa t) throws ParseException {
 		t.setStatus(StatusEnum.CONCLUIDO);
 		SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
@@ -49,11 +51,11 @@ public class TarefaService implements BaseService<Tarefa>, Serializable {
 
 	public List<Tarefa> buscarTodos(FormConsultaTarefaDto form) {
 		List<Tarefa> resultado = new ArrayList<Tarefa>();
-		
-		if(UsuarioUtils.getLogado().getFuncao() == Funcao.USER) {
+
+		if (UsuarioUtils.getLogado().getFuncao() == Funcao.USER) {
 			form.setResponsavel(UsuarioUtils.getLogado());
 		}
-		
+
 		StringBuilder hql = new StringBuilder("select t from Tarefa t  where 1 = 1");
 		if (form.getNumero() != null && form.getNumero() != 0) {
 			hql.append(String.format(" and t.id = %d", form.getNumero()));
@@ -72,5 +74,24 @@ public class TarefaService implements BaseService<Tarefa>, Serializable {
 		resultado = dao.buscarTodos(hql.toString());
 
 		return resultado;
+	}
+
+	public MonitorTarefas monitoramento() {
+
+		List<Tarefa> lista = buscarTodos(new FormConsultaTarefaDto());
+		int encerrados = 0;
+		int andamento = 0;
+
+		for (Tarefa t : lista) {
+			if (t.getStatus().equals(StatusEnum.EM_ANDAMENTO))
+				andamento++;
+			else if (t.getStatus().equals(StatusEnum.CONCLUIDO))
+				encerrados++;
+
+		}
+
+		MonitorTarefas monitor = new MonitorTarefas(andamento, encerrados);
+
+		return monitor;
 	}
 }

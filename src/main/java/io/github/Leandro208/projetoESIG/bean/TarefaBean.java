@@ -9,6 +9,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.model.SelectItem;
 
+
 import io.github.Leandro208.projetoESIG.dto.FormConsultaTarefaDto;
 import io.github.Leandro208.projetoESIG.entities.Responsavel;
 import io.github.Leandro208.projetoESIG.entities.Tarefa;
@@ -16,11 +17,12 @@ import io.github.Leandro208.projetoESIG.enums.PrioridadeEnum;
 import io.github.Leandro208.projetoESIG.enums.StatusEnum;
 import io.github.Leandro208.projetoESIG.services.ResponsavelService;
 import io.github.Leandro208.projetoESIG.services.TarefaService;
+import io.github.Leandro208.projetoESIG.util.MonitorTarefas;
 
 @ManagedBean
 @SessionScoped
 public class TarefaBean {
-	
+
 	private Tarefa tarefa;
 
 	private FormConsultaTarefaDto formConsulta;
@@ -31,18 +33,22 @@ public class TarefaBean {
 
 	private ResponsavelService responsavelService;
 
-	public TarefaBean() {
+	private MonitorTarefas monitor;
+
+	public TarefaBean() throws ParseException {
 		tarefa = new Tarefa();
 		tarefaService = new TarefaService();
 		responsavelService = new ResponsavelService();
 		formConsulta = new FormConsultaTarefaDto();
 		listaTarefas = tarefaService.buscarTodos(formConsulta);
+		monitor = tarefaService.monitoramento();
 	}
 
-	public String cadastrar() {
+	public String cadastrar() throws ParseException {
 		tarefaService.salvar(tarefa);
 		carregarTarefas();
 		limpar();
+		dashboard();
 		return "";
 	}
 
@@ -52,23 +58,26 @@ public class TarefaBean {
 		return "";
 	}
 
-	public String editar(Tarefa t) {
+	public String editar(Tarefa t) throws ParseException {
 		this.tarefa = t;
+		dashboard();
 		return "adm/formTarefa?faces-redirect=true";
 	}
 
 	public String concluir(Tarefa t) throws ParseException {
 		tarefaService.concluir(t);
+		dashboard();
 		return "listaTarefa.jsf";
 	}
 
-	public String remover(Tarefa t) {
+	public String remover(Tarefa t) throws ParseException {
 		tarefaService.remover(t);
 		carregarTarefas();
+		dashboard();
 		return "listaTarefa.jsf";
 	}
 
-	private void carregarTarefas() {
+	public void carregarTarefas() {
 		listaTarefas = tarefaService.buscarTodos(formConsulta);
 	}
 
@@ -100,27 +109,36 @@ public class TarefaBean {
 		}
 		return itensComboBoxResponsaveis;
 	}
-	
+
 	public String corDias(Tarefa t) throws ParseException {
 		String dias = t.getDias();
-		
-		if(dias.contains("Atrasado")) return "red";
-		else if(dias.contains("atraso")) return "orange";
-		else if(dias.contains("hoje")) return "#ffd700";
-		else if(dias.contains("prazo")) return "green";
-		else return "blue";
+
+		if (dias.contains("Atrasado"))
+			return "red";
+		else if (dias.contains("atraso"))
+			return "orange";
+		else if (dias.contains("hoje"))
+			return "#ffd700";
+		else if (dias.contains("prazo"))
+			return "green";
+		else
+			return "blue";
 	}
-	
+
 	public String selecionado(Tarefa t) {
 		this.tarefa = t;
 		return "listaTarefa?faces-redirect=true";
 	}
-	
+
+	public void dashboard() throws ParseException {
+		monitor = tarefaService.monitoramento();
+	}
+
 	public void limpar() {
 		tarefa = new Tarefa();
 		formConsulta = new FormConsultaTarefaDto();
 	}
-	
+
 	public Tarefa getTarefa() {
 		return tarefa;
 	}
@@ -144,5 +162,15 @@ public class TarefaBean {
 	public void setFormConsulta(FormConsultaTarefaDto formConsulta) {
 		this.formConsulta = formConsulta;
 	}
+
+	public MonitorTarefas getMonitor() {
+		return monitor;
+	}
+
+	public void setMonitor(MonitorTarefas monitor) {
+		this.monitor = monitor;
+	}
+	
+	
 
 }

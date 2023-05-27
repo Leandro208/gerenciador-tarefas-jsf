@@ -89,9 +89,6 @@ public class LoginBean implements Serializable {
         horaAtual.set(Calendar.SECOND, horaAtual.get(Calendar.SECOND)+1);
     }
 	
-	
-	
-	
 	public String getEmail() {
 		return email;
 	}
