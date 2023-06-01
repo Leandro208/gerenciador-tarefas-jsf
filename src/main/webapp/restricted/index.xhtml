@@ -56,7 +56,7 @@ body {
 			<h:outputText id="relogio" value="#{loginBean.horaAtual.time}">
 				<f:convertDateTime pattern="HH:mm:ss" timeZone="GMT-3" />
 			</h:outputText>
-			<!-- Relógio atualizado acada 1 minuto -->
+			<!-- Relógio atualizado acada 1 segundo -->
 			<p:poll interval="1" listener="#{loginBean.relogio}" update="relogio" />
 			<!-- Fim relogio  -->
 

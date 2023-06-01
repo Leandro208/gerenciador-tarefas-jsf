@@ -6,39 +6,52 @@
 	xmlns:p="http://primefaces.org/ui">
 <h:head>
 	<title>Formulario Responsável</title>
-	<link rel="icon" type="image/png" href="assets/img/icon.png"/>
+	<link rel="icon" type="image/png" href="assets/img/icon.png" />
 	<link rel="stylesheet" href="assets/css/formTarefa.css" />
 </h:head>
 <h:body class="fundo">
 	<h:form>
-	<p:messages id="messages" closable="true">
-	   		<p:autoUpdate/>
-	   </p:messages>
-	<fieldset>
-	<legend>Formulario Responsável:</legend>
-		<h:panelGrid>
-			<h:panelGroup class="grupo">
-				<h:outputLabel value="Nome:" class="label" />
-				<h:inputText value="#{responsavelBean.responsavel.nome}" class="campo" />
-			</h:panelGroup>
-			<h:panelGroup class="grupo">
-				<h:outputLabel value="E-mail:" class="label" />
-				<h:inputText value="#{responsavelBean.responsavel.email}" class="campo" />
-			</h:panelGroup>
-			
-			<h:panelGroup class="grupo">
-				<h:outputLabel value="Senha:" class="label" />
-				<h:inputText value="#{responsavelBean.responsavel.senha}" class="campo" />
-			</h:panelGroup>
-			
-			<h:panelGroup class="grupo">
-				<h:outputLabel value="Data de nascimento:" class="label" />
-				<h:inputText value="#{responsavelBean.responsavel.dataNascimento}" class="data">
-					<f:convertDateTime pattern="dd/MM/yyyy" />
-				</h:inputText>
-			</h:panelGroup>
-			<h:commandButton action="#{responsavelBean.salvar}" value="Salvar" class="btn"/>
-		</h:panelGrid>
+		<p:messages id="messages" closable="true">
+			<p:autoUpdate />
+		</p:messages>
+		<fieldset>
+			<legend>Formulario Responsável:</legend>
+			<h:panelGrid>
+				<h:panelGroup class="grupo">
+					<h:outputLabel value="Nome:" class="label" />
+					<h:inputText value="#{responsavelBean.responsavel.nome}"
+						class="campo" />
+				</h:panelGroup>
+				<h:panelGroup class="grupo">
+					<h:outputLabel value="E-mail:" class="label" />
+					<h:inputText value="#{responsavelBean.responsavel.email}"
+						class="campo" />
+				</h:panelGroup>
+
+				<h:panelGroup class="grupo" >
+					<h:outputLabel value="Data de nascimento:" class="label" />
+					<h:inputText value="#{responsavelBean.responsavel.dataNascimento}"
+						class="data">
+						<f:convertDateTime pattern="dd/MM/yyyy" />
+					</h:inputText>
+				</h:panelGroup>
+
+				<h:panelGrid  id="matchGrid" cellpadding="5" >
+					<h:outputLabel for="pwd1" value="Digite a senha:" />
+					<p:password id="pwd1"
+						value="#{responsavelBean.responsavel.senha}" match="pwd2"
+						label="senha" required="true"
+						validatorMessage="Os campos Senha não são iguais" />
+					<h:outputLabel for="pwd2" value="Confirme a senha:" />
+					<p:password id="pwd2"
+						value="#{responsavelBean.responsavel.senha}"
+						label="ConfirmaSenha"/>
+				</h:panelGrid>
+
+				<h:commandButton update="matchGrid"
+					action="#{responsavelBean.salvar}" value="Salvar" class="btn" />
+
+			</h:panelGrid>
 		</fieldset>
 	</h:form>
 </h:body>
