@@ -27,6 +27,52 @@
 body {
 	margin: 0px;
 }
+
+.dashboard {
+	background-color: white;
+	border: 5px solid red;
+	border-radius: 5%;
+	width: 500px;
+	height: 250px;
+	
+	position: relative;
+	font-size: 13px;
+	color: gray;
+}
+
+.item1 {
+	background-color: orange;
+	
+	width: 100px;
+	height: 100px;
+	border-radius: 50%;
+	position: absolute;
+	top: 20%;
+	left: 50%;
+	margin: -25px 0 0 -25px;
+}
+
+.item2 {
+	background-color: purple;
+	width: 100px;
+	height: 100px;
+	border-radius: 50%;
+	position: absolute;
+	top: 65%;
+	left: 50%;
+	margin: -25px 0 0 -25px;
+	float: left;
+}
+
+.texto {
+	color: pink;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	margin: -20px 0 0 -5;
+	font-size: 25px;
+	color: white;
+}
 </style>
 </h:head>
 <h:body>
@@ -76,11 +122,22 @@ body {
 		<div class="box">
 			<h:outputLabel style="font-size: 50px;">Gerenciador de Tarefas</h:outputLabel>
 			<br />
-			<h:panelGroup id="monitor">
-				<h:outputLabel>Abertas: #{tarefaBean.monitor.andamento}</h:outputLabel>
-				<br />
-				<h:outputLabel>Concluidas: #{tarefaBean.monitor.concluidas}</h:outputLabel>
-			</h:panelGroup><br />
+
+			<div class="dashboard">
+
+				<h:panelGroup id="monitor">
+					<div class="item1">
+						Andamento:
+						<h:outputLabel class="texto">#{tarefaBean.monitor.andamento}</h:outputLabel>
+					</div>
+					<div class="item2">
+						Concluidas:
+						<h:outputLabel class="texto">#{tarefaBean.monitor.concluidas}</h:outputLabel>
+					</div>
+				</h:panelGroup>
+
+			</div>
+			<br />
 			<!-- Atualizao monitor -->
 			<p:poll interval="2" listener="#{tarefaBean.dashboard}"
 				update="monitor" />
