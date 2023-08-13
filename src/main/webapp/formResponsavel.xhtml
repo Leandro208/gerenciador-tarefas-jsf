@@ -21,6 +21,7 @@
 					<h:outputLabel value="Nome:" class="label" />
 					<h:inputText value="#{responsavelBean.responsavel.nome}"
 						class="campo" />
+
 				</h:panelGroup>
 				<h:panelGroup class="grupo">
 					<h:outputLabel value="E-mail:" class="label" />
@@ -28,24 +29,30 @@
 						class="campo" />
 				</h:panelGroup>
 
-				<h:panelGroup class="grupo" >
+				<h:panelGroup class="grupo">
 					<h:outputLabel value="Data de nascimento:" class="label" />
 					<h:inputText value="#{responsavelBean.responsavel.dataNascimento}"
 						class="data">
 						<f:convertDateTime pattern="dd/MM/yyyy" />
 					</h:inputText>
 				</h:panelGroup>
+				<h:panelGroup>
+					<h:outputLabel value="Equipe:" class="label" />
+						<h:selectOneMenu value="#{responsavelBean.responsavel.equipe}"
+							class="select">
+							<f:converter converterId="equipeConverter" />
+							<f:selectItems value="#{responsavelBean.comboEquipes}" />
+						</h:selectOneMenu>
+				</h:panelGroup>
 
-				<h:panelGrid  id="matchGrid" cellpadding="5" >
+				<h:panelGrid id="matchGrid" cellpadding="5">
 					<h:outputLabel for="pwd1" value="Digite a senha:" />
-					<p:password id="pwd1"
-						value="#{responsavelBean.responsavel.senha}" match="pwd2"
-						label="senha" required="true"
+					<p:password id="pwd1" value="#{responsavelBean.responsavel.senha}"
+						match="pwd2" label="senha" required="true"
 						validatorMessage="Os campos Senha não são iguais" />
 					<h:outputLabel for="pwd2" value="Confirme a senha:" />
-					<p:password id="pwd2"
-						value="#{responsavelBean.responsavel.senha}"
-						label="ConfirmaSenha"/>
+					<p:password id="pwd2" value="#{responsavelBean.responsavel.senha}"
+						label="ConfirmaSenha" />
 				</h:panelGrid>
 
 				<h:commandButton update="matchGrid"

@@ -19,7 +19,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.NotEmpty;
 
@@ -58,6 +57,9 @@ public class Tarefa implements Base, Serializable {
 	private Date deadline;
 	
 	private Date dataFinalizacao;
+	
+	@ManyToOne(cascade = CascadeType.ALL)
+	private Equipe equipe;
 	
 	public Tarefa() {
 		status = StatusEnum.EM_ANDAMENTO;
@@ -175,6 +177,15 @@ public class Tarefa implements Base, Serializable {
 
 	public void setDataFinalizacao(Date dataFinalizacao) {
 		this.dataFinalizacao = dataFinalizacao;
+	}
+
+	
+	public Equipe getEquipe() {
+		return equipe;
+	}
+
+	public void setEquipe(Equipe equipe) {
+		this.equipe = equipe;
 	}
 
 	@Override

@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.Objects;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -11,6 +12,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -45,6 +47,9 @@ public class Responsavel implements Base, Serializable {
 	
 	@Enumerated(EnumType.STRING)
 	private Funcao funcao;
+	
+	@ManyToOne(cascade = CascadeType.ALL)
+	private Equipe equipe;
 	
 	public Responsavel() {
 		funcao = Funcao.USER;
@@ -102,8 +107,6 @@ public class Responsavel implements Base, Serializable {
 	public void setDataNascimento(Date dataNascimento) {
 		this.dataNascimento = dataNascimento;
 	}
-
-	
 	
 	public Funcao getFuncao() {
 		return funcao;
@@ -111,6 +114,14 @@ public class Responsavel implements Base, Serializable {
 
 	public void setFuncao(Funcao funcao) {
 		this.funcao = funcao;
+	}
+
+	public Equipe getEquipe() {
+		return equipe;
+	}
+
+	public void setEquipe(Equipe equipe) {
+		this.equipe = equipe;
 	}
 
 	@Override

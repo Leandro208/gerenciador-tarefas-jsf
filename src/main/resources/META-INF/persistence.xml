@@ -9,13 +9,14 @@
 		<provider>org.hibernate.ejb.HibernatePersistence</provider>
 		<class>io.github.Leandro208.projetoESIG.entities.Tarefa</class>
 		<class>io.github.Leandro208.projetoESIG.entities.Responsavel</class>
+		<class>io.github.Leandro208.projetoESIG.entities.Equipe</class>
 		<properties>
 			<property name="javax.persistence.jdbc.url" value="jdbc:postgresql://localhost:5432/tarefas"/>
 			<property name="javax.persistence.jdbc.user" value="postgres"/>
 			<property name="javax.persistence.jdbc.password" value="123456"/>
 			<property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver"/>
 			<property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect" />
-			<property name="hibernate.show_sql" value="true" />
+			<!--  <property name="hibernate.show_sql" value="true" />-->
 			<property name="hibernate.format_sql" value="true" />
 			<property name="hibernate.hbm2ddl.auto" value="update" />
 		</properties>

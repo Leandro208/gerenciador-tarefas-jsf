@@ -68,14 +68,13 @@
 					</h:panelGroup>
 
 					<h:panelGroup class="grupoSelect">
-
-						<h:outputLabel value="Responsável:" class="label" />
-						<h:selectOneMenu value="#{tarefaBean.tarefa.responsavel}"
+						
+						<h:outputLabel value="Equipe:" class="label" />
+						<h:selectOneMenu value="#{tarefaBean.tarefa.equipe}"
 							class="select">
-							<f:converter converterId="responsavelConverter" />
-							<f:selectItems value="#{tarefaBean.comboResponsaveis}" />
+							<f:converter converterId="equipeConverter" />
+							<f:selectItems value="#{tarefaBean.comboEquipes}" />
 						</h:selectOneMenu>
-
 
 						<h:outputLabel value="Prioridade:" class="label" />
 						<h:selectOneMenu value="#{tarefaBean.tarefa.prioridade}"

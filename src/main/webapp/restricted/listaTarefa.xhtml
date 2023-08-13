@@ -2,7 +2,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:p="http://primefaces.org/ui">
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
 <h:head>
 	<title>Busca</title>
 	<link rel="icon" type="image/png" href="../assets/img/icon.png" />
@@ -78,10 +79,9 @@
 				</h:panelGroup>
 
 				<h:panelGroup class="grupoSelect">
-					<h:outputLabel value="Responsável:" class="label"
-						rendered="${loginBean.responsavel.adm}" />
+					<h:outputLabel value="Responsável:" class="label" />
 					<h:selectOneMenu value="#{tarefaBean.formConsulta.responsavel}"
-						class="select" rendered="${loginBean.responsavel.adm}">
+						class="select">
 						<f:converter converterId="responsavelConverter" />
 						<f:selectItems value="#{tarefaBean.comboResponsaveis}" />
 					</h:selectOneMenu>
@@ -113,7 +113,10 @@
 
 		<div class="card">
 			<p:dataTable var="t" value="#{tarefaBean.listaTarefas}"
-				id="tabelaTarefa">
+				id="tabelaTarefa" emptyMessage="Nenhuma Tarefa no momento!">
+				<f:facet name="header">
+            Equipe '#{loginBean.responsavel.equipe.nome}'
+        </f:facet>
 				<p:column headerText="Número">
 					<h:outputText value="#{t.id}" />
 				</p:column>
@@ -123,7 +126,10 @@
 				</p:column>
 
 				<p:column headerText="Responsável">
-					<h:outputText value="#{t.responsavel.nome}" />
+
+					<h:outputText value="#{t.responsavel.nome} " />
+					<p:commandLink style=" color:blue; font-size: 12px;"
+						value="#{t.responsavel.nome==null  ? ' Delegar Para Mim' : 'Deixar tarefa'}"></p:commandLink>
 				</p:column>
 
 				<p:column headerText="Prazo">

@@ -52,9 +52,7 @@ public class TarefaService implements BaseService<Tarefa>, Serializable {
 	public List<Tarefa> buscarTodos(FormConsultaTarefaDto form) {
 		List<Tarefa> resultado = new ArrayList<Tarefa>();
 
-		if (UsuarioUtils.getLogado().getFuncao() == Funcao.USER) {
-			form.setResponsavel(UsuarioUtils.getLogado());
-		}
+		
 
 		StringBuilder hql = new StringBuilder("select t from Tarefa t  where 1 = 1");
 		if (form.getNumero() != null && form.getNumero() != 0) {
@@ -69,6 +67,9 @@ public class TarefaService implements BaseService<Tarefa>, Serializable {
 		}
 		if (form.getSituacao() != null) {
 			hql.append(String.format(" and t.status like '%s'", form.getSituacao().toString()));
+		}
+		if (UsuarioUtils.getLogado().getFuncao() == Funcao.USER) {
+			hql.append(String.format(" and t.equipe.id = '%d'", UsuarioUtils.getLogado().getEquipe().getId()));
 		}
 		hql.append(" order by t.id");
 		resultado = dao.buscarTodos(hql.toString());

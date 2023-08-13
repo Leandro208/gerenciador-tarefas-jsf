@@ -11,13 +11,16 @@ import javax.faces.model.SelectItem;
 
 
 import io.github.Leandro208.projetoESIG.dto.FormConsultaTarefaDto;
+import io.github.Leandro208.projetoESIG.entities.Equipe;
 import io.github.Leandro208.projetoESIG.entities.Responsavel;
 import io.github.Leandro208.projetoESIG.entities.Tarefa;
 import io.github.Leandro208.projetoESIG.enums.PrioridadeEnum;
 import io.github.Leandro208.projetoESIG.enums.StatusEnum;
+import io.github.Leandro208.projetoESIG.services.EquipeService;
 import io.github.Leandro208.projetoESIG.services.ResponsavelService;
 import io.github.Leandro208.projetoESIG.services.TarefaService;
 import io.github.Leandro208.projetoESIG.util.MonitorTarefas;
+import io.github.Leandro208.projetoESIG.util.UsuarioUtils;
 
 @ManagedBean
 @SessionScoped
@@ -81,6 +84,7 @@ public class TarefaBean {
 		listaTarefas = tarefaService.buscarTodos(formConsulta);
 	}
 
+	
 	public List<SelectItem> getComboNiveisPrioridade() {
 		List<SelectItem> itensComboNiveisPrioridade = new ArrayList<>();
 		for (PrioridadeEnum p : PrioridadeEnum.values()) {
@@ -97,7 +101,21 @@ public class TarefaBean {
 		}
 		return niveisStatus;
 	}
+	
 
+	public List<SelectItem> getComboEquipes(){
+		List<SelectItem> itensComboBoxEquipe = new ArrayList<>();
+		List<Equipe> equipes = new EquipeService().buscarTodos();
+		for(Equipe equipe : equipes) {
+			boolean isSelecionado = tarefa.getEquipe() != null && tarefa.getEquipe().getId() != null
+					&& tarefa.getEquipe().equals(equipe);
+			itensComboBoxEquipe.add(new SelectItem(equipe, equipe.getNome(), null, false, false, isSelecionado));
+			
+		}
+		
+		return itensComboBoxEquipe;
+	}
+	
 	public List<SelectItem> getComboResponsaveis() {
 		List<SelectItem> itensComboBoxResponsaveis = new ArrayList<>();
 		List<Responsavel> responsaveis = responsavelService.buscarTodos();
@@ -132,6 +150,13 @@ public class TarefaBean {
 
 	public void dashboard() throws ParseException {
 		monitor = tarefaService.monitoramento();
+	}
+	
+	public boolean isAtribuido(Responsavel resp) {
+		if(UsuarioUtils.getLogado().getId() == resp.getId()) {
+			return true;
+		}
+		return false;
 	}
 
 	public void limpar() {

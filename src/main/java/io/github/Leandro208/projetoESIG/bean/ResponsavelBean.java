@@ -2,12 +2,15 @@ package io.github.Leandro208.projetoESIG.bean;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.faces.bean.ManagedBean;
+import javax.faces.model.SelectItem;
 
-
+import io.github.Leandro208.projetoESIG.entities.Equipe;
 import io.github.Leandro208.projetoESIG.entities.Responsavel;
 import io.github.Leandro208.projetoESIG.enums.Funcao;
+import io.github.Leandro208.projetoESIG.services.EquipeService;
 import io.github.Leandro208.projetoESIG.services.ResponsavelService;
 import io.github.Leandro208.projetoESIG.util.UsuarioUtils;
 
@@ -30,7 +33,14 @@ public class ResponsavelBean {
 		limpar();
 		return "login.jsf";
 	}
+	
+	public List<Responsavel> completeResponsaveis(String query) {
+        String queryLowerCase = query.toLowerCase();
+        List<Responsavel> todosResponsaveis = responsavelService.buscarTodos();
+        return todosResponsaveis.stream().filter(t -> t.getNome().toLowerCase().contains(queryLowerCase)).collect(Collectors.toList());
+    }
 
+	
 	public void listarResponsaveis() {
 		listaReponsaveis = responsavelService.buscarTodos();
 		listaReponsaveis.remove(UsuarioUtils.getLogado());
@@ -45,6 +55,16 @@ public class ResponsavelBean {
 		 responsavelService.salvar(r);
 		 listarResponsaveis();
 		 return "";
+	}
+	
+	
+	public List<SelectItem> getComboEquipes(){
+		List<SelectItem> itensComboBoxEquipe = new ArrayList<>();
+		List<Equipe> equipes = new EquipeService().buscarTodos();
+		for(Equipe equipe : equipes) {
+			itensComboBoxEquipe.add(new SelectItem(equipe, equipe.getNome(), null, false, false));
+		}
+		return itensComboBoxEquipe;
 	}
 	
 	private void limpar() {

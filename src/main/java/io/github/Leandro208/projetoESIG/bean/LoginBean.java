@@ -51,9 +51,8 @@ public class LoginBean implements Serializable {
 			List<Responsavel> res = new ArrayList<>();
 			res = service.buscarTodos();
 			for (Responsavel r : res) {
-				if (r.getEmail().equals(email) && r.getSenha().equals(Criptografar.encriptografar(senha))) {
+				if (r.getEmail().equalsIgnoreCase(email) && r.getSenha().equals(Criptografar.encriptografar(senha))) {
 					responsavel = r;
-					System.out.println("achou");
 				}
 			}
 		
