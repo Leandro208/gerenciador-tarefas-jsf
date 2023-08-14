@@ -2,13 +2,14 @@ package io.github.Leandro208.projetoESIG.bean;
 
 import java.text.ParseException;
 import java.util.ArrayList;
-
+import java.util.HashMap;
 import java.util.List;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.model.SelectItem;
 
+import org.primefaces.PrimeFaces;
 
 import io.github.Leandro208.projetoESIG.dto.FormConsultaTarefaDto;
 import io.github.Leandro208.projetoESIG.entities.Equipe;
@@ -30,7 +31,7 @@ public class TarefaBean {
 
 	private FormConsultaTarefaDto formConsulta;
 
-	private List<Tarefa> listaTarefas;
+	private HashMap<Integer, List<Tarefa>> listaTarefas;
 
 	private TarefaService tarefaService;
 
@@ -61,25 +62,32 @@ public class TarefaBean {
 		return "";
 	}
 
-	public String editar(Tarefa t) throws ParseException {
-		this.tarefa = t;
-		dashboard();
+	public String editar() throws ParseException {
 		return "adm/formTarefa?faces-redirect=true";
 	}
 
-	public String concluir(Tarefa t) throws ParseException {
-		tarefaService.concluir(t);
-		dashboard();
-		return "listaTarefa.jsf";
-	}
-
-	public String remover(Tarefa t) throws ParseException {
-		tarefaService.remover(t);
+	public void moverTarefa() throws ParseException  {
+		tarefaService.salvar(tarefa);
 		carregarTarefas();
 		dashboard();
-		return "listaTarefa.jsf";
+		//PrimeFaces.current().executeScript("window.location.reload();");
 	}
 
+	public String remover() throws ParseException {
+		tarefaService.remover(tarefa);
+		carregarTarefas();
+		dashboard();
+		limpar();
+		return "listaTarefa.jsf";
+	}
+	
+	public String visualizarTarefa(Tarefa t) {
+		this.tarefa = t;
+		return "tarefaView.jsf";
+	}
+	public List<Tarefa> getObjectsForKey(int key) {
+        return listaTarefas.get(key);
+    }
 	public void carregarTarefas() {
 		listaTarefas = tarefaService.buscarTodos(formConsulta);
 	}
@@ -119,6 +127,7 @@ public class TarefaBean {
 	public List<SelectItem> getComboResponsaveis() {
 		List<SelectItem> itensComboBoxResponsaveis = new ArrayList<>();
 		List<Responsavel> responsaveis = responsavelService.buscarTodos();
+		itensComboBoxResponsaveis.add(new SelectItem(new Responsavel(), "-SELECIONE-", null, false, false, true));
 		for (Responsavel r : responsaveis) {
 			boolean isSelecionado = tarefa.getResponsavel() != null && tarefa.getResponsavel().getId() != null
 					&& tarefa.getResponsavel().equals(r);
@@ -142,7 +151,7 @@ public class TarefaBean {
 		else
 			return "blue";
 	}
-
+	
 	public String selecionado(Tarefa t) {
 		this.tarefa = t;
 		return "listaTarefa?faces-redirect=true";
@@ -150,13 +159,6 @@ public class TarefaBean {
 
 	public void dashboard() throws ParseException {
 		monitor = tarefaService.monitoramento();
-	}
-	
-	public boolean isAtribuido(Responsavel resp) {
-		if(UsuarioUtils.getLogado().getId() == resp.getId()) {
-			return true;
-		}
-		return false;
 	}
 
 	public void limpar() {
@@ -172,11 +174,11 @@ public class TarefaBean {
 		this.tarefa = tarefa;
 	}
 
-	public List<Tarefa> getListaTarefas() {
+	public HashMap<Integer, List<Tarefa>> getListaTarefas() {
 		return listaTarefas;
 	}
 
-	public void setListaTarefas(List<Tarefa> listaTarefas) {
+	public void setListaTarefas(HashMap<Integer, List<Tarefa>> listaTarefas) {
 		this.listaTarefas = listaTarefas;
 	}
 

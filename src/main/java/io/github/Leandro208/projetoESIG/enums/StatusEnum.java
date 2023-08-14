@@ -2,7 +2,8 @@ package io.github.Leandro208.projetoESIG.enums;
 
 public enum StatusEnum {
 	EM_ANDAMENTO(1),
-	CONCLUIDO(2);
+	CONCLUIDO(2),
+	BACKLOG(3);
 	
 	private final int codigo;
 

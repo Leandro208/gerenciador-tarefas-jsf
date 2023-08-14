@@ -25,6 +25,9 @@ public class ResponsavelConverter implements Converter {
 
 	@Override
 	public String getAsString(FacesContext context, UIComponent component, Object value) {
+		if(value == null || ((Responsavel) value).getId() == null) {
+			return "";
+		}
 		return ((Responsavel) value).getId().toString();
 	}
 }

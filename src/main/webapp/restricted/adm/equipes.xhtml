@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+	<title>Formulário JSF</title>
+	<link rel="stylesheet" href="../../assets/css/formEquipe.css" />
+</h:head>
+
+<h:body>
+	<h:form styleClass="formulario">
+		<p:messages id="messages" closable="true">
+			<p:autoUpdate />
+		</p:messages>
+		<h:outputLabel for="nome" value="Nome da equipe:" styleClass="label" />
+		<h:inputText id="nome" value="#{equipeBean.equipe.nome}"
+			styleClass="input-text" />
+
+		<h:commandButton value="Cadastrar" action="#{equipeBean.cadastrar}"
+			styleClass="botao-enviar" />
+	</h:form>
+</h:body>
+</html>

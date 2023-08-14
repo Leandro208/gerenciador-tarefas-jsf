@@ -62,7 +62,7 @@ public class Tarefa implements Base, Serializable {
 	private Equipe equipe;
 	
 	public Tarefa() {
-		status = StatusEnum.EM_ANDAMENTO;
+		status = StatusEnum.BACKLOG;
 	}
 	
 	public Tarefa(Long id, String titulo, String descricao, Responsavel responsavel, PrioridadeEnum prioridade,

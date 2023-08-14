@@ -5,8 +5,9 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
-
+import java.util.Map;
 
 import io.github.Leandro208.projetoESIG.dao.GenericDao;
 import io.github.Leandro208.projetoESIG.dto.FormConsultaTarefaDto;
@@ -49,11 +50,8 @@ public class TarefaService implements BaseService<Tarefa>, Serializable {
 		dao.salvar(t);
 	}
 
-	public List<Tarefa> buscarTodos(FormConsultaTarefaDto form) {
-		List<Tarefa> resultado = new ArrayList<Tarefa>();
-
+	public HashMap<Integer, List<Tarefa>> buscarTodos(FormConsultaTarefaDto form) {
 		
-
 		StringBuilder hql = new StringBuilder("select t from Tarefa t  where 1 = 1");
 		if (form.getNumero() != null && form.getNumero() != 0) {
 			hql.append(String.format(" and t.id = %d", form.getNumero()));
@@ -72,24 +70,30 @@ public class TarefaService implements BaseService<Tarefa>, Serializable {
 			hql.append(String.format(" and t.equipe.id = '%d'", UsuarioUtils.getLogado().getEquipe().getId()));
 		}
 		hql.append(" order by t.id");
-		resultado = dao.buscarTodos(hql.toString());
-
-		return resultado;
+		 
+		
+		HashMap<Integer, List<Tarefa>> tarefas = new HashMap<>();
+		tarefas.put(StatusEnum.BACKLOG.getCodigo(), new ArrayList<Tarefa>());
+		tarefas.put(StatusEnum.CONCLUIDO.getCodigo(), new ArrayList<Tarefa>());
+		tarefas.put(StatusEnum.EM_ANDAMENTO.getCodigo(), new ArrayList<Tarefa>());
+		for(Tarefa t : dao.buscarTodos(hql.toString())) {
+			if(t.getStatus().getCodigo() == StatusEnum.BACKLOG.getCodigo()) {
+				tarefas.get(StatusEnum.BACKLOG.getCodigo()).add(t);
+			} else if(t.getStatus().getCodigo() == StatusEnum.CONCLUIDO.getCodigo()) {
+				tarefas.get(StatusEnum.CONCLUIDO.getCodigo()).add(t);
+			} else if(t.getStatus().getCodigo() == StatusEnum.EM_ANDAMENTO.getCodigo()) {
+				tarefas.get(StatusEnum.EM_ANDAMENTO.getCodigo()).add(t);
+			}
+			
+		}
+		
+		return tarefas;
 	}
 
 	public MonitorTarefas monitoramento() {
-
-		List<Tarefa> lista = buscarTodos(new FormConsultaTarefaDto());
-		int encerrados = 0;
-		int andamento = 0;
-
-		for (Tarefa t : lista) {
-			if (t.getStatus().equals(StatusEnum.EM_ANDAMENTO))
-				andamento++;
-			else if (t.getStatus().equals(StatusEnum.CONCLUIDO))
-				encerrados++;
-
-		}
+		
+		int encerrados = buscarTodos(new FormConsultaTarefaDto()).get(StatusEnum.CONCLUIDO.getCodigo()).size();
+		int andamento = buscarTodos(new FormConsultaTarefaDto()).get(StatusEnum.EM_ANDAMENTO.getCodigo()).size();
 
 		MonitorTarefas monitor = new MonitorTarefas(andamento, encerrados);
 

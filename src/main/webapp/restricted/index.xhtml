@@ -14,7 +14,6 @@
 	display: flex;
 	flex-direction: row;
 	justify-content: center;
-	align-items: center;
 }
 
 .box {
@@ -186,5 +185,6 @@ body {
 		</p:dataTable>
 
 	</p:dialog>
+	<f:event type="preRenderView" listener="#{tarefaBean.limpar}" />
 </h:body>
 </html>
