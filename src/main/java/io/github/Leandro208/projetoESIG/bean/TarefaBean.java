@@ -28,6 +28,8 @@ import io.github.Leandro208.projetoESIG.util.UsuarioUtils;
 public class TarefaBean {
 
 	private Tarefa tarefa;
+	
+	private Equipe equipe;
 
 	private FormConsultaTarefaDto formConsulta;
 
@@ -41,10 +43,11 @@ public class TarefaBean {
 
 	public TarefaBean() throws ParseException {
 		tarefa = new Tarefa();
+		equipe = new Equipe();
 		tarefaService = new TarefaService();
 		responsavelService = new ResponsavelService();
 		formConsulta = new FormConsultaTarefaDto();
-		listaTarefas = tarefaService.buscarTodos(formConsulta);
+		listaTarefas = new HashMap<>();
 		monitor = tarefaService.monitoramento();
 	}
 
@@ -57,7 +60,7 @@ public class TarefaBean {
 	}
 
 	public String listar() {
-		listaTarefas = tarefaService.buscarTodos(formConsulta);
+		listaTarefas = tarefaService.buscarTodos(formConsulta, equipe.getId());
 		limpar();
 		return "";
 	}
@@ -85,11 +88,33 @@ public class TarefaBean {
 		this.tarefa = t;
 		return "tarefaView.jsf";
 	}
+	
+	//atribui  tarefa ao usuario logado
+	public void delegar() throws ParseException {
+		if(tarefa.getResponsavel() == null) {
+			tarefa.setResponsavel(UsuarioUtils.getLogado());
+		} else  {
+			tarefa.setResponsavel(null);
+		}
+		
+		tarefaService.salvar(tarefa);
+		carregarTarefas();
+		dashboard();
+	}
+	
+	
+	public String visualizarQuadro(Equipe equipeAtual) {
+		equipe = equipeAtual;
+		carregarTarefas();
+		return "/restricted/listaTarefa?faces-redirect=true";
+	}
+	
+	//retorna uma das listas do hashMap
 	public List<Tarefa> getObjectsForKey(int key) {
         return listaTarefas.get(key);
     }
 	public void carregarTarefas() {
-		listaTarefas = tarefaService.buscarTodos(formConsulta);
+		listaTarefas = tarefaService.buscarTodos(formConsulta, equipe.getId());
 	}
 
 	
@@ -197,6 +222,16 @@ public class TarefaBean {
 	public void setMonitor(MonitorTarefas monitor) {
 		this.monitor = monitor;
 	}
+
+	public Equipe getEquipe() {
+		return equipe;
+	}
+
+	public void setEquipe(Equipe equipe) {
+		this.equipe = equipe;
+	}
+
+	
 	
 	
 

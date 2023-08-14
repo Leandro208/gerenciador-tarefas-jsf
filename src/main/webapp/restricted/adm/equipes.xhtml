@@ -9,17 +9,28 @@
 	<link rel="stylesheet" href="../../assets/css/formEquipe.css" />
 </h:head>
 
-<h:body>
-	<h:form styleClass="formulario">
-		<p:messages id="messages" closable="true">
-			<p:autoUpdate />
-		</p:messages>
-		<h:outputLabel for="nome" value="Nome da equipe:" styleClass="label" />
-		<h:inputText id="nome" value="#{equipeBean.equipe.nome}"
-			styleClass="input-text" />
+<style type="text/css">
+.ui-datalist {
+	width: 300px;
+	margin-bottom: 20px;
+}
 
-		<h:commandButton value="Cadastrar" action="#{equipeBean.cadastrar}"
-			styleClass="botao-enviar" />
+.ui-datalist-item {
+	padding: 3px;
+}
+</style>
+
+<h:body>
+	<h:form id="form">
+		<p:dataList value="#{equipeBean.listaEquipes}" var="equipe" type="definition">
+			<f:facet name="header">
+            Equipes
+        </f:facet>
+        <p:commandLink value="#{equipe.nome}" 
+									style="text-decoration: none; color: blue;"
+									action="#{tarefaBean.visualizarQuadro(equipe)}"/>
+    </p:dataList>
+
 	</h:form>
 </h:body>
 </html>

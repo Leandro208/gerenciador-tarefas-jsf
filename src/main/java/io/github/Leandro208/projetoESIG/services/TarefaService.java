@@ -50,7 +50,9 @@ public class TarefaService implements BaseService<Tarefa>, Serializable {
 		dao.salvar(t);
 	}
 
-	public HashMap<Integer, List<Tarefa>> buscarTodos(FormConsultaTarefaDto form) {
+	public HashMap<Integer, List<Tarefa>> buscarTodos(FormConsultaTarefaDto form, Long idEquipe) {
+		
+		
 		
 		StringBuilder hql = new StringBuilder("select t from Tarefa t  where 1 = 1");
 		if (form.getNumero() != null && form.getNumero() != 0) {
@@ -66,9 +68,9 @@ public class TarefaService implements BaseService<Tarefa>, Serializable {
 		if (form.getSituacao() != null) {
 			hql.append(String.format(" and t.status like '%s'", form.getSituacao().toString()));
 		}
-		if (UsuarioUtils.getLogado().getFuncao() == Funcao.USER) {
-			hql.append(String.format(" and t.equipe.id = '%d'", UsuarioUtils.getLogado().getEquipe().getId()));
-		}
+		
+		hql.append(String.format(" and t.equipe.id = '%d'", idEquipe));
+		
 		hql.append(" order by t.id");
 		 
 		
@@ -91,9 +93,13 @@ public class TarefaService implements BaseService<Tarefa>, Serializable {
 	}
 
 	public MonitorTarefas monitoramento() {
-		
-		int encerrados = buscarTodos(new FormConsultaTarefaDto()).get(StatusEnum.CONCLUIDO.getCodigo()).size();
-		int andamento = buscarTodos(new FormConsultaTarefaDto()).get(StatusEnum.EM_ANDAMENTO.getCodigo()).size();
+		FormConsultaTarefaDto dto = new FormConsultaTarefaDto();
+		dto.setResponsavel(UsuarioUtils.getLogado());
+				
+		int encerrados = buscarTodos(dto, UsuarioUtils.getLogado().getEquipe().getId())
+				.get(StatusEnum.CONCLUIDO.getCodigo()).size();
+		int andamento = buscarTodos(dto, UsuarioUtils.getLogado().getEquipe().getId())
+				.get(StatusEnum.EM_ANDAMENTO.getCodigo()).size();
 
 		MonitorTarefas monitor = new MonitorTarefas(andamento, encerrados);
 

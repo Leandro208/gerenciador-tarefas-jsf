@@ -144,7 +144,9 @@ body {
 				style="font-size: 25px;" rendered="${loginBean.responsavel.adm}" />
 			<p:linkButton href="adm/formEquipe.jsf" value="Cadastrar uma Equipe"
 				style="font-size: 25px;" rendered="${loginBean.responsavel.adm}" />
-			<p:linkButton href="listaTarefa.jsf" value="Listar"
+			<p:linkButton href="adm/equipes.jsf" value="Ver equipes"
+				style="font-size: 25px;" rendered="${loginBean.responsavel.adm}"/>
+			<p:commandButton action="#{tarefaBean.visualizarQuadro(loginBean.responsavel.equipe)}" value="Minha Equipe"
 				style="font-size: 25px;" />
 			<p:commandButton ajax="false" rendered="${loginBean.responsavel.adm}"
 				value="Novo Administrador" type="button"

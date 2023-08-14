@@ -48,7 +48,7 @@
 
 	<h:panelGroup id="bodyContent">
 	<div class="container" id="view">
-
+		
 		<div class="tarefa">
 			<div>
 				<label>Titulo </label>
@@ -84,17 +84,18 @@
 			</div>
 		</div>
 		
-		<a href="listaTarefa.jsf">Ver Lista</a>
+		<a href="listaTarefa.jsf">Ver Lista</a> <br/>
+		<p:commandLink style=" color:blue; font-size: 12px;"
+						value="${responsavelBean.campoAtribuir(tarefaBean.tarefa.responsavel)}"
+						action="#{tarefaBean.delegar}" update="bodyContent"></p:commandLink>
 
 		<h:form style="float: right; margin-right:20px;" id="form-op">
 
 			<!-- Mudar status -->
 			<h:selectOneMenu value="#{tarefaBean.tarefa.status}" 
 						class="select">
-						
 						<f:converter converterId="statusConverter" />				
 						<f:selectItems value="#{tarefaBean.niveisStatus}" />
-						<f:selectItem itemDisabled="true" itemLabel="FLUXO DE TRABALHO" noSelectionOption="true"/>
 						<p:ajax event="change" update="bodyContent" listener="#{tarefaBean.moverTarefa}"></p:ajax>
 					</h:selectOneMenu>
 	
