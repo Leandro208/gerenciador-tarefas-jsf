@@ -109,7 +109,6 @@ public class TarefaBean {
 		return "/restricted/listaTarefa?faces-redirect=true";
 	}
 	
-	//retorna uma das listas do hashMap
 	public List<Tarefa> getObjectsForKey(int key) {
         return listaTarefas.get(key);
     }
@@ -152,12 +151,12 @@ public class TarefaBean {
 	public List<SelectItem> getComboResponsaveis() {
 		List<SelectItem> itensComboBoxResponsaveis = new ArrayList<>();
 		List<Responsavel> responsaveis = responsavelService.buscarTodos();
-		itensComboBoxResponsaveis.add(new SelectItem(new Responsavel(), "-SELECIONE-", null, false, false, true));
+		itensComboBoxResponsaveis.add(new SelectItem(new Responsavel(), "-SELECIONE-"));
 		for (Responsavel r : responsaveis) {
-			boolean isSelecionado = tarefa.getResponsavel() != null && tarefa.getResponsavel().getId() != null
-					&& tarefa.getResponsavel().equals(r);
-			itensComboBoxResponsaveis.add(new SelectItem(r, r.getNome(), null, false, false, isSelecionado));
-
+			if(equipe.getId() == r.getEquipe().getId()) {
+				itensComboBoxResponsaveis.add(new SelectItem(r, r.getNome()));
+			}
+			
 		}
 		return itensComboBoxResponsaveis;
 	}
@@ -230,9 +229,5 @@ public class TarefaBean {
 	public void setEquipe(Equipe equipe) {
 		this.equipe = equipe;
 	}
-
-	
-	
-	
 
 }

@@ -4,133 +4,126 @@
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:p="http://primefaces.org/ui"
 	xmlns:c="http://java.sun.com/jsp/jstl/core">
+
 <h:head>
-	<title>Tarefa ##{tarefaBean.tarefa.id}</title>
-	<link rel="icon" type="image/png" href="../assets/img/icon.png" />
-
-	<style>
-</style>
-
+    <title>Tarefa ##{tarefaBean.tarefa.id}</title>
+    <link rel="icon" type="image/png" href="../assets/img/icon.png" />
+    <link rel="stylesheet" href="../assets/css/viewTarefa.css" />
+    <style></style>
 </h:head>
+
 <h:body>
-	<nav style="padding-top: 20px;">
+    <nav style="padding-top: 20px;">
+        <a href="index.jsf">
+            <img alt="Logo" src="../assets/img/icon.png"
+                style="float: left; width: 30px; height: 30px; margin-bottom: 15px;" />
+        </a>
 
-		<a href="index.jsf"><img alt="Logo" src="../assets/img/icon.png"
-			style="float: left; width: 30px; height: 30px; margin-bottom: 15px;" /></a>
+        <h:outputLabel value="#{loginBean.responsavel.funcao}"
+            style="background-color:orange; color:white; border-radius: 30%; 
+            font-size: 15px; margin-left:15px;" />
 
-		<h:outputLabel value="#{loginBean.responsavel.funcao}"
-			style="background-color:orange; color:white; border-radius: 30%; 
-			font-size: 15px; margin-left:15px;" />
+        <div style="height: 0;">
+            <h:outputLabel
+                style="margin-left: 20px;font-size: 20px;color: purple;"
+                value="#{loginBean.responsavel.nome}" />
 
-		<div style="height: 0;">
-			<h:outputLabel
-				style="margin-left: 20px;font-size: 20px;color: purple;"
-				value="#{loginBean.responsavel.nome}" />
+            <h:outputLabel value="#User-ID: #{loginBean.responsavel.id}"
+                style="margin-left: 5px;font-size: 12px;opacity: 0.6;" />
+        </div>
 
-			<h:outputLabel value="#User-ID: #{loginBean.responsavel.id}"
-				style="margin-left: 5px;font-size: 12px;opacity: 0.6;" />
-		</div>
+        <div>
+            <h:form style="float: right;">
+                <h:commandButton image="../assets/img/logout.png"
+                    style="width: 30px;" alt="Logout" action="#{loginBean.logout}" />
+            </h:form>
+        </div>
+    </nav>
 
-		<!-- Relogio -->
-		<div style="margin-left: 80%;">
-			<h:outputLabel value="Tempo de sessão " />
-			<h:outputText id="relogio" value="#{loginBean.horaAtual.time}">
-				<f:convertDateTime pattern="HH:mm:ss" timeZone="GMT-3" />
-			</h:outputText>
+    <br />
 
-			<h:form style="float: right;">
-				<h:commandButton image="../assets/img/logout.png"
-					style="width: 30px;" alt="Logout" action="#{loginBean.logout}" />
-			</h:form>
-		</div>
+    <h:panelGroup id="bodyContent">
+        <div class="container" id="view">
+            <div class="tarefa">
+                <div>
+                    <h1>#{tarefaBean.tarefa.titulo}</h1>
 
-	</nav>
+                    <h:form style="float: right; margin-right:20px;" id="form-op">
+                        <!-- Mudar status -->
+                        <h:selectOneMenu value="#{tarefaBean.tarefa.status}" class="select">
+                            <f:converter converterId="statusConverter" />
+                            <f:selectItems value="#{tarefaBean.niveisStatus}" />
+                            <p:ajax event="change" update="bodyContent"
+                                listener="#{tarefaBean.moverTarefa}"></p:ajax>
+                        </h:selectOneMenu>
 
-	<h:panelGroup id="bodyContent">
-	<div class="container" id="view">
-		
-		<div class="tarefa">
-			<div>
-				<label>Titulo </label>
-				<h:outputText value="#{tarefaBean.tarefa.titulo}" />
-			</div>
+                        <!-- Editar tarefa -->
+                        <p:commandButton ajax="false" action="#{tarefaBean.editar}"
+                            icon="ui-icon-pencil" title="Editar" id="editar"
+                            rendered="${loginBean.responsavel.adm}" />
+                        <p:tooltip id="toolTipFade2" for="editar" value="Editar"
+                            position="top" />
 
-			<div>
-				<label>Descrição: </label>
-				<h:outputText value="#{tarefaBean.tarefa.descricao}" />
-			</div>
-			<div>
-				<label>Responsavel: </label>
-				<h:outputText value="#{tarefaBean.tarefa.responsavel.nome}" />
-			</div>
-			<div>
-				<label>Prioridade: </label>
-				<h:outputText value="#{tarefaBean.tarefa.prioridade}" />
-			</div>
-			<div>
-				<label>Deadline: </label>
-				<h:outputText value="#{tarefaBean.tarefa.deadline}" class="data">
-					<f:convertDateTime pattern="dd/MM/yyyy" locale="pt_BR"
-						timeZone="GMT-3" />
-				</h:outputText>
-			</div>
-			<div>
-				<label>Status </label>
-				<h:outputText value="#{tarefaBean.tarefa.status}" />
-			</div>
-			<div>
-				<label>Equipe </label>
-				<h:outputText value="#{tarefaBean.tarefa.equipe.nome}" />
-			</div>
-		</div>
-		
-		<a href="listaTarefa.jsf">Ver Lista</a> <br/>
-		<p:commandLink style=" color:blue; font-size: 12px;"
-						value="${responsavelBean.campoAtribuir(tarefaBean.tarefa.responsavel)}"
-						action="#{tarefaBean.delegar}" update="bodyContent"></p:commandLink>
+                        <!-- Remover tarefa -->
+                        <p:commandButton action="#{tarefaBean.remover}"
+                            icon="ui-icon-trash" title="Remover" id="remover"
+                            rendered="${loginBean.responsavel.adm}">
+                            <p:confirm header="Remover tarefa ##{t.id}"
+                                message='Tem certeza que deseja remover a tarefa "#{t.titulo}"? ' />
+                        </p:commandButton>
+                        <p:tooltip id="toolTipFade3" for="remover" value="Remover"
+                            position="top" />
 
-		<h:form style="float: right; margin-right:20px;" id="form-op">
+                        <!-- Dialog de confirmação -->
+                        <p:confirmDialog global="true">
+                            <p:commandButton value="Sim" styleClass="ui-confirmdialog-yes"
+                                icon="ui-icon-check" />
+                            <p:commandButton value="Não" styleClass="ui-confirmdialog-no"
+                                icon="ui-icon-close" />
+                        </p:confirmDialog>
+                    </h:form>
+                </div>
 
-			<!-- Mudar status -->
-			<h:selectOneMenu value="#{tarefaBean.tarefa.status}" 
-						class="select">
-						<f:converter converterId="statusConverter" />				
-						<f:selectItems value="#{tarefaBean.niveisStatus}" />
-						<p:ajax event="change" update="bodyContent" listener="#{tarefaBean.moverTarefa}"></p:ajax>
-					</h:selectOneMenu>
-	
-			<!-- Editar tarefa -->
-			<p:commandButton ajax="false" action="#{tarefaBean.editar}"
-				icon="ui-icon-pencil" title="Editar" id="editar"
-				rendered="${loginBean.responsavel.adm}" />
-			<p:tooltip id="toolTipFade2" for="editar" value="Editar"
-				position="top" />
+                <div>
+                    <label>Responsável: </label>
+                    <h:outputText value="#{tarefaBean.tarefa.responsavel == null ? 'Nenhum' : tarefaBean.tarefa.responsavel.nome}" />
+                    
+                    <p:commandLink style=" color:blue; font-size: 12px;"
+                        value="#{responsavelBean.campoAtribuir(tarefaBean.tarefa.responsavel)}"
+                        action="#{tarefaBean.delegar}" update="bodyContent" id="atribuir"></p:commandLink>
+                </div>
 
-			<!-- Remover tarefa -->
-			<p:commandButton action="#{tarefaBean.remover}"
-				icon="ui-icon-trash" title="Remover" id="remover"
-                rendered="${loginBean.responsavel.adm}">
+                <div>
+                    <label>Prioridade: </label>
+                    <h:outputText value="#{tarefaBean.tarefa.prioridade}" />
+                </div>
 
-				<p:confirm header="Remover tarefa ##{t.id}"
-					message='Tem certeza que deseja remover a tarefa "#{t.titulo}"? ' />
+                <div>
+                    <label>Deadline: </label>
+                    <h:outputText value="#{tarefaBean.tarefa.deadline}" class="data">
+                        <f:convertDateTime pattern="dd/MM/yyyy" locale="pt_BR"
+                            timeZone="GMT-3" />
+                    </h:outputText>
+                </div>
 
-			</p:commandButton>
-			<p:tooltip id="toolTipFade3" for="remover" value="Remover"
-				position="top" />
+                <div>
+                    <label>Status </label>
+                    <h:outputText value="#{tarefaBean.tarefa.status}" />
+                </div>
 
+                <div>
+                    <label>Equipe </label>
+                    <h:outputText value="#{tarefaBean.tarefa.equipe.nome}" />
+                </div>
 
-			<!-- Dialog de confirmação -->
+                <a href="listaTarefa.jsf">Ver no Quadro</a> <br />
 
-			<p:confirmDialog global="true">
-				<p:commandButton value="Sim" styleClass="ui-confirmdialog-yes"
-					icon="ui-icon-check" />
-				<p:commandButton value="Não" styleClass="ui-confirmdialog-no"
-					icon="ui-icon-close" />
-			</p:confirmDialog>
-
-		
-		</h:form>
-	</div>
-	</h:panelGroup>
+                <div id="descricao">
+                    <label>Descrição</label><br />
+                    <h:outputText value="#{tarefaBean.tarefa.descricao}" />
+                </div>
+            </div>
+        </div>
+    </h:panelGroup>
 </h:body>
 </html>

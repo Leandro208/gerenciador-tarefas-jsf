@@ -57,8 +57,6 @@
 
 		<!-- Relogio -->
 		<div style="margin-left: 80%;">
-			<h:inputText></h:inputText>
-
 			<h:form style="float: right;">
 				<h:commandButton image="../assets/img/logout.png"
 					style="width: 30px;" alt="Logout" action="#{loginBean.logout}" />
@@ -172,10 +170,6 @@
 
 			</p:dataTable>
 
-
-			<!-- Responsavel por recarregar as tarefas a cada 10 seg -->
-			<p:poll interval="2" listener="#{tarefaBean.carregarTarefas}"
-				update="tabelaTarefa" />
 
 		</div>
 	</div>

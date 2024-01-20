@@ -1,0 +1,24 @@
+#bodyContentlabel {
+	font-family: sans-serif;
+}
+
+.tarefa div {
+	font-size: 14px;
+}
+
+.tarefa div label {
+    font-weight: bold;
+}
+
+.container a, #atribuir{
+	text-decoration: none;
+	color: blue;
+}
+.container a:visited{
+	color: blue;
+}
+
+#descricao{
+	margin-top: 30px;
+	width: 50%;
+}

@@ -71,9 +71,9 @@ public class ResponsavelBean {
 		
 		String result = "";
 		 if( r == null || r.getId() == null ){
-			result = "Delegar Para Mim";
+			result = " | Delegar Para Mim";
 		} else if(r.getId() == UsuarioUtils.getLogado().getId()) {
-			result = "Deixar tarefa";
+			result = " | Deixar tarefa";
 		}  
 		return result;
 	}
