@@ -11,7 +11,7 @@ import io.github.Leandro208.projetoESIG.util.Message;
 
 public class ResponsavelService implements BaseService<Responsavel>, Serializable{
 
-private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 	
 	private GenericDao<Responsavel> dao;
 	

@@ -79,11 +79,11 @@ public class TarefaService implements BaseService<Tarefa>, Serializable {
 		tarefas.put(StatusEnum.CONCLUIDO.getCodigo(), new ArrayList<Tarefa>());
 		tarefas.put(StatusEnum.EM_ANDAMENTO.getCodigo(), new ArrayList<Tarefa>());
 		for(Tarefa t : dao.buscarTodos(hql.toString())) {
-			if(t.getStatus().getCodigo() == StatusEnum.BACKLOG.getCodigo()) {
+			if(t.getStatus() == StatusEnum.BACKLOG) {
 				tarefas.get(StatusEnum.BACKLOG.getCodigo()).add(t);
-			} else if(t.getStatus().getCodigo() == StatusEnum.CONCLUIDO.getCodigo()) {
+			} else if(t.getStatus() == StatusEnum.CONCLUIDO) {
 				tarefas.get(StatusEnum.CONCLUIDO.getCodigo()).add(t);
-			} else if(t.getStatus().getCodigo() == StatusEnum.EM_ANDAMENTO.getCodigo()) {
+			} else if(t.getStatus() == StatusEnum.EM_ANDAMENTO) {
 				tarefas.get(StatusEnum.EM_ANDAMENTO.getCodigo()).add(t);
 			}
 			

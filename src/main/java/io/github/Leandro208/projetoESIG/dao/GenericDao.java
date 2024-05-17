@@ -41,10 +41,10 @@ private static final long serialVersionUID = 1L;
 
 	
 	public void remover(Class<T> clazz, Long id) {
-		T t = buscarPorId(clazz, id);
+		T entidade = buscarPorId(clazz, id);
 		try {
 			manager.getTransaction().begin();
-			manager.remove(t);
+			manager.remove(entidade);
 			Message.info("Excluido com sucesso!");
 			manager.getTransaction().commit();
 		} catch (Exception e) {
