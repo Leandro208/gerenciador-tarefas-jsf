@@ -13,6 +13,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -50,6 +53,13 @@ public class Responsavel implements Base, Serializable {
 	
 	@ManyToOne(cascade = CascadeType.ALL)
 	private Equipe equipe;
+	
+	@Column(name = "data_cadastro")
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date dataCadastro;
+	
+	@Transient
+	private RegistroEntrada entrada;
 	
 	public Responsavel() {
 		funcao = Funcao.USER;
@@ -122,6 +132,23 @@ public class Responsavel implements Base, Serializable {
 
 	public void setEquipe(Equipe equipe) {
 		this.equipe = equipe;
+	}
+	
+	public Date getDataCadastro() {
+		return dataCadastro;
+	}
+
+	public void setDataCadastro(Date dataCadastro) {
+		this.dataCadastro = dataCadastro;
+	}
+	
+
+	public RegistroEntrada getRegistroEntrada() {
+		return entrada;
+	}
+
+	public void setRegistroEntrada(RegistroEntrada entrada) {
+		this.entrada = entrada;
 	}
 
 	@Override

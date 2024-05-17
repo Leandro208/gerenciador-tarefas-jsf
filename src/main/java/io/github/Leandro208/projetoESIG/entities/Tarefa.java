@@ -61,6 +61,14 @@ public class Tarefa implements Base, Serializable {
 	@ManyToOne(cascade = CascadeType.ALL)
 	private Equipe equipe;
 	
+	@Column(name = "data_cadastro")
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date dataCadastro;
+	
+	@ManyToOne
+	@JoinColumn(name="id_registro_entrada")
+	private RegistroEntrada registroEntrada;
+	
 	public Tarefa() {
 		status = StatusEnum.BACKLOG;
 	}
@@ -186,6 +194,21 @@ public class Tarefa implements Base, Serializable {
 
 	public void setEquipe(Equipe equipe) {
 		this.equipe = equipe;
+	}
+
+	public Date getDataCadastro() {
+		return dataCadastro;
+	}
+
+	public void setDataCadastro(Date dataCadastro) {
+		this.dataCadastro = dataCadastro;
+	}
+	public RegistroEntrada getRegistroEntrada() {
+		return registroEntrada;
+	}
+
+	public void setRegistroEntrada(RegistroEntrada registroEntrada) {
+		this.registroEntrada = registroEntrada;
 	}
 
 	@Override

@@ -2,9 +2,14 @@ package io.github.Leandro208.projetoESIG.services;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
+import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpServletRequest;
+
 import io.github.Leandro208.projetoESIG.dao.GenericDao;
+import io.github.Leandro208.projetoESIG.entities.RegistroEntrada;
 import io.github.Leandro208.projetoESIG.entities.Responsavel;
 import io.github.Leandro208.projetoESIG.util.Criptografar;
 import io.github.Leandro208.projetoESIG.util.Message;
@@ -34,7 +39,7 @@ public class ResponsavelService implements BaseService<Responsavel>, Serializabl
 			}
 		}
 		
-		
+		responsavel.setDataCadastro(new Date());;
 		responsavel.setSenha(Criptografar.encriptografar(responsavel.getSenha()));
 		dao.salvar(responsavel);
 	}
@@ -50,4 +55,33 @@ public class ResponsavelService implements BaseService<Responsavel>, Serializabl
 		return resultado;
 	}
 	
+	public RegistroEntrada registrarEntrada(Responsavel usuario) {
+		GenericDao<RegistroEntrada> daoEntrada = new GenericDao<>();
+		RegistroEntrada entrada = new RegistroEntrada();
+		entrada.setData(new Date());
+		entrada.setUsuario(usuario);
+		
+	    entrada.setIp(getClientIp());
+	    
+	    daoEntrada.salvar(entrada);
+	    System.out.println("Registro de entrada: " + entrada);
+		return entrada;
+	}
+	
+	public void encerrarEntrada(RegistroEntrada entrada) {
+		GenericDao<RegistroEntrada> daoEntrada = new GenericDao<>();
+		entrada.setDataSaida(new Date());
+		daoEntrada.salvar(entrada);
+	}
+	
+	public String getClientIp() {
+	    FacesContext facesContext = FacesContext.getCurrentInstance();
+	    HttpServletRequest request = (HttpServletRequest) facesContext.getExternalContext().getRequest();
+	    String ip = request.getHeader("X-Forwarded-For");
+	    if (ip == null || ip.isEmpty() || "unknown".equalsIgnoreCase(ip)) {
+	        ip = request.getRemoteAddr();
+	    }
+	    return ip;
+	}
+
 }

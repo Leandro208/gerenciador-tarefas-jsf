@@ -19,6 +19,7 @@ import io.github.Leandro208.projetoESIG.entities.Responsavel;
 import io.github.Leandro208.projetoESIG.services.ResponsavelService;
 import io.github.Leandro208.projetoESIG.util.Criptografar;
 import io.github.Leandro208.projetoESIG.util.Message;
+import io.github.Leandro208.projetoESIG.util.UsuarioUtils;
 
 @ManagedBean
 @SessionScoped
@@ -60,12 +61,12 @@ public class LoginBean implements Serializable {
 			// se for diferente de null ele da o acesso
 			HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext()
 					.getSession(false);
-
+			
+			responsavel.setRegistroEntrada(service.registrarEntrada(responsavel));
 			session.setAttribute("responsavel", responsavel);
 
 			return "/restricted/index?faces-redirect=true";
 		}
-		System.out.println("Não achou");
 		//se o usuario digitar os componentes errado exibe msg e carrega a pag
 		Message.erro("Usuario não encontrado! Email ou senha errado!");
 		
@@ -73,6 +74,7 @@ public class LoginBean implements Serializable {
 	}
 
 	public String logout() {
+		service.encerrarEntrada(UsuarioUtils.getLogado().getRegistroEntrada());
 		FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
 		limpar();
 		return "/login?faces-redirect=true";

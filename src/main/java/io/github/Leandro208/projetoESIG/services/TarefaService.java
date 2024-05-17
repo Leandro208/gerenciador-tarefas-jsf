@@ -33,6 +33,8 @@ public class TarefaService implements BaseService<Tarefa>, Serializable {
 
 	@Override
 	public void salvar(Tarefa t) {
+		t.setDataCadastro(new Date());
+		t.setRegistroEntrada(UsuarioUtils.getLogado().getRegistroEntrada());
 		dao.salvar(t);
 	}
 
@@ -95,6 +97,9 @@ public class TarefaService implements BaseService<Tarefa>, Serializable {
 	public MonitorTarefas monitoramento() {
 		FormConsultaTarefaDto dto = new FormConsultaTarefaDto();
 		dto.setResponsavel(UsuarioUtils.getLogado());
+		if(dto.getResponsavel().getEquipe() == null) {
+			return new MonitorTarefas();
+		}
 				
 		int encerrados = buscarTodos(dto, UsuarioUtils.getLogado().getEquipe().getId())
 				.get(StatusEnum.CONCLUIDO.getCodigo()).size();

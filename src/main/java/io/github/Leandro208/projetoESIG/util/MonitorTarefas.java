@@ -7,6 +7,8 @@ public class MonitorTarefas {
 	
 
 	public MonitorTarefas() {
+		this.andamento = 0;
+		this.concluidas = 0;
 	}
 
 	public MonitorTarefas(int andamento, int concluidas) {

@@ -1,12 +1,18 @@
 package io.github.Leandro208.projetoESIG.entities;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.Objects;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 import org.hibernate.validator.constraints.NotEmpty;
 
@@ -24,6 +30,14 @@ public class Equipe implements Base, Serializable {
 	private String nome;
 	
 	private Integer tarefas_concluidas;
+	
+	@Column(name = "data_cadastro")
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date dataCadastro;
+	
+	@ManyToOne
+	@JoinColumn(name="id_registro_entrada")
+	private RegistroEntrada registroEntrada;
 
 	public Equipe() {
 	}
@@ -57,6 +71,22 @@ public class Equipe implements Base, Serializable {
 
 	public void setTarefas_concluidas(Integer tarefas_concluidas) {
 		this.tarefas_concluidas = tarefas_concluidas;
+	}
+
+	public Date getDataCadastro() {
+		return dataCadastro;
+	}
+
+	public void setDataCadastro(Date dataCadastro) {
+		this.dataCadastro = dataCadastro;
+	}
+
+	public RegistroEntrada getRegistroEntrada() {
+		return registroEntrada;
+	}
+
+	public void setRegistroEntrada(RegistroEntrada registroEntrada) {
+		this.registroEntrada = registroEntrada;
 	}
 
 	@Override

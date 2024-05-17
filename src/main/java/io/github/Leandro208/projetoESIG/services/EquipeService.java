@@ -1,10 +1,12 @@
 package io.github.Leandro208.projetoESIG.services;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 
 import io.github.Leandro208.projetoESIG.dao.GenericDao;
 import io.github.Leandro208.projetoESIG.entities.Equipe;
+import io.github.Leandro208.projetoESIG.util.UsuarioUtils;
 
 public class EquipeService implements BaseService<Equipe>, Serializable {
 
@@ -26,6 +28,8 @@ public class EquipeService implements BaseService<Equipe>, Serializable {
 
 	@Override
 	public void salvar(Equipe t) {
+		t.setDataCadastro(new Date());
+		t.setRegistroEntrada(UsuarioUtils.getLogado().getRegistroEntrada());
 		dao.salvar(t);
 	}
 
