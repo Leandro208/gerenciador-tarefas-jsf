@@ -36,14 +36,6 @@
 						<f:convertDateTime pattern="dd/MM/yyyy" />
 					</h:inputText>
 				</h:panelGroup>
-				<h:panelGroup>
-					<h:outputLabel value="Equipe:" class="label" />
-						<h:selectOneMenu value="#{responsavelBean.responsavel.equipe}"
-							class="select">
-							<f:converter converterId="equipeConverter" />
-							<f:selectItems value="#{responsavelBean.comboEquipes}" />
-						</h:selectOneMenu>
-				</h:panelGroup>
 
 				<h:panelGrid id="matchGrid" cellpadding="5">
 					<h:outputLabel for="pwd1" value="Digite a senha:" />

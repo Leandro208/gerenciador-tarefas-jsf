@@ -22,6 +22,7 @@ import io.github.Leandro208.projetoESIG.services.ResponsavelService;
 import io.github.Leandro208.projetoESIG.services.TarefaService;
 import io.github.Leandro208.projetoESIG.util.MonitorTarefas;
 import io.github.Leandro208.projetoESIG.util.UsuarioUtils;
+import io.github.Leandro208.projetoESIG.util.ValidatorUtils;
 
 @ManagedBean
 @SessionScoped
@@ -44,6 +45,9 @@ public class TarefaBean {
 	public TarefaBean() throws ParseException {
 		tarefa = new Tarefa();
 		equipe = new Equipe();
+		if(UsuarioUtils.usuarioTemEquipe()) {
+			equipe = UsuarioUtils.getLogado().getEquipe();
+		}
 		tarefaService = new TarefaService();
 		responsavelService = new ResponsavelService();
 		formConsulta = new FormConsultaTarefaDto();
@@ -98,14 +102,23 @@ public class TarefaBean {
 		}
 		
 		tarefaService.salvar(tarefa);
+		equipe = UsuarioUtils.getLogado().getEquipe();
 		carregarTarefas();
 		dashboard();
 	}
 	
 	
-	public String visualizarQuadro(Equipe equipeAtual) {
-		equipe = equipeAtual;
+	public String visualizarQuadro() {
 		carregarTarefas();
+		return "/restricted/listaTarefa?faces-redirect=true";
+	}
+	
+	public String visualizarQuadro(Equipe equipe) {
+		this.equipe = equipe;
+		carregarTarefas();
+		if(UsuarioUtils.usuarioTemEquipe()) {
+			equipe = UsuarioUtils.getLogado().getEquipe();
+		}
 		return "/restricted/listaTarefa?faces-redirect=true";
 	}
 	
@@ -153,9 +166,9 @@ public class TarefaBean {
 		List<Responsavel> responsaveis = responsavelService.buscarTodos();
 		itensComboBoxResponsaveis.add(new SelectItem(new Responsavel(), "-SELECIONE-"));
 		for (Responsavel r : responsaveis) {
-			if(equipe.getId() == r.getEquipe().getId()) {
+			//if(equipe.getId() == r.getEquipe().getId()) {
 				itensComboBoxResponsaveis.add(new SelectItem(r, r.getNome()));
-			}
+			//}
 			
 		}
 		return itensComboBoxResponsaveis;

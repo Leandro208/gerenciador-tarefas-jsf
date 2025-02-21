@@ -26,4 +26,8 @@
 		<filter-name>LoginFilter</filter-name>
 		<url-pattern>/restricted/*</url-pattern>
 	</filter-mapping>
+	<listener>
+		<web:display-name>SessionListener</web:display-name>
+        <listener-class>io.github.Leandro208.projetoESIG.config.SessionListener</listener-class>
+    </listener>
 </web-app>

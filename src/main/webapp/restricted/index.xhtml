@@ -138,22 +138,26 @@ body {
 			<!-- Atualizao monitor -->
 			<p:poll interval="2" listener="#{tarefaBean.dashboard}"
 				update="monitor" />
+				
+			<h:form id="formInicio">
 			<p:linkButton href="adm/formTarefa.jsf" value="Cadastrar uma Tarefa"
-				style="font-size: 25px;" rendered="${loginBean.responsavel.adm}" />
+				style="font-size: 25px;" rendered="#{loginBean.responsavel.adm}" />
 			<p:linkButton href="adm/formEquipe.jsf" value="Cadastrar uma Equipe"
-				style="font-size: 25px;" rendered="${loginBean.responsavel.adm}" />
-			<p:commandButton
-				action="#{tarefaBean.visualizarQuadro(loginBean.responsavel.equipe)}"
-				value="Minha Equipe" style="font-size: 25px;" />
-			<p:commandButton ajax="false" rendered="${loginBean.responsavel.adm}"
+				style="font-size: 25px;" rendered="#{loginBean.responsavel.adm}" />
+			<p:commandButton action="#{tarefaBean.visualizarQuadro}"
+				value="Minha Equipe"
+				rendered="#{loginBean.responsavel.equipe != null}"
+				style="font-size: 25px;" />
+			<p:commandButton ajax="false" rendered="#{loginBean.responsavel.adm}"
 				value="Novo Administrador" type="button"
 				onclick="PF('dialogUsuarios').show();" style="font-size: 25px;" />
-			<p:commandButton ajax="false" rendered="${loginBean.responsavel.adm}"
+			<p:commandButton ajax="false" rendered="#{loginBean.responsavel.adm and loginBean.responsavel.equipe != null}"
 				value="Ver Equipes" type="button" onclick="PF('dialogEquipes').show();"
 				style="font-size: 25px;" />
+			</h:form>
 		</div>
 	</div>
-
+	
 	<p:dialog header="Equipes" widgetVar="dialogEquipes" modal="true" height="350"
 		width="500">
 

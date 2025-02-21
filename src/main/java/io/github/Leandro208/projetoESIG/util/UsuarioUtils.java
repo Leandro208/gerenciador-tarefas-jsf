@@ -11,4 +11,8 @@ public class UsuarioUtils {
 		return (Responsavel) FacesContext.getCurrentInstance()
 				.getExternalContext().getSessionMap().get("responsavel");
 	}
+	
+	public static boolean usuarioTemEquipe() {
+		return getLogado().getEquipe() != null;
+	}
 }

@@ -17,7 +17,7 @@ import javax.persistence.TemporalType;
 
 @Entity
 @Table(name = "registro_entrada")
-public class RegistroEntrada implements Base, Serializable {
+public class RegistroEntrada implements BaseEntity, Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -106,7 +106,7 @@ public class RegistroEntrada implements Base, Serializable {
 
 	@Override
 	public String toString() {
-		return "[id=" + id + ", usuario=" + usuario.getEmail() + ", entrou em =" + data
+		return "[usuario=" + usuario.getEmail() + ", entrou em =" + data
 				+ ", ip=" + ip + "]";
 	}
 	

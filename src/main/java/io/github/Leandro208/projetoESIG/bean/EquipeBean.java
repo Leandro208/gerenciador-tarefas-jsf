@@ -24,8 +24,13 @@ public class EquipeBean {
 	
 	public String cadastrar() {
 		service.salvar(equipe);
+		carregarEquipes();
 		limpar();
 		return "";
+	}
+	
+	public void carregarEquipes() {
+		listaEquipes = service.buscarTodos();
 	}
 	
 	private void limpar() {

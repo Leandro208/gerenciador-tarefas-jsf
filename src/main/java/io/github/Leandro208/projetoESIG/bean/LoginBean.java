@@ -48,20 +48,14 @@ public class LoginBean implements Serializable {
 	}
 
 	public String logar() {
-			//buscando Responsavel no dao
-			List<Responsavel> res = new ArrayList<>();
-			res = service.buscarTodos();
-			for (Responsavel r : res) {
-				if (r.getEmail().equalsIgnoreCase(email) && r.getSenha().equals(Criptografar.encriptografar(senha))) {
-					responsavel = r;
-				}
-			}
+		//buscando Responsavel no dao
+		responsavel = service.verificarCredenciais(email, senha);
 		
 		if (responsavel.getId() != null && responsavel.getId() != 0) {
 			// se for diferente de null ele da o acesso
 			HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext()
 					.getSession(false);
-			
+			session.setMaxInactiveInterval(60);
 			responsavel.setRegistroEntrada(service.registrarEntrada(responsavel));
 			session.setAttribute("responsavel", responsavel);
 
@@ -74,7 +68,6 @@ public class LoginBean implements Serializable {
 	}
 
 	public String logout() {
-		service.encerrarEntrada(UsuarioUtils.getLogado().getRegistroEntrada());
 		FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
 		limpar();
 		return "/login?faces-redirect=true";

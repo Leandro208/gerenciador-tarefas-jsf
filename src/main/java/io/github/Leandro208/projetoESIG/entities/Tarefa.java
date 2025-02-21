@@ -11,6 +11,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -27,7 +28,7 @@ import io.github.Leandro208.projetoESIG.enums.StatusEnum;
 
 
 @Entity
-public class Tarefa implements Base, Serializable {
+public class Tarefa implements BaseEntity, Serializable {
 
 	private static final long serialVersionUID = 1L;
 	
@@ -42,7 +43,7 @@ public class Tarefa implements Base, Serializable {
 	@Column(columnDefinition = "TEXT")
 	private String descricao;
 
-	@ManyToOne(cascade=CascadeType.MERGE)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name="id_responsavel")
 	private Responsavel responsavel;
 
@@ -58,7 +59,7 @@ public class Tarefa implements Base, Serializable {
 	
 	private Date dataFinalizacao;
 	
-	@ManyToOne(cascade = CascadeType.ALL)
+	@ManyToOne(fetch = FetchType.EAGER)
 	private Equipe equipe;
 	
 	@Column(name = "data_cadastro")

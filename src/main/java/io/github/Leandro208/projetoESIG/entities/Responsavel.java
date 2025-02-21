@@ -23,9 +23,10 @@ import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
 
 import io.github.Leandro208.projetoESIG.enums.Funcao;
+import io.github.Leandro208.projetoESIG.util.ValidatorUtils;
 
 @Entity
-public class Responsavel implements Base, Serializable {
+public class Responsavel implements BaseEntity, Serializable {
 
 	private static final long serialVersionUID = 1606071181997167603L;
 
@@ -76,6 +77,7 @@ public class Responsavel implements Base, Serializable {
 	public boolean isAdm() {
 		return funcao == Funcao.ADM;
 	}
+	
 	
 	public Long getId() {
 		return id;

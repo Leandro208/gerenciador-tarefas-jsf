@@ -55,6 +55,17 @@ public class ResponsavelService implements BaseService<Responsavel>, Serializabl
 		return resultado;
 	}
 	
+	public Responsavel verificarCredenciais(String email, String senha) {
+		List<Responsavel> res = new ArrayList<>();
+		res = buscarTodos();
+		for (Responsavel r : res) {
+			if (r.getEmail().equalsIgnoreCase(email) && r.getSenha().equals(Criptografar.encriptografar(senha))) {
+				return r;
+			}
+		}
+		return new Responsavel();
+	}
+	
 	public RegistroEntrada registrarEntrada(Responsavel usuario) {
 		GenericDao<RegistroEntrada> daoEntrada = new GenericDao<>();
 		RegistroEntrada entrada = new RegistroEntrada();
@@ -66,12 +77,6 @@ public class ResponsavelService implements BaseService<Responsavel>, Serializabl
 	    daoEntrada.salvar(entrada);
 	    System.out.println("Registro de entrada: " + entrada);
 		return entrada;
-	}
-	
-	public void encerrarEntrada(RegistroEntrada entrada) {
-		GenericDao<RegistroEntrada> daoEntrada = new GenericDao<>();
-		entrada.setDataSaida(new Date());
-		daoEntrada.salvar(entrada);
 	}
 	
 	public String getClientIp() {
