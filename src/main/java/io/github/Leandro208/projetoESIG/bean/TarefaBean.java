@@ -9,8 +9,8 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.model.SelectItem;
 
-import org.primefaces.PrimeFaces;
 
+import io.github.Leandro208.projetoESIG.dao.DAOException;
 import io.github.Leandro208.projetoESIG.dto.FormConsultaTarefaDto;
 import io.github.Leandro208.projetoESIG.entities.Equipe;
 import io.github.Leandro208.projetoESIG.entities.Responsavel;
@@ -20,13 +20,16 @@ import io.github.Leandro208.projetoESIG.enums.StatusEnum;
 import io.github.Leandro208.projetoESIG.services.EquipeService;
 import io.github.Leandro208.projetoESIG.services.ResponsavelService;
 import io.github.Leandro208.projetoESIG.services.TarefaService;
+import io.github.Leandro208.projetoESIG.util.Message;
 import io.github.Leandro208.projetoESIG.util.MonitorTarefas;
 import io.github.Leandro208.projetoESIG.util.UsuarioUtils;
-import io.github.Leandro208.projetoESIG.util.ValidatorUtils;
+import io.github.Leandro208.projetoESIG.persistence.OperacaoCadastro;
+import io.github.Leandro208.projetoESIG.persistence.ListaComando;
+import io.github.Leandro208.projetoESIG.persistence.Operacao;
 
 @ManagedBean
 @SessionScoped
-public class TarefaBean {
+public class TarefaBean extends AbstractBean{
 
 	private Tarefa tarefa;
 	
@@ -56,25 +59,43 @@ public class TarefaBean {
 	}
 
 	public String cadastrar() throws ParseException {
-		tarefaService.salvar(tarefa);
+		
+		Operacao operacao = new OperacaoCadastro();
+		if(getConfirmButton().equals(BOTAO_CADASTRAR)) {
+			operacao.setComando(ListaComando.CADASTRAR_TAREFA);
+		} else if(getConfirmButton().equals(BOTAO_ALTERAR)) {
+			operacao.setComando(ListaComando.ALTERAR_TAREFA);
+		}
+		
+		operacao.setEntidade(tarefa);
+		try {
+			realizarOperacao(operacao);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		addMensagem("Operação realizada com sucesso!");
 		carregarTarefas();
 		limpar();
 		dashboard();
-		return "";
+		return null;
 	}
 
 	public String listar() {
-		listaTarefas = tarefaService.buscarTodos(formConsulta, equipe.getId());
+		formConsulta.setIdEquipe(equipe.getId());
+		listaTarefas = tarefaService.buscarTodos(formConsulta);
 		limpar();
 		return "";
 	}
 
 	public String editar() throws ParseException {
+		setConfirmButton(BOTAO_ALTERAR);
 		return "adm/formTarefa?faces-redirect=true";
 	}
 
 	public void moverTarefa() throws ParseException  {
+		//TODO EDITAR ESSE SALVAR
 		tarefaService.salvar(tarefa);
+		
 		carregarTarefas();
 		dashboard();
 		//PrimeFaces.current().executeScript("window.location.reload();");
@@ -101,7 +122,9 @@ public class TarefaBean {
 			tarefa.setResponsavel(null);
 		}
 		
-		tarefaService.salvar(tarefa);
+		//TODO EDITAR ESSE SALVAR
+			tarefaService.salvar(tarefa);
+		
 		equipe = UsuarioUtils.getLogado().getEquipe();
 		carregarTarefas();
 		dashboard();
@@ -109,6 +132,7 @@ public class TarefaBean {
 	
 	
 	public String visualizarQuadro() {
+		this.equipe = UsuarioUtils.getLogado().getEquipe();
 		carregarTarefas();
 		return "/restricted/listaTarefa?faces-redirect=true";
 	}
@@ -126,7 +150,7 @@ public class TarefaBean {
         return listaTarefas.get(key);
     }
 	public void carregarTarefas() {
-		listaTarefas = tarefaService.buscarTodos(formConsulta, equipe.getId());
+		listaTarefas = tarefaService.buscarTodos(formConsulta);
 	}
 
 	

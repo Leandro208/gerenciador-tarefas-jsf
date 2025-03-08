@@ -6,7 +6,9 @@ import javax.servlet.annotation.WebListener;
 import javax.servlet.http.HttpSessionEvent;
 import javax.servlet.http.HttpSessionListener;
 
-import io.github.Leandro208.projetoESIG.dao.GenericDao;
+import io.github.Leandro208.projetoESIG.dao.DAOException;
+import io.github.Leandro208.projetoESIG.dao.GenericDAO;
+import io.github.Leandro208.projetoESIG.dao.GenericDAOImpl;
 import io.github.Leandro208.projetoESIG.entities.RegistroEntrada;
 import io.github.Leandro208.projetoESIG.entities.Responsavel;
 
@@ -25,8 +27,12 @@ public class SessionListener implements HttpSessionListener{
 	    	    RegistroEntrada entrada = responsavel.getRegistroEntrada();
 	    	    if (entrada != null) {
 	    	        entrada.setDataSaida(new Date());
-	    	        GenericDao<RegistroEntrada> daoEntrada = new GenericDao<>();
-	    	        daoEntrada.salvar(entrada);
+	    	        GenericDAO daoEntrada = new GenericDAOImpl();
+	    	        try {
+						daoEntrada.create(entrada);
+					} catch (DAOException e) {
+						e.printStackTrace();
+					}
 	    	        System.out.println("Saindo: " + entrada);
 	    	    }
 	    	}

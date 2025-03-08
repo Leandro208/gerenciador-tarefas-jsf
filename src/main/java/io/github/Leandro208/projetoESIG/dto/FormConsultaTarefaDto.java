@@ -12,7 +12,9 @@ private Long numero;
 	private Responsavel responsavel;
 	
 	private StatusEnum situacao;
-
+	
+	private Long idEquipe;
+	
 	public FormConsultaTarefaDto() {}
 	
 	public FormConsultaTarefaDto(Tarefa t) {
@@ -53,4 +55,14 @@ private Long numero;
 	public void setSituacao(StatusEnum situacao) {
 		this.situacao = situacao;
 	}
+
+	public Long getIdEquipe() {
+		return idEquipe;
+	}
+
+	public void setIdEquipe(Long idEquipe) {
+		this.idEquipe = idEquipe;
+	}
+	
+	
 }

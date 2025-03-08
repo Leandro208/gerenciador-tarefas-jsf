@@ -9,7 +9,7 @@ import io.github.Leandro208.projetoESIG.connection.ConnectionFactory;
 import io.github.Leandro208.projetoESIG.entities.BaseEntity;
 import io.github.Leandro208.projetoESIG.util.Message;
 
-public class GenericDao <T extends BaseEntity> implements Serializable {
+public class GenericDaoII <T extends BaseEntity> implements Serializable {
 
 	private static final long serialVersionUID = 1L; 
 	

@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
-import io.github.Leandro208.projetoESIG.dao.GenericDao;
+import io.github.Leandro208.projetoESIG.dao.GenericDaoII;
 import io.github.Leandro208.projetoESIG.entities.Equipe;
 import io.github.Leandro208.projetoESIG.util.UsuarioUtils;
 
@@ -15,25 +15,20 @@ public class EquipeService implements BaseService<Equipe>, Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 	
-	private GenericDao<Equipe> dao;
+	private GenericDaoII<Equipe> dao;
 	
 	public EquipeService() {
-		this.dao = new GenericDao<Equipe>();
+		this.dao = new GenericDaoII<Equipe>();
 	}
 
-	@Override
-	public Equipe buscarPorId(Long id) {
-		return dao.buscarPorId(Equipe.class, id);
-	}
 
-	@Override
+
 	public void salvar(Equipe t) {
 		t.setDataCadastro(new Date());
 		t.setRegistroEntrada(UsuarioUtils.getLogado().getRegistroEntrada());
 		dao.salvar(t);
 	}
 
-	@Override
 	public void remover(Equipe t) {
 		dao.remover(Equipe.class, t.getId());	
 	}
@@ -41,6 +36,13 @@ public class EquipeService implements BaseService<Equipe>, Serializable {
 	public List<Equipe> buscarTodos(){
 		StringBuilder hql = new StringBuilder("select e from Equipe e order by e.nome");
 		return dao.buscarTodos(hql.toString());
+	}
+
+
+
+	public Equipe buscarPorId(Long valueOf) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

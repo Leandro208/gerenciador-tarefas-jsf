@@ -60,6 +60,7 @@ public class Tarefa implements BaseEntity, Serializable {
 	private Date dataFinalizacao;
 	
 	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name="id_equipe")
 	private Equipe equipe;
 	
 	@Column(name = "data_cadastro")

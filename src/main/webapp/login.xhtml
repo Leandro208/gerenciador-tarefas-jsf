@@ -1,45 +1,114 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <html xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:h="http://java.sun.com/jsf/html"
-	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:p="http://primefaces.org/ui">
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:p="http://primefaces.org/ui">
 <h:head>
-	<title>Login</title>
-	<link rel="icon" type="image/png" href="assets/img/icon.png" />
+    <title>Login</title>
+    <link rel="icon" type="image/png" href="assets/img/icon.png" />
+	<style>
+		 .login-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+        }
 
+        .login-box {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            width: 350px;
+        }
+
+        .login-title {
+            font-size: 22px;
+            color: #333;
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+
+        .custom-input {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 16px;
+            outline: none;
+            transition: border 0.3s ease-in-out;
+        }
+
+        .custom-input:focus {
+            border: 1px solid #6a11cb;
+            box-shadow: 0px 0px 8px rgba(106, 17, 203, 0.3);
+        }
+
+        .button-container {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 15px;
+        }
+
+        .login-button, .register-button {
+            width: 48%;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .login-button {
+            background: linear-gradient(to right, #6a11cb, #2575fc);
+            color: white;
+        }
+
+        .register-button {
+            background: linear-gradient(to right, #ff416c, #ff4b2b);
+            color: white;
+        }
+
+        .login-button:hover {
+            opacity: 0.8;
+        }
+
+        .register-button:hover {
+            opacity: 0.8;
+        }
+	</style>
 </h:head>
-<h:body
-	style="display: flex; 
-		justify-content:center; 
-		align-items: center;
-  justify-content: center;">
 
-	<h:form>
-		<p:messages id="messages" closable="true">
-				<p:autoUpdate />
-			</p:messages>
-		<h:outputLabel
-			style="color: purple;font-size: 20px; font-family: cursive;"
-			value="Faça o login ou Registre-se para acessar a aplicação" />
-		<p:panelGrid columns="2">
+<h:body class="login-container">
+    <h:form>
+        <div class="login-box">
+            <h:outputLabel class="login-title" value="Faça o login ou registre-se" />
+            
+            <p:messages id="messages" closable="true">
+                <p:autoUpdate />
+            </p:messages>
 
-			<p:outputLabel value="Email" />
-			<p:inputText value="#{loginBean.email}" required="true"
-				requiredMessage="Digite seu Email" />
+            <p:inputText value="#{loginBean.email}" required="true" 
+                requiredMessage="Digite seu Email" styleClass="custom-input"
+                placeholder="Digite seu email" />
 
-			<p:outputLabel value="Senha:" />
-			<p:password value="#{loginBean.senha}" required="true"
-				requiredMessage="Digite sua senha" />
+            <p:password value="#{loginBean.senha}" required="true"
+                requiredMessage="Digite sua senha" styleClass="custom-input"
+                placeholder="Digite sua senha" />
 
-			<h:panelGroup>
-				<p:commandButton value="Login" icon="ui-icon-arrowthickstop-1-e"
-					action="#{loginBean.logar}" ajax="false">
-				</p:commandButton>
-				<p:linkButton href="formResponsavel.jsf" value="Registrar"
-					icon=" ui-icon-script" />
-			</h:panelGroup>
-		</p:panelGrid>
-	</h:form>
+            <div class="button-container">
+                <p:commandButton value="Login" action="#{loginBean.logar}" ajax="false" 
+                    styleClass="login-button" icon="pi pi-sign-in"/>
 
+                <p:linkButton href="formResponsavel.jsf" value="Registrar" 
+                    styleClass="register-button" icon="pi pi-user-plus"/>
+            </div>
+        </div>
+    </h:form>
 </h:body>
 </html>

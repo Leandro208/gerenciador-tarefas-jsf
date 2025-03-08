@@ -9,7 +9,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import io.github.Leandro208.projetoESIG.dao.GenericDao;
+import io.github.Leandro208.projetoESIG.dao.DAOException;
+import io.github.Leandro208.projetoESIG.dao.GenericDaoII;
+import io.github.Leandro208.projetoESIG.dao.TarefaDAO;
+import io.github.Leandro208.projetoESIG.dao.TarefaDAO;
 import io.github.Leandro208.projetoESIG.dto.FormConsultaTarefaDto;
 import io.github.Leandro208.projetoESIG.entities.Equipe;
 import io.github.Leandro208.projetoESIG.entities.Tarefa;
@@ -22,41 +25,24 @@ import io.github.Leandro208.projetoESIG.util.ValidatorUtils;
 public class TarefaService implements BaseService<Tarefa>, Serializable {
 	private static final long serialVersionUID = 1L;
 
-	private GenericDao<Tarefa> dao;
-
 	public TarefaService() {
-		dao = new GenericDao<Tarefa>();
+
 	}
 
-	@Override
-	public Tarefa buscarPorId(Long id) {
-		return dao.buscarPorId(Tarefa.class, id);
-	}
 
-	@Override
-	public void salvar(Tarefa t) {
-		t.setDataCadastro(new Date());
-		t.setRegistroEntrada(UsuarioUtils.getLogado().getRegistroEntrada());
-		dao.salvar(t);
-	}
-
-	@Override
-	public void remover(Tarefa t) {
-		dao.remover(Tarefa.class, t.getId());
-	}
-
-	public void concluir(Tarefa t) throws ParseException {
+	public void concluir(Tarefa t) throws ParseException, DAOException {
+		TarefaDAO dao = new TarefaDAO();
 		t.setStatus(StatusEnum.CONCLUIDO);
 		SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 		t.setDataFinalizacao(new Date());
 		String data = df.format(t.getDataFinalizacao());
 		t.setDataFinalizacao(df.parse(data));
-		dao.salvar(t);
+		dao.update(t);
 	}
 
-	public HashMap<Integer, List<Tarefa>> buscarTodos(FormConsultaTarefaDto form, Long idEquipe) {
+	public HashMap<Integer, List<Tarefa>> buscarTodos(FormConsultaTarefaDto form) {
 		
-		
+		TarefaDAO dao = new TarefaDAO();
 		
 		StringBuilder hql = new StringBuilder("select t from Tarefa t where 1 = 1");
 		if (form.getNumero() != null && form.getNumero() != 0) {
@@ -72,29 +58,26 @@ public class TarefaService implements BaseService<Tarefa>, Serializable {
 		if (form.getSituacao() != null) {
 			hql.append(String.format(" and t.status like '%s'", form.getSituacao().toString()));
 		}
-		if(!ValidatorUtils.isEmpty(idEquipe)) {
-			hql.append(String.format(" and t.equipe.id = '%d'", idEquipe));
-		}
-		
 		hql.append(" order by t.id");
 		 
+		List<Tarefa> tarefas = dao.filter(form);
 		
-		HashMap<Integer, List<Tarefa>> tarefas = new HashMap<>();
-		tarefas.put(StatusEnum.BACKLOG.getCodigo(), new ArrayList<Tarefa>());
-		tarefas.put(StatusEnum.CONCLUIDO.getCodigo(), new ArrayList<Tarefa>());
-		tarefas.put(StatusEnum.EM_ANDAMENTO.getCodigo(), new ArrayList<Tarefa>());
-		for(Tarefa t : dao.buscarTodos(hql.toString())) {
+		HashMap<Integer, List<Tarefa>> mapTarefas = new HashMap<>();
+		mapTarefas.put(StatusEnum.BACKLOG.getCodigo(), new ArrayList<Tarefa>());
+		mapTarefas.put(StatusEnum.CONCLUIDO.getCodigo(), new ArrayList<Tarefa>());
+		mapTarefas.put(StatusEnum.EM_ANDAMENTO.getCodigo(), new ArrayList<Tarefa>());
+		for(Tarefa t : tarefas) {
 			if(t.getStatus() == StatusEnum.BACKLOG) {
-				tarefas.get(StatusEnum.BACKLOG.getCodigo()).add(t);
+				mapTarefas.get(StatusEnum.BACKLOG.getCodigo()).add(t);
 			} else if(t.getStatus() == StatusEnum.CONCLUIDO) {
-				tarefas.get(StatusEnum.CONCLUIDO.getCodigo()).add(t);
+				mapTarefas.get(StatusEnum.CONCLUIDO.getCodigo()).add(t);
 			} else if(t.getStatus() == StatusEnum.EM_ANDAMENTO) {
-				tarefas.get(StatusEnum.EM_ANDAMENTO.getCodigo()).add(t);
+				mapTarefas.get(StatusEnum.EM_ANDAMENTO.getCodigo()).add(t);
 			}
 			
 		}
 		
-		return tarefas;
+		return mapTarefas;
 	}
 
 	public MonitorTarefas monitoramento() {
@@ -104,13 +87,25 @@ public class TarefaService implements BaseService<Tarefa>, Serializable {
 			return new MonitorTarefas();
 		}
 				
-		int encerrados = buscarTodos(dto, UsuarioUtils.getLogado().getEquipe().getId())
+		int encerrados = buscarTodos(dto)
 				.get(StatusEnum.CONCLUIDO.getCodigo()).size();
-		int andamento = buscarTodos(dto, UsuarioUtils.getLogado().getEquipe().getId())
+		int andamento = buscarTodos(dto)
 				.get(StatusEnum.EM_ANDAMENTO.getCodigo()).size();
 
 		MonitorTarefas monitor = new MonitorTarefas(andamento, encerrados);
 
 		return monitor;
+	}
+
+
+	public void salvar(Tarefa tarefa) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	public void remover(Tarefa tarefa) {
+		// TODO Auto-generated method stub
+		
 	}
 }

@@ -8,7 +8,7 @@ import java.util.List;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
 
-import io.github.Leandro208.projetoESIG.dao.GenericDao;
+import io.github.Leandro208.projetoESIG.dao.GenericDaoII;
 import io.github.Leandro208.projetoESIG.entities.RegistroEntrada;
 import io.github.Leandro208.projetoESIG.entities.Responsavel;
 import io.github.Leandro208.projetoESIG.util.Criptografar;
@@ -18,17 +18,14 @@ public class ResponsavelService implements BaseService<Responsavel>, Serializabl
 
 	private static final long serialVersionUID = 1L;
 	
-	private GenericDao<Responsavel> dao;
+	private GenericDaoII<Responsavel> dao;
 	
 	public ResponsavelService() {
-		dao = new GenericDao<Responsavel>();
+		dao = new GenericDaoII<Responsavel>();
 	}
 	
-	@Override
-	public Responsavel buscarPorId(Long id) {
-		return dao.buscarPorId(Responsavel.class, id);
-	}
-	@Override
+
+
 	public void salvar(Responsavel responsavel) {
 		
 		List<Responsavel> resp = buscarTodos();
@@ -43,7 +40,7 @@ public class ResponsavelService implements BaseService<Responsavel>, Serializabl
 		responsavel.setSenha(Criptografar.encriptografar(responsavel.getSenha()));
 		dao.salvar(responsavel);
 	}
-	@Override
+	
 	public void remover(Responsavel r) {
 		dao.remover(Responsavel.class, r.getId());
 	}
@@ -67,7 +64,7 @@ public class ResponsavelService implements BaseService<Responsavel>, Serializabl
 	}
 	
 	public RegistroEntrada registrarEntrada(Responsavel usuario) {
-		GenericDao<RegistroEntrada> daoEntrada = new GenericDao<>();
+		GenericDaoII<RegistroEntrada> daoEntrada = new GenericDaoII<>();
 		RegistroEntrada entrada = new RegistroEntrada();
 		entrada.setData(new Date());
 		entrada.setUsuario(usuario);
@@ -87,6 +84,13 @@ public class ResponsavelService implements BaseService<Responsavel>, Serializabl
 	        ip = request.getRemoteAddr();
 	    }
 	    return ip;
+	}
+
+
+
+	public Responsavel buscarPorId(Long valueOf) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

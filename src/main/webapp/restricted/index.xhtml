@@ -93,16 +93,8 @@ body {
 				style="margin-left: 5px;font-size: 12px;opacity: 0.6;" />
 		</div>
 
-		<!-- Relogio -->
+		
 		<div style="margin-left: 80%;">
-			<h:outputLabel value="Tempo de sessão " />
-			<h:outputText id="relogio" value="#{loginBean.horaAtual.time}">
-				<f:convertDateTime pattern="HH:mm:ss" timeZone="GMT-3" />
-			</h:outputText>
-			<!-- Relógio atualizado acada 1 segundo -->
-			<p:poll interval="1" listener="#{loginBean.relogio}" update="relogio" />
-			<!-- Fim relogio  -->
-
 			<h:form style="float: right;">
 				<h:commandButton image="../assets/img/logout.png"
 					style="width: 30px;" alt="Logout" action="#{loginBean.logout}" />
@@ -151,7 +143,7 @@ body {
 			<p:commandButton ajax="false" rendered="#{loginBean.responsavel.adm}"
 				value="Novo Administrador" type="button"
 				onclick="PF('dialogUsuarios').show();" style="font-size: 25px;" />
-			<p:commandButton ajax="false" rendered="#{loginBean.responsavel.adm and loginBean.responsavel.equipe != null}"
+			<p:commandButton ajax="false" rendered="#{loginBean.responsavel.adm}"
 				value="Ver Equipes" type="button" onclick="PF('dialogEquipes').show();"
 				style="font-size: 25px;" />
 			</h:form>
