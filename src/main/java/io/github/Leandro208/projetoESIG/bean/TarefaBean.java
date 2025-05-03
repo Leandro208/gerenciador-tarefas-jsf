@@ -44,7 +44,11 @@ public class TarefaBean extends AbstractBean{
 	private ResponsavelService responsavelService;
 
 	private MonitorTarefas monitor;
+	
+	private final String FORM_TAREFA = "adm/formTarefa.jsf";
 
+	private final String LISTA_TAREFA = "/restricted/listaTarefa.jsf";
+	
 	public TarefaBean() throws ParseException {
 		tarefa = new Tarefa();
 		equipe = new Equipe();
@@ -57,7 +61,11 @@ public class TarefaBean extends AbstractBean{
 		listaTarefas = new HashMap<>();
 		monitor = tarefaService.monitoramento();
 	}
-
+	
+	public String entrarCadastro() {
+		return navegar(FORM_TAREFA);
+	}
+	
 	public String cadastrar() throws ParseException {
 		
 		Operacao operacao = new OperacaoCadastro();
@@ -89,7 +97,7 @@ public class TarefaBean extends AbstractBean{
 
 	public String editar() throws ParseException {
 		setConfirmButton(BOTAO_ALTERAR);
-		return "adm/formTarefa?faces-redirect=true";
+		return navegar(FORM_TAREFA);
 	}
 
 	public void moverTarefa() throws ParseException  {
@@ -134,7 +142,7 @@ public class TarefaBean extends AbstractBean{
 	public String visualizarQuadro() {
 		this.equipe = UsuarioUtils.getLogado().getEquipe();
 		carregarTarefas();
-		return "/restricted/listaTarefa?faces-redirect=true";
+		return navegar(LISTA_TAREFA);
 	}
 	
 	public String visualizarQuadro(Equipe equipe) {
@@ -143,7 +151,7 @@ public class TarefaBean extends AbstractBean{
 		if(UsuarioUtils.usuarioTemEquipe()) {
 			equipe = UsuarioUtils.getLogado().getEquipe();
 		}
-		return "/restricted/listaTarefa?faces-redirect=true";
+		return navegar(LISTA_TAREFA);
 	}
 	
 	public List<Tarefa> getObjectsForKey(int key) {

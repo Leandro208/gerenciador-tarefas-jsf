@@ -132,7 +132,7 @@ body {
 				update="monitor" />
 				
 			<h:form id="formInicio">
-			<p:linkButton href="adm/formTarefa.jsf" value="Cadastrar uma Tarefa"
+			<p:commandButton action="#{tarefaBean.entrarCadastro}" value="Cadastrar uma Tarefa"
 				style="font-size: 25px;" rendered="#{loginBean.responsavel.adm}" />
 			<p:linkButton href="adm/formEquipe.jsf" value="Cadastrar uma Equipe"
 				style="font-size: 25px;" rendered="#{loginBean.responsavel.adm}" />

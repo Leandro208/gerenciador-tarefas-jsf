@@ -50,5 +50,12 @@ public abstract class AbstractBean {
 	        throw new RuntimeException("Erro ao instanciar a classe: " + daoClass.getName(), e);
 	    }
 	}
+	
+	public String navegar(String caminho) {
+	    if (caminho.endsWith(".jsf") || caminho.endsWith(".xhtml")) {
+	        caminho = caminho.substring(0, caminho.lastIndexOf("."));
+	    }
+	    return caminho + "?faces-redirect=true";
+	}
 
 }
