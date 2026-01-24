@@ -17,7 +17,10 @@
 		<servlet-name>Faces Servlet</servlet-name>
 		<url-pattern>*.jsf</url-pattern>
 	</servlet-mapping>
-
+	<context-param>
+		<param-name>primefaces.FONT_AWESOME</param-name>
+		<param-value>true</param-value>
+	</context-param>
 	<filter>
 		<filter-name>LoginFilter</filter-name>
 		<filter-class>io.github.Leandro208.projetoESIG.filter.LoginFilter</filter-class>

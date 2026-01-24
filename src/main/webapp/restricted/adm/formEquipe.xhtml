@@ -1,27 +1,36 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+<ui:composition template="/WEB-INF/templates/navbar_template.xhtml"
+				xmlns="http://www.w3.org/1999/xhtml"
+				xmlns:h="http://java.sun.com/jsf/html"
+				xmlns:ui="http://java.sun.com/jsf/facelets"
+				xmlns:p="http://primefaces.org/ui">
 
-<html xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:h="http://java.sun.com/jsf/html"
-	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:p="http://primefaces.org/ui">
-<h:head>
-	<title>Formulário JSF</title>
-	<link rel="stylesheet" href="../../assets/css/formEquipe.css" />
-</h:head>
+    <ui:define name="conteudo">
+        <h:outputStylesheet library="css" name="form.css" />
 
-<h:body>
-	<h:form styleClass="formulario">
-		<p:messages id="messages" closable="true">
-			<p:autoUpdate />
-		</p:messages>
-		<h:outputLabel for="nome" value="Nome da equipe:" styleClass="label" />
-		<h:inputText id="nome" value="#{equipeBean.equipe.nome}"
-			styleClass="input-text" />
+        <main class="main-content">
+            <div class="form-card">
+                <h2>Nova Equipe</h2>
+                <p class="subtitle">Cadastre os dados da nova equipe.</p>
 
-		<h:commandButton value="Cadastrar" action="#{equipeBean.cadastrar}"
-			styleClass="botao-enviar" />
-	</h:form>
-	
-	<a href="../index.jsf">Voltar</a>
-</h:body>
-</html>
+                <h:form id="formCadastro">
+                    <p:messages id="msgs" closable="true" showDetail="false" showSummary="true">
+                        <p:autoUpdate />
+                    </p:messages>
+
+                    <h:outputLabel value="Nome da Equipe" styleClass="field-label" />
+                    <p:inputText value="#{equipeBean.equipe.nome}" required="true"
+                                 placeholder="Ex: Desenvolvimento" />
+
+                    <p:commandButton value="Salvar"
+                                     action="#{equipeBean.cadastrar}"
+                                     styleClass="btn-primary"
+                                     icon="fa fa-check" />
+                </h:form>
+            </div>
+
+            <h:link outcome="/restricted/index" styleClass="back-link">
+                <i class="fa fa-arrow-left"></i> Voltar ao Dashboard
+            </h:link>
+        </main>
+    </ui:define>
+</ui:composition>

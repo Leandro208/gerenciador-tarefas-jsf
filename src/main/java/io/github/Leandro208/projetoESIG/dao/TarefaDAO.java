@@ -39,9 +39,9 @@ public class TarefaDAO extends GenericDAOImpl{
 	        parameters.put("situacao", form.getSituacao().toString());
 	    }
 
-	    if (!ValidatorUtils.isEmpty(form.getIdEquipe())) {
+	    if (!ValidatorUtils.isEmpty(form.getEquipe().getId())) {
 	        sql.append(" AND t.id_equipe = :idEquipe");
-	        parameters.put("idEquipe", form.getIdEquipe());
+	        parameters.put("idEquipe", form.getEquipe().getId());
 	    }
 
 	    sql.append(" ORDER BY t.id");

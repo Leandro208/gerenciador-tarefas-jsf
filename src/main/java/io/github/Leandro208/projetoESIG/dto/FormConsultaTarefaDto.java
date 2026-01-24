@@ -1,5 +1,6 @@
 package io.github.Leandro208.projetoESIG.dto;
 
+import io.github.Leandro208.projetoESIG.entities.Equipe;
 import io.github.Leandro208.projetoESIG.entities.Responsavel;
 import io.github.Leandro208.projetoESIG.entities.Tarefa;
 import io.github.Leandro208.projetoESIG.enums.StatusEnum;
@@ -13,7 +14,7 @@ private Long numero;
 	
 	private StatusEnum situacao;
 	
-	private Long idEquipe;
+	private Equipe equipe;
 	
 	public FormConsultaTarefaDto() {}
 	
@@ -56,13 +57,11 @@ private Long numero;
 		this.situacao = situacao;
 	}
 
-	public Long getIdEquipe() {
-		return idEquipe;
+	public Equipe getEquipe() {
+		return equipe;
 	}
 
-	public void setIdEquipe(Long idEquipe) {
-		this.idEquipe = idEquipe;
+	public void setEquipe(Equipe equipe) {
+		this.equipe = equipe;
 	}
-	
-	
 }

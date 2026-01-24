@@ -29,7 +29,7 @@ public class SessionListener implements HttpSessionListener{
 	    	        entrada.setDataSaida(new Date());
 	    	        GenericDAO daoEntrada = new GenericDAOImpl();
 	    	        try {
-						daoEntrada.create(entrada);
+						daoEntrada.update(entrada);
 					} catch (DAOException e) {
 						e.printStackTrace();
 					}

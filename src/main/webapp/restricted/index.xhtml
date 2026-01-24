@@ -1,201 +1,97 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<html xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:h="http://java.sun.com/jsf/html"
-	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:p="http://primefaces.org/ui">
-<h:head>
-	<title>Gerenciador de Tarefas</title>
-	<link rel="icon" type="image/png" href="../assets/img/icon.png" />
-	<style>
-.container {
-	width: 100vw;
-	height: 100vh;
-	background: #6C7A89;
-	display: flex;
-	flex-direction: row;
-	justify-content: center;
-}
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+				xmlns:h="http://java.sun.com/jsf/html"
+				xmlns:f="http://java.sun.com/jsf/core"
+				xmlns:ui="http://java.sun.com/jsf/facelets"
+				xmlns:p="http://primefaces.org/ui"
+				template="/WEB-INF/templates/navbar_template.xhtml">
 
-.box {
-	width: 800px;
-	height: 300px;
-	color: white;
-	font-family: cursive;
-}
+	<ui:define name="titulo">Gerenciador de Tarefas</ui:define>
 
-body {
-	margin: 0px;
-}
+	<ui:define name="conteudo">
+		<h:outputStylesheet library="css" name="inicio.css" />
 
-.dashboard {
-	background-color: white;
-	border: 5px solid red;
-	border-radius: 5%;
-	width: 500px;
-	height: 250px;
-	position: relative;
-	font-size: 13px;
-	color: gray;
-}
-
-.item1 {
-	background-color: orange;
-	width: 100px;
-	height: 100px;
-	border-radius: 50%;
-	position: absolute;
-	top: 20%;
-	left: 50%;
-	margin: -25px 0 0 -25px;
-}
-
-.item2 {
-	background-color: purple;
-	width: 100px;
-	height: 100px;
-	border-radius: 50%;
-	position: absolute;
-	top: 65%;
-	left: 50%;
-	margin: -25px 0 0 -25px;
-	float: left;
-}
-
-.texto {
-	color: pink;
-	position: absolute;
-	top: 50%;
-	left: 50%;
-	margin: -20px 0 0 -5;
-	font-size: 25px;
-	color: white;
-}
-</style>
-</h:head>
-<h:body>
-
-	<!-- Cabeçalho -->
-	<nav style="padding-top: 20px;">
-
-		<img alt="Logo" src="../assets/img/icon.png"
-			style="float: left; width: 30px; height: 30px; margin-bottom: 15px;" />
-
-		<h:outputLabel value="#{loginBean.responsavel.funcao}"
-			style="background-color:orange; color:white; border-radius: 30%; 
-			font-size: 15px; margin-left:15px;" />
-
-		<div style="height: 0;">
-			<h:outputLabel
-				style="margin-left: 20px;font-size: 20px;color: purple;"
-				value="#{loginBean.responsavel.nome}" />
-
-			<h:outputLabel value="#User-ID: #{loginBean.responsavel.id}"
-				style="margin-left: 5px;font-size: 12px;opacity: 0.6;" />
-		</div>
-
-		
-		<div style="margin-left: 80%;">
-			<h:form style="float: right;">
-				<h:commandButton image="../assets/img/logout.png"
-					style="width: 30px;" alt="Logout" action="#{loginBean.logout}" />
-			</h:form>
-		</div>
-
-	</nav>
-
-	<!-- Fim cabeçalho -->
-
-
-
-	<div class="container">
-		<div class="box">
-			<h:outputLabel style="font-size: 50px;">Gerenciador de Tarefas</h:outputLabel>
-			<br />
-
-			<div class="dashboard">
-
-				<h:panelGroup id="monitor">
-					<div class="item1">
-						Andamento:
-						<h:outputLabel class="texto">#{tarefaBean.monitor.andamento}</h:outputLabel>
-					</div>
-					<div class="item2">
-						Concluidas:
-						<h:outputLabel class="texto">#{tarefaBean.monitor.concluidas}</h:outputLabel>
-					</div>
-				</h:panelGroup>
-
+		<main class="main-content">
+			<div class="page-header">
+				<h1>Gerenciador de Tarefas</h1>
+				<p style="color: #6b7280;">Acompanhe o progresso da sua equipe em tempo real.</p>
 			</div>
-			<br />
-			<!-- Atualizao monitor -->
-			<p:poll interval="2" listener="#{tarefaBean.dashboard}"
-				update="monitor" />
-				
-			<h:form id="formInicio">
-			<p:commandButton action="#{tarefaBean.entrarCadastro}" value="Cadastrar uma Tarefa"
-				style="font-size: 25px;" rendered="#{loginBean.responsavel.adm}" />
-			<p:linkButton href="adm/formEquipe.jsf" value="Cadastrar uma Equipe"
-				style="font-size: 25px;" rendered="#{loginBean.responsavel.adm}" />
-			<p:commandButton action="#{tarefaBean.visualizarQuadro}"
-				value="Minha Equipe"
-				rendered="#{loginBean.responsavel.equipe != null}"
-				style="font-size: 25px;" />
-			<p:commandButton ajax="false" rendered="#{loginBean.responsavel.adm}"
-				value="Novo Administrador" type="button"
-				onclick="PF('dialogUsuarios').show();" style="font-size: 25px;" />
-			<p:commandButton ajax="false" rendered="#{loginBean.responsavel.adm}"
-				value="Ver Equipes" type="button" onclick="PF('dialogEquipes').show();"
-				style="font-size: 25px;" />
-			</h:form>
-		</div>
-	</div>
-	
-	<p:dialog header="Equipes" widgetVar="dialogEquipes" modal="true" height="350"
-		width="500">
 
-		<p:dataTable var="equipe" value="#{equipeBean.listaEquipes}">
+			<h:panelGroup id="monitor" layout="block" styleClass="dashboard-grid">
+				<div class="stat-card">
+					<div class="icon-circle bg-andamento">
+						<i class="pi pi-sync"></i>
+					</div>
+					<div class="stat-info">
+						<span>Em Andamento</span>
+						<h:outputText value="#{tarefaBean.monitor.andamento}" styleClass="stat-value" />
+					</div>
+				</div>
 
-			<p:column headerText="Nome">
-				<p:commandLink value="#{equipe.nome}"
-					style="text-decoration: none; color: blue;"
-					action="#{tarefaBean.visualizarQuadro(equipe)}" />
-			</p:column>
-		</p:dataTable>
+				<div class="stat-card">
+					<div class="icon-circle bg-concluido">
+						<i class="pi pi-check-circle"></i>
+					</div>
+					<div class="stat-info">
+						<span>Concluídas</span>
+						<h:outputText value="#{tarefaBean.monitor.concluidas}" styleClass="stat-value" />
+					</div>
+				</div>
+			</h:panelGroup>
 
-	</p:dialog>
+			<p:poll interval="2" listener="#{tarefaBean.dashboard}" update="monitor" />
 
+			<div class="actions-panel">
+				<h3 style="margin-top: 0; margin-bottom: 20px; font-size: 16px;">Ações Rápidas</h3>
+				<h:form id="formInicio" styleClass="actions-grid">
+					<p:commandButton action="#{tarefaBean.entrarCadastro}" value="Nova Tarefa"
+									 icon="fa fa-plus" rendered="#{loginBean.responsavel.adm}" />
 
-	<p:dialog header="Responsáveis" widgetVar="dialogUsuarios" modal="true"
-		height="350" width="500">
-		<h:outputText value="Lista completa" />
+					<p:linkButton href="adm/formEquipe.jsf" value="Criar Equipe"
+								  icon="fa fa-users" rendered="#{loginBean.responsavel.adm}" />
 
-		<p:dataTable var="r" value="#{responsavelBean.listaReponsaveis}">
+					<p:commandButton action="#{tarefaBean.visualizarQuadro}" value="Minha Equipe"
+									 icon="fa fa-th-large" rendered="#{loginBean.responsavel.equipe != null}"
+									 styleClass="ui-button-success" />
 
-			<p:column headerText="Id">
-				<h:outputText value="#{r.id}" />
-			</p:column>
+					<p:commandButton value="Usuários" icon="fa fa-user-circle"
+									 rendered="#{loginBean.responsavel.adm}" onclick="PF('dialogUsuarios').show();"
+									 type="button" />
 
-			<p:column headerText="Nome">
-				<h:outputText value="#{r.nome}" />
-			</p:column>
-
-			<p:column headerText="Opção">
-				<h:form>
-					<p:commandButton ajax="false"
-						action="#{responsavelBean.alterarFuncao(r)}" disabled="${r.adm}"
-						icon="ui-icon-gear" id="admin" title="Admin" />
-					<p:tooltip id="toolTipFade" for="admin" value="Admin"
-						position="top" />
-
-					<p:commandButton ajax="false"
-						action="#{responsavelBean.alterarFuncao(r)}" disabled="${!r.adm}"
-						icon="ui-icon-person" id="user" title="User" />
-					<p:tooltip id="toolTipFade1" for="user" value="User" position="top" />
+					<p:commandButton value="Ver Equipes" icon="fa fa-list-ul"
+									 rendered="#{loginBean.responsavel.adm}" onclick="PF('dialogEquipes').show();"
+									 type="button" />
 				</h:form>
-			</p:column>
-		</p:dataTable>
+			</div>
+		</main>
 
-	</p:dialog>
-	<f:event type="preRenderView" listener="#{tarefaBean.limpar}" />
-</h:body>
-</html>
+		<p:dialog header="Equipes Registradas" widgetVar="dialogEquipes" modal="true" responsive="true" width="450">
+			<p:dataTable var="equipe" value="#{equipeBean.listaEquipes}" size="small">
+				<p:column headerText="Equipe">
+					<p:commandLink value="#{equipe.nome}" action="#{tarefaBean.visualizarQuadro(equipe)}"
+								   style="color: var(--primary); font-weight: 500;" />
+				</p:column>
+			</p:dataTable>
+		</p:dialog>
+
+		<p:dialog header="Gestão de Responsáveis" widgetVar="dialogUsuarios" modal="true" responsive="true" width="600">
+			<p:dataTable var="r" value="#{responsavelBean.listaReponsaveis}" size="small" paginator="true" rows="5">
+				<p:column headerText="ID" width="50"><h:outputText value="#{r.id}" /></p:column>
+				<p:column headerText="Nome"><h:outputText value="#{r.nome}" /></p:column>
+				<p:column headerText="Opções" width="100">
+					<h:form>
+						<p:commandButton ajax="false" action="#{responsavelBean.alterarFuncao(r)}"
+										 disabled="#{r.adm}" icon="fa fa-shield"
+										 styleClass="rounded-button" title="Tornar Admin" />
+
+						<p:commandButton ajax="false" action="#{responsavelBean.alterarFuncao(r)}"
+										 disabled="#{!r.adm}" icon="fa fa-user"
+										 styleClass="rounded-button" title="Tornar Usuário" />
+					</h:form>
+				</p:column>
+			</p:dataTable>
+		</p:dialog>
+
+		<f:event type="preRenderView" listener="#{tarefaBean.limpar}" />
+	</ui:define>
+
+</ui:composition>

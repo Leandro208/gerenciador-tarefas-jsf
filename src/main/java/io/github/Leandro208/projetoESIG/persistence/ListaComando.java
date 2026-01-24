@@ -10,5 +10,8 @@ public class ListaComando {
 	
 	public static final Comando CADASTRAR_TAREFA = new Comando(10, "io.github.Leandro208.projetoESIG.persistence.TarefaCrudOperation");
 	public static final Comando ALTERAR_TAREFA = new Comando(11, "io.github.Leandro208.projetoESIG.persistence.TarefaCrudOperation");
+	public static final Comando ATRIBUIR_TAREFA = new Comando(12, "io.github.Leandro208.projetoESIG.persistence.TarefaCrudOperation");
+	public static final Comando MOVER_TAREFA = new Comando(13, "io.github.Leandro208.projetoESIG.persistence.TarefaCrudOperation");
+
 
 }

@@ -1,178 +1,90 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<html xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:h="http://java.sun.com/jsf/html"
-	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:p="http://primefaces.org/ui"
-	xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
-<h:head>
-	<title>Busca</title>
-	<link rel="icon" type="image/png" href="../assets/img/icon.png" />
-	<link rel="stylesheet" href="../assets/css/listaTarefa.css" />
+<ui:composition template="/WEB-INF/templates/navbar_template.xhtml"
+				xmlns="http://www.w3.org/1999/xhtml"
+				xmlns:h="http://java.sun.com/jsf/html"
+				xmlns:f="http://java.sun.com/jsf/core"
+				xmlns:p="http://primefaces.org/ui"
+				xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
 
+	<ui:define name="conteudo">
+		<h:outputStylesheet library="css" name="form.css" />
 
-	<style>
-.tarefa div {
-	margin-bottom: 25px;
-}
+		<main class="main-content">
+			<div class="search-bar-card">
+				<h:form id="formBusca">
+					<p:messages id="messages" closable="true"><p:autoUpdate /></p:messages>
 
-.tarefa label {
-	font-weight: bold;
-}
-
-.no-header-column {
-	padding: 0 !important;
-	border-top: none !important;
-	border-bottom: none !important;
-}
-
-.table-wrapper {
-	display: flex;
-}
-
-.table-wrapper>div {
-	flex: 1;
-	padding: 10px;
-}
-</style>
-
-</h:head>
-<h:body>
-	<nav style="padding-top: 20px;">
-
-		<a href="index.jsf"><img alt="Logo" src="../assets/img/icon.png"
-			style="float: left; width: 30px; height: 30px; margin-bottom: 15px;" /></a>
-
-		<h:outputLabel value="#{loginBean.responsavel.funcao}"
-			style="background-color:orange; color:white; border-radius: 30%; 
-			font-size: 15px; margin-left:15px;" />
-
-		<div style="height: 0;">
-			<h:outputLabel
-				style="margin-left: 20px;font-size: 20px;color: purple;"
-				value="#{loginBean.responsavel.nome}" />
-
-			<h:outputLabel value="#User-ID: #{loginBean.responsavel.id}"
-				style="margin-left: 5px;font-size: 12px;opacity: 0.6;" />
-		</div>
-
-		<!-- Relogio -->
-		<div style="margin-left: 80%;">
-			<h:form style="float: right;">
-				<h:commandButton image="../assets/img/logout.png"
-					style="width: 30px;" alt="Logout" action="#{loginBean.logout}" />
-			</h:form>
-		</div>
-
-	</nav>
-
-	<div class="container">
-
-		<h:form class="form">
-			<p:messages id="messages" closable="true">
-				<p:autoUpdate />
-			</p:messages>
-
-			<h:panelGrid>
-				<h:panelGroup class="grupoNumero">
-					<h:outputLabel value="Número:" class="label" />
-					<h:inputText value="#{tarefaBean.formConsulta.numero}"
-						class="campo" />
-				</h:panelGroup>
-
-				<h:panelGroup class="grupoTitulo">
-					<h:outputLabel value="Título/Descrição:" class="label" />
-					<h:inputText value="#{tarefaBean.formConsulta.titulo}"
-						class="campo" />
-				</h:panelGroup>
-
-				<h:panelGroup class="grupoSelect">
-					<h:outputLabel value="Responsável:" class="label" />
-					<h:selectOneMenu value="#{tarefaBean.formConsulta.responsavel}"
-						class="select">
-						<f:converter converterId="responsavelConverter" />
-						<f:selectItems value="#{tarefaBean.comboResponsaveis}" />
-					</h:selectOneMenu>
-
-					<h:outputLabel value="Situação:" class="label" />
-					<h:selectOneMenu value="#{tarefaBean.formConsulta.situacao}"
-						class="select">
-						<f:selectItem itemDisabled="true" itemLabel="-SELECIONE-"/>
-						
-						<f:converter converterId="statusConverter" />				
-						<f:selectItems value="#{tarefaBean.niveisStatus}" />
-						
-					</h:selectOneMenu>
-
-					<h:commandButton action="#{tarefaBean.listar}" value="Buscar"
-						class="btn" />
-
-					<h:outputLink value="adm/formTarefa.jsf"
-						rendered="${loginBean.responsavel.adm}">
-						<input type="button" value="Cadastrar"
-							style="font-size: 15px; background-color: white; cursor: pointer; border: 1px solid black;" />
-					</h:outputLink>
-
-
-
-				</h:panelGroup>
-
-
-			</h:panelGrid>
-		</h:form>
-
-
-		<div class="card">
-			<p:dataTable id="tabelaTarefa" value="#{tarefaBean}" var="t">
-				<f:facet name="header">
-	            		Equipe '#{tarefaBean.equipe.nome}'
-	        	</f:facet>
-				<p:column styleClass="no-header-column">
-					<div class="table-wrapper">
-
-						<div>
-							<p:dataTable value="#{t.getObjectsForKey(3)}" var="object"
-								emptyMessage="Nenhuma Tarefa em Backlog no momento!">
-
-								<p:column headerText="BackLog">
-									<p:commandLink value="##{object.id} - #{object.titulo}" 
-									style="text-decoration: none; color: blue;"
-									action="#{tarefaBean.visualizarTarefa(object)}"/>
-								</p:column>
-
-							</p:dataTable>
+					<div class="search-grid">
+						<div class="search-item">
+							<p:outputLabel value="Número" styleClass="field-label-min" />
+							<p:inputText value="#{tarefaBean.formConsulta.numero}" placeholder="ID" />
 						</div>
-						<div>
-							<p:dataTable value="#{t.getObjectsForKey(1)}" var="object"
-								emptyMessage="Nenhuma Tarefa em andamento no momento!">
-
-								<p:column headerText="Em Andamento">
-									<p:commandLink value="##{object.id} - #{object.titulo}" 
-									style="text-decoration: none; color: blue;"
-									action="#{tarefaBean.visualizarTarefa(object)}"/>
-								</p:column>
-
-							</p:dataTable>
+						<div class="search-item flex-2">
+							<p:outputLabel value="Título" styleClass="field-label-min" />
+							<p:inputText value="#{tarefaBean.formConsulta.titulo}" placeholder="O que busca?" />
 						</div>
-						<div>
-							<p:dataTable value="#{t.getObjectsForKey(2)}" var="object"
-								emptyMessage="Nenhuma Tarefa concluida no momento!">
-
-								<p:column headerText="Concluido">
-									<p:commandLink value="##{object.id} - #{object.titulo}" 
-									style="text-decoration: none; color: blue;"
-									action="#{tarefaBean.visualizarTarefa(object)}"/>
-								</p:column>
-
-							</p:dataTable>
+						<div class="search-item">
+							<p:outputLabel value="Responsável" styleClass="field-label-min" />
+							<p:selectOneMenu value="#{tarefaBean.formConsulta.responsavel}" styleClass="custom-select-min">
+								<f:selectItem itemLabel="Todos" itemValue="#{null}" />
+								<f:converter converterId="responsavelConverter" />
+								<f:selectItems value="#{tarefaBean.comboResponsaveis}" />
+							</p:selectOneMenu>
+						</div>
+						<div class="search-button-area">
+							<p:commandButton action="#{tarefaBean.listar}"
+											 icon="fa fa-search"
+											 update="messages :kanbanBoard"
+											 process="@form"
+											 styleClass="btn-circle" />
 						</div>
 					</div>
-				</p:column>
+				</h:form>
+			</div>
 
-			</p:dataTable>
+			<div class="equipe-header">
+				<span class="equipe-label">Equipe</span>
+				<h2 class="equipe-title">#{tarefaBean.formConsulta.equipe.nome}</h2>
+			</div>
 
+			<h:panelGroup id="kanbanBoard" layout="block">
+				<div class="kanban-wrapper">
+					<div class="kanban-col">
+						<div class="col-header">
+							<span class="dot backlog-dot"></span> Backlog
+						</div>
+						<ui:repeat value="#{tarefaBean.getObjectsForKey(3)}" var="t">
+							<p:commandLink action="#{tarefaBean.visualizarTarefa(t)}" styleClass="task-card-modern">
+								<div class="task-id-tag">##{t.id}</div>
+								<div class="task-content">#{t.titulo}</div>
+							</p:commandLink>
+						</ui:repeat>
+					</div>
 
-		</div>
-	</div>
-	<f:event type="preRenderView" listener="#{tarefaBean.limpar}" />
-</h:body>
-</html>
+					<div class="kanban-col">
+						<div class="col-header">
+							<span class="dot andamento-dot"></span> Em Andamento
+						</div>
+						<ui:repeat value="#{tarefaBean.getObjectsForKey(1)}" var="t">
+							<p:commandLink action="#{tarefaBean.visualizarTarefa(t)}" styleClass="task-card-modern">
+								<div class="task-id-tag">##{t.id}</div>
+								<div class="task-content">#{t.titulo}</div>
+							</p:commandLink>
+						</ui:repeat>
+					</div>
+
+					<div class="kanban-col">
+						<div class="col-header">
+							<span class="dot concluido-dot"></span> Concluído
+						</div>
+						<ui:repeat value="#{tarefaBean.getObjectsForKey(2)}" var="t">
+							<p:commandLink action="#{tarefaBean.visualizarTarefa(t)}" styleClass="task-card-modern">
+								<div class="task-id-tag">##{t.id}</div>
+								<div class="task-content">#{t.titulo}</div>
+							</p:commandLink>
+						</ui:repeat>
+					</div>
+				</div>
+			</h:panelGroup>
+		</main>
+	</ui:define>
+</ui:composition>

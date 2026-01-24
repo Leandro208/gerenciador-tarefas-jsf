@@ -55,7 +55,7 @@ public class LoginBean implements Serializable {
 			// se for diferente de null ele da o acesso
 			HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext()
 					.getSession(false);
-			session.setMaxInactiveInterval(60);
+			session.setMaxInactiveInterval(360);
 			responsavel.setRegistroEntrada(service.registrarEntrada(responsavel));
 			session.setAttribute("responsavel", responsavel);
 

@@ -89,9 +89,7 @@ public class TarefaBean extends AbstractBean{
 	}
 
 	public String listar() {
-		formConsulta.setIdEquipe(equipe.getId());
-		listaTarefas = tarefaService.buscarTodos(formConsulta);
-		limpar();
+		carregarTarefas();
 		return "";
 	}
 
@@ -101,9 +99,14 @@ public class TarefaBean extends AbstractBean{
 	}
 
 	public void moverTarefa() throws ParseException  {
-		//TODO EDITAR ESSE SALVAR
-		tarefaService.salvar(tarefa);
-		
+		Operacao operacao = new OperacaoCadastro();
+		operacao.setComando(ListaComando.MOVER_TAREFA);
+		operacao.setEntidade(tarefa);
+		try {
+			realizarOperacao(operacao);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		carregarTarefas();
 		dashboard();
 		//PrimeFaces.current().executeScript("window.location.reload();");
@@ -129,27 +132,31 @@ public class TarefaBean extends AbstractBean{
 		} else  {
 			tarefa.setResponsavel(null);
 		}
-		
-		//TODO EDITAR ESSE SALVAR
-			tarefaService.salvar(tarefa);
-		
-		equipe = UsuarioUtils.getLogado().getEquipe();
+
+		Operacao operacao = new OperacaoCadastro();
+		operacao.setComando(ListaComando.ATRIBUIR_TAREFA);
+		operacao.setEntidade(tarefa);
+		try {
+			realizarOperacao(operacao);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		carregarTarefas();
 		dashboard();
 	}
 	
 	
 	public String visualizarQuadro() {
-		this.equipe = UsuarioUtils.getLogado().getEquipe();
+		formConsulta.setEquipe(equipe);
 		carregarTarefas();
 		return navegar(LISTA_TAREFA);
 	}
 	
 	public String visualizarQuadro(Equipe equipe) {
-		this.equipe = equipe;
+		this.formConsulta.setEquipe(equipe);
 		carregarTarefas();
 		if(UsuarioUtils.usuarioTemEquipe()) {
-			equipe = UsuarioUtils.getLogado().getEquipe();
+			this.equipe = UsuarioUtils.getLogado().getEquipe();
 		}
 		return navegar(LISTA_TAREFA);
 	}
@@ -233,6 +240,17 @@ public class TarefaBean extends AbstractBean{
 	public void limpar() {
 		tarefa = new Tarefa();
 		formConsulta = new FormConsultaTarefaDto();
+	}
+
+	public String getCampoAtribuir() {
+		Responsavel r = tarefa.getResponsavel();
+		String result = "";
+		if( r == null || r.getId() == null ){
+			result = " | Delegar Para Mim";
+		} else if(r.getId() == UsuarioUtils.getLogado().getId()) {
+			result = " | Deixar tarefa";
+		}
+		return result;
 	}
 
 	public Tarefa getTarefa() {

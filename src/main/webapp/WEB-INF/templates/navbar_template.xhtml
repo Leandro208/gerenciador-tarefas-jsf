@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+<h:head>
+    <title><ui:insert name="titulo">Gerenciador de Tarefas</ui:insert></title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&amp;display=swap" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="#{request.contextPath}/resources/css/global.css" />
+</h:head>
+<h:body>
+    <header class="navbar">
+        <div class="user-profile">
+            <h:link outcome="/restricted/index">
+                <h:graphicImage library="img" name="icon.png" width="32" height="32" />
+            </h:link>
+            <div>
+                <h:outputText value="#{loginBean.responsavel.nome}" style="font-weight: 600;" />
+                <span class="role-badge">#{loginBean.responsavel.funcao}</span>
+            </div>
+        </div>
+        <h:form><p:commandButton action="#{loginBean.logout}" icon="fa fa-sign-out" styleClass="btn-logout" /></h:form>
+    </header>
+
+    <div class="container-principal">
+        <ui:insert name="conteudo" />
+    </div>
+</h:body>
+</html>

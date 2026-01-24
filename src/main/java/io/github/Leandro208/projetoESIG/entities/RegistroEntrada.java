@@ -106,7 +106,7 @@ public class RegistroEntrada implements BaseEntity, Serializable {
 
 	@Override
 	public String toString() {
-		return "[usuario=" + usuario.getEmail() + ", entrou em =" + data
+		return "[usuario=" + usuario.getEmail() + ", entrou em = " + data + ", saiu em = " + dataSaida
 				+ ", ip=" + ip + "]";
 	}
 	

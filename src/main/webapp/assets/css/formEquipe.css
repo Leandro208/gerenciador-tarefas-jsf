@@ -1,52 +1,131 @@
-/* estilos.css */
-.formulario {
-  max-width: 400px;
-  margin: 20px auto;
+/* Configurações Gerais */
+:root {
+  --primary: #4f46e5;
+  --primary-hover: #4338ca;
+  --bg-page: #f3f4f6;
+  --text-main: #111827;
+  --text-sub: #6b7280;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Inter', sans-serif;
+  background-color: var(--bg-page);
+}
+
+.form-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
   padding: 20px;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  background-color: #f9f9f9;
 }
 
-.label {
-  display: block;
-  margin-bottom: 10px;
-  font-weight: bold;
-  color: #333;
-}
-
-.input-text {
+/* Card do Formulário */
+.form-card {
+  background: #ffffff;
+  padding: 40px;
+  border-radius: 16px;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
   width: 100%;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 3px;
+  max-width: 420px;
+}
+
+.form-header {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.form-header h2 {
+  margin: 0;
+  color: var(--text-main);
+  font-size: 22px;
+}
+
+.form-header p {
+  color: var(--text-sub);
+  font-size: 14px;
+  margin-top: 8px;
+}
+
+/* Labels */
+.custom-label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 500;
+  color: var(--text-main);
   font-size: 14px;
 }
 
-.botao-enviar {
-  margin-top: 20px;
-  background-color: #4CAF50;
-  color: #fff;
-  border: none;
-  padding: 12px 20px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 16px;
-  border-radius: 3px;
+.field-group {
+  margin-bottom: 20px;
+}
+
+/* --- CORREÇÃO DO INPUT (DESTAQUE) --- */
+body .ui-inputfield.input-moderno {
+  background: #ffffff !important; /* Força o fundo branco */
+  border: 1px solid #d1d5db !important; /* Borda cinza visível */
+  padding: 12px 15px !important;
+  border-radius: 8px !important;
+  width: 100% !important;
+  color: #1f2937 !important;
+  box-shadow: none !important;
+  transition: border-color 0.2s, box-shadow 0.2s !important;
+}
+
+body .ui-inputfield.input-moderno:focus {
+  border-color: var(--primary) !important;
+  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1) !important;
+}
+
+/* --- CORREÇÃO DO BOTÃO (DESTAQUE) --- */
+body .btn-submit.ui-button {
+  background: var(--primary) !important; /* Azul sólido */
+  background-image: none !important; /* Mata o gradiente cinza */
+  border: 1px solid var(--primary-hover) !important;
+  color: #ffffff !important; /* Texto branco */
+  width: 100% !important;
+  padding: 12px !important;
+  border-radius: 8px !important;
+  font-size: 16px !important;
+  font-weight: 600 !important;
+  text-shadow: none !important;
   cursor: pointer;
 }
 
-.botao-enviar:hover {
-  background-color: #45a049;
+body .btn-submit.ui-button:hover {
+  background: var(--primary-hover) !important;
 }
 
-.mensagem-sucesso {
-  margin-top: 20px;
-  padding: 10px;
-  border: 1px solid #4CAF50;
-  border-radius: 5px;
-  background-color: #dff0d8;
-  color: #4CAF50;
+/* Garante que o ícone do botão também seja branco */
+body .btn-submit.ui-button .ui-button-icon-left {
+  color: #ffffff !important;
+  font-size: 16px;
+}
+
+body .btn-submit.ui-button .ui-button-text {
+  color: #ffffff !important;
+}
+
+/* Link de Voltar */
+.back-link {
+  margin-top: 25px;
+  text-decoration: none;
+  color: var(--text-sub);
   font-size: 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.back-link:hover {
+  color: var(--primary);
+}
+
+/* Ajuste nas mensagens de sucesso/erro */
+.ui-messages-info, .ui-messages-error {
+  border-radius: 8px !important;
+  margin-bottom: 20px !important;
 }

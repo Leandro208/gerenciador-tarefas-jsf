@@ -7,7 +7,7 @@ import io.github.Leandro208.projetoESIG.dao.GenericDAOImpl;
 public class CadastroCrudOperation implements CrudOperation {
 
 	@Override
-	public void operar(Operacao operacao) {
+	public void operar(Operacao operacao) throws DAOException {
 		validate(operacao);
 		if(operacao.getComando().equals(ListaComando.CADASTRAR)) {
 			criar(operacao);

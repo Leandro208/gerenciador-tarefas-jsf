@@ -14,7 +14,7 @@ public class EquipeService implements BaseService<Equipe>, Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	
+
 	private GenericDaoII<Equipe> dao;
 	
 	public EquipeService() {
@@ -41,8 +41,7 @@ public class EquipeService implements BaseService<Equipe>, Serializable {
 
 
 	public Equipe buscarPorId(Long valueOf) {
-		// TODO Auto-generated method stub
-		return null;
+		return dao.buscarPorId(Equipe.class, valueOf);
 	}
 
 }

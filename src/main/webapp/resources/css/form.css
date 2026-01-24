@@ -1,0 +1,286 @@
+/* --- ESTILO PARA FORMULÁRIOS --- */
+
+/* Container que centraliza o formulário na página */
+.container-principal {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 60px 20px;
+    min-height: calc(100vh - 80px); /* Desconta a altura da navbar */
+}
+
+/* Cartão branco que envolve o formulário */
+.form-card {
+    background: #ffffff;
+    padding: 40px;
+    border-radius: 16px;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 450px;
+    margin-top: 50px;
+}
+
+.form-card h2 {
+    margin: 0 0 10px 0;
+    font-size: 22px;
+    text-align: center;
+    color: var(--text-main);
+}
+
+.form-card p.subtitle {
+    color: var(--text-sub);
+    text-align: center;
+    font-size: 14px;
+    margin-bottom: 30px;
+}
+
+/* --- ESTILIZAÇÃO DE COMPONENTES PRIMEFACES --- */
+
+/* Labels (Títulos dos campos) */
+.field-label {
+    display: block;
+    font-weight: 500;
+    font-size: 14px;
+    color: var(--text-main);
+    margin-bottom: 8px;
+    margin-top: 15px;
+}
+
+/* Inputs (Campos de Texto) */
+html body .ui-inputfield {
+    width: 100% !important;
+    padding: 12px 15px !important;
+    border: 1px solid #d1d5db !important;
+    border-radius: 8px !important;
+    box-shadow: none !important;
+    box-sizing: border-box !important;
+    transition: all 0.2s;
+}
+
+html body .ui-inputfield:focus {
+    border-color: var(--primary) !important;
+    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1) !important;
+}
+
+/* Estilo para a Área de Texto */
+html body .ui-inputtextarea {
+    width: 100% !important;
+    padding: 12px !important;
+    border: 1px solid #e5e7eb !important;
+    border-radius: 10px !important;
+    font-family: inherit !important;
+    box-sizing: border-box !important;
+}
+
+/* Estilo para SelectOneMenu (Combobox) */
+html body .ui-selectonemenu {
+    width: 100% !important;
+    border: 1px solid #e5e7eb !important;
+    border-radius: 10px !important;
+    padding: 2px !important;
+    background: #ffffff !important;
+}
+
+html body .ui-selectonemenu-label {
+    text-align: left !important;
+    padding: 8px !important;
+    color: #374151 !important;
+}
+
+/* Estilo para o Calendário */
+html body .ui-calendar,
+html body .ui-calendar input {
+    width: 100% !important;
+}
+
+/* --- BOTÃO ESTILO DASHBOARD (BRANCO COM TEXTO/ÍCONE AZUL) --- */
+
+html body .ui-button.btn-primary,
+html body .ui-button.btn-primary.ui-state-default {
+    /* Força o fundo branco e remove qualquer cor de variável */
+    background: #ffffff !important;
+    background-color: #ffffff !important;
+    background-image: none !important;
+
+    /* Borda e Arredondamento */
+    border: 1px solid #e5e7eb !important;
+    border-radius: 10px !important;
+
+    /* Espaçamento e Sombra */
+    padding: 10px !important;
+    display: block !important;       /* Permite o uso de margin auto */
+    margin: 25px auto 0 auto !important;
+    width: 50% !important;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05) !important;
+}
+
+/* COR DO TEXTO (AZUL) */
+html body .ui-button.btn-primary .ui-button-text {
+    color: #6366f1 !important; /* O azul/índigo do seu Dashboard */
+    text-shadow: none !important;
+    font-weight: 600 !important;
+}
+
+/* COR DO ÍCONE (AZUL) */
+html body .ui-button.btn-primary .ui-icon-left,
+html body .ui-button.btn-primary .ui-c {
+    color: #6366f1 !important;
+}
+
+/* EFEITO AO PASSAR O MOUSE */
+html body .ui-button.btn-primary.ui-state-hover {
+    background: #f9fafb !important;
+    border-color: #d1d5db !important;
+    transform: translateY(-1px);
+}
+
+/* Link de Voltar */
+.back-link {
+    margin-top: 25px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--text-sub);
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.back-link:hover {
+    color: var(--primary);
+}
+
+
+/* --- KANBAN COM LOOK DE CARDS (image_8fd42c.png) --- */
+/* --- BUSCA COMPACTA --- */
+.search-bar-card {
+    background: #ffffff;
+    padding: 20px 30px;
+    border-radius: 20px;
+    box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+    margin-bottom: 40px;
+}
+
+.search-grid {
+    display: flex;
+    align-items: flex-end;
+    gap: 15px;
+}
+
+.search-item { flex: 1; }
+.flex-2 { flex: 2; }
+
+.field-label-min {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: #9ca3af;
+    margin-bottom: 5px;
+    display: block;
+}
+
+/* Botão de busca circular */
+html body .ui-button.btn-circle {
+    width: 45px !important;
+    height: 45px !important;
+    border-radius: 50% !important;
+    background: #6366f1 !important;
+    border: none !important;
+    color: white !important;
+}
+
+/* --- KANBAN MODERNO --- */
+.kanban-wrapper {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 25px;
+}
+
+.kanban-col {
+    background: #f3f4f6;
+    border-radius: 16px;
+    padding: 15px;
+    min-height: 500px;
+}
+
+.col-header {
+    font-weight: 700;
+    color: #374151;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+}
+
+/* Cartões das Tarefas */
+.task-card-modern {
+    background: #ffffff !important;
+    border-radius: 12px !important;
+    padding: 16px !important;
+    margin-bottom: 12px !important;
+    display: block !important;
+    text-decoration: none !important;
+    border: 1px solid transparent !important;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1) !important;
+    transition: all 0.2s ease !important;
+}
+
+.task-card-modern:hover {
+    transform: translateY(-3px);
+    border-color: #6366f1 !important;
+    box-shadow: 0 10px 15px -3px rgba(99,102,241,0.1) !important;
+}
+
+.task-id-tag {
+    font-size: 10px;
+    font-weight: 800;
+    color: #6366f1;
+    margin-bottom: 4px;
+}
+
+.task-content {
+    font-size: 14px;
+    color: #1f2937;
+    font-weight: 500;
+}
+
+/* Indicadores de Status (Bolinhas) */
+.dot { width: 8px; height: 8px; border-radius: 50%; }
+.backlog-dot { background: #9ca3af; }
+.andamento-dot { background: #6366f1; }
+.concluido-dot { background: #10b981; }
+
+/* Reset do PrimeFaces para não estragar o layout */
+html body .ui-selectonemenu.custom-select-min {
+    border: 1px solid #e5e7eb !important;
+    background: #f9fafb !important;
+}
+
+/* --- CABEÇALHO DA EQUIPE --- */
+.equipe-header {
+    margin-bottom: 25px;
+    padding-left: 10px;
+    border-left: 4px solid #6366f1; /* Barra lateral azul igual ao Dashboard */
+}
+
+.equipe-label {
+    display: block;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #9ca3af; /* Cinza suave */
+    font-weight: 700;
+    margin-bottom: 4px;
+}
+
+.equipe-title {
+    font-size: 24px;
+    color: #111827; /* Preto azulado */
+    font-weight: 700;
+    margin: 0;
+}
+
+/* Ajuste opcional para o Kanban não ficar colado no header */
+.kanban-wrapper {
+    margin-top: 10px;
+}

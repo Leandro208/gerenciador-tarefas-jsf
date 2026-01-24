@@ -19,7 +19,10 @@ public class EquipeConverter implements Converter{
 	
 	@Override
 	public Object getAsObject(FacesContext context, UIComponent component, String value) {
-		return (Equipe) service.buscarPorId(Long.valueOf(value));
+		System.out.println("Converter recebendo valor: " + value);
+		Object resultado = service.buscarPorId(Long.valueOf(value));
+		System.out.println("Converter encontrou equipe: " + resultado);
+		return resultado;
 	}
 
 	@Override

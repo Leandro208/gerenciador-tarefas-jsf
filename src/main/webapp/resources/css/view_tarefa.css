@@ -1,0 +1,90 @@
+.view-container {
+    animation: fadeIn 0.4s ease;
+}
+
+.view-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 30px;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 20px;
+}
+
+.task-id {
+    color: #888;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.header-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.view-grid {
+    display: grid;
+    grid-template-columns: 1fr 350px;
+    gap: 30px;
+}
+
+.detail-card {
+    background: white;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+}
+
+.info-row {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+}
+
+.info-row label {
+    font-size: 11px;
+    text-transform: uppercase;
+    color: #999;
+    font-weight: 700;
+    margin-bottom: 5px;
+}
+
+.description-text {
+    line-height: 1.6;
+    color: #444;
+    white-space: pre-wrap;
+}
+
+.action-link {
+    font-size: 11px;
+    margin-left: 8px;
+    color: #6366f1;
+    text-decoration: none;
+}
+
+.btn-back-full {
+    display: block;
+    text-align: center;
+    margin-top: 20px;
+    padding: 12px;
+    background: #f8fafc;
+    border-radius: 8px;
+    color: #64748b;
+    text-decoration: none;
+    transition: all 0.2s;
+}
+
+.btn-back-full:hover {
+    background: #f1f5f9;
+    color: #1e293b;
+}
+
+.badge-priority {
+    background: #fef3c7;
+    color: #92400e;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    width: fit-content;
+    font-weight: 600;
+}

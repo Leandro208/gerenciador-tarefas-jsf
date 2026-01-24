@@ -1,0 +1,101 @@
+/* Este é o seu arquivo global.css */
+:root {
+    --primary: #4f46e5;
+    --success: #10b981;
+    --warning: #f59e0b;
+    --bg: #f3f4f6;
+    --text-main: #1f2937;
+}
+
+body {
+    margin: 0;
+    font-family: 'Inter', sans-serif;
+    background-color: var(--bg);
+    color: var(--text-main);
+}
+
+/* Estilos da Navbar (Copiados do seu Index) */
+.navbar {
+    background: white;
+    padding: 0.75rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.user-profile {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.role-badge {
+    background: #eef2ff;
+    color: var(--primary);
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+/* Botão de Logout Vermelho */
+body .btn-logout.ui-button {
+    background: #fee2e2 !important;
+    border: 1px solid #fecaca !important;
+    width: 40px !important;
+    height: 40px !important;
+    border-radius: 10px !important;
+}
+
+body .btn-logout.ui-button .ui-button-icon-left {
+    color: #ef4444 !important;
+    margin-left: -8px !important; /* Ajuste para o FontAwesome fa-sign-out */
+}
+
+/* --- MENSAGENS ESTILO MINIMALISTA (DASHBOARD) --- */
+
+html body .ui-messages {
+    margin: 0 0 20px 0 !important;
+    border: none !important;
+}
+
+/* Container de Info (Sucesso) */
+html body .ui-messages-info {
+    background-color: #ffffff !important; /* Fundo branco para não "gritar" */
+    border: 1px solid #e5e7eb !important; /* Borda cinza igual aos cards */
+    color: #374151 !important; /* Texto neutro */
+    padding: 12px 16px !important;
+    border-radius: 12px !important;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05) !important;
+}
+
+/* Ícone de Info (Azul/Índigo do seu Dashboard) */
+html body .ui-messages-info-icon {
+    background: none !important;
+    color: #6366f1 !important; /* O azul dos seus ícones */
+    font-size: 16px !important;
+}
+
+/* Texto da Mensagem */
+html body .ui-messages-info-summary {
+    color: #4f46e5 !important; /* Texto levemente azulado para indicar sucesso */
+    font-weight: 500 !important;
+    margin-left: 5px !important;
+}
+
+/* Botão de Fechar (X) */
+html body .ui-messages-close {
+    color: #9ca3af !important;
+    top: 14px !important;
+}
+
+/* Remove marcadores de lista que o PrimeFaces coloca */
+html body .ui-messages ul {
+    list-style: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    display: flex !important;
+    align-items: center !important;
+}
