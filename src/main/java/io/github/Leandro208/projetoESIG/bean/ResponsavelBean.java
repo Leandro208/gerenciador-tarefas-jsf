@@ -49,39 +49,22 @@ public class ResponsavelBean extends AbstractBean{
 		limpar();
 		return "login.jsf";
 	}
-	
-	public List<Responsavel> completeResponsaveis(String query) {
-        String queryLowerCase = query.toLowerCase();
-        List<Responsavel> todosResponsaveis = responsavelService.buscarTodos();
-        return todosResponsaveis.stream().filter(t -> t.getNome().toLowerCase().contains(queryLowerCase)).collect(Collectors.toList());
-    }
 
-	
 	public void listarResponsaveis() {
 		listaReponsaveis = responsavelService.buscarTodos();
 		listaReponsaveis.remove(UsuarioUtils.getLogado());
 	}
 	
-	public String alterarFuncao(Usuario u) {
-		 if(u.getFuncao().equals(Funcao.USER)) {
-			 u.setFuncao(Funcao.ADM);
+	public String alterarFuncao() {
+		 if(responsavel.getUsuario().getFuncao().equals(Funcao.USER)) {
+			 responsavel.getUsuario().setFuncao(Funcao.ADM);
 		 } else {
-			 u.setFuncao(Funcao.USER);
+			 responsavel.getUsuario().setFuncao(Funcao.USER);
 		 }
 		 //TODO refazer
 		// responsavelService.salvar(r);
 		 listarResponsaveis();
 		 return "";
-	}
-	
-	
-	public List<SelectItem> getComboEquipes(){
-		List<SelectItem> itensComboBoxEquipe = new ArrayList<>();
-		List<Equipe> equipes = new EquipeService().buscarTodos();
-		for(Equipe equipe : equipes) {
-			itensComboBoxEquipe.add(new SelectItem(equipe, equipe.getNome(), null, false, false));
-		}
-		return itensComboBoxEquipe;
 	}
 	
 	private void limpar() {
@@ -94,14 +77,6 @@ public class ResponsavelBean extends AbstractBean{
 
 	public void setResponsavel(Responsavel responsavel) {
 		this.responsavel = responsavel;
-	}
-
-	public ResponsavelService getResponsavelService() {
-		return responsavelService;
-	}
-
-	public void setResponsavelService(ResponsavelService responsavelService) {
-		this.responsavelService = responsavelService;
 	}
 
 	public List<Responsavel> getListaReponsaveis() {

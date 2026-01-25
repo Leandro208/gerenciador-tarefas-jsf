@@ -118,8 +118,7 @@ public class TarefaBean extends AbstractBean{
 		return "listaTarefa.jsf";
 	}
 	
-	public String visualizarTarefa(Tarefa t) {
-		this.tarefa = t;
+	public String visualizarTarefa() {
 		return "tarefaView.jsf";
 	}
 	
@@ -152,13 +151,9 @@ public class TarefaBean extends AbstractBean{
 		return navegar(LISTA_TAREFA);
 	}
 	
-	public String visualizarQuadro(Equipe equipe) {
-		this.formConsulta.setEquipe(equipe);
-		carregarTarefas();
-		if(UsuarioUtils.usuarioTemEquipe()) {
-			this.equipe = UsuarioUtils.getLogado().getEquipe();
-		}
-		return navegar(LISTA_TAREFA);
+	public String visualizarMeuQuadro() {
+		this.equipe = UsuarioUtils.getLogado().getEquipe();
+		return visualizarQuadro();
 	}
 	
 	public List<Tarefa> getObjectsForKey(int key) {
@@ -204,32 +199,9 @@ public class TarefaBean extends AbstractBean{
 		List<SelectItem> itensComboBoxResponsaveis = new ArrayList<>();
 		List<Responsavel> responsaveis = responsavelService.buscarTodos();
 		for (Responsavel r : responsaveis) {
-			//if(equipe.getId() == r.getEquipe().getId()) {
-				itensComboBoxResponsaveis.add(new SelectItem(r, r.getNome()));
-			//}
-			
+			itensComboBoxResponsaveis.add(new SelectItem(r, r.getNome()));
 		}
 		return itensComboBoxResponsaveis;
-	}
-
-	public String corDias(Tarefa t) throws ParseException {
-		String dias = t.getDias();
-
-		if (dias.contains("Atrasado"))
-			return "red";
-		else if (dias.contains("atraso"))
-			return "orange";
-		else if (dias.contains("hoje"))
-			return "#ffd700";
-		else if (dias.contains("prazo"))
-			return "green";
-		else
-			return "blue";
-	}
-	
-	public String selecionado(Tarefa t) {
-		this.tarefa = t;
-		return "listaTarefa?faces-redirect=true";
 	}
 
 	public void dashboard() throws ParseException {
@@ -262,10 +234,6 @@ public class TarefaBean extends AbstractBean{
 
 	public HashMap<Integer, List<Tarefa>> getListaTarefas() {
 		return listaTarefas;
-	}
-
-	public void setListaTarefas(HashMap<Integer, List<Tarefa>> listaTarefas) {
-		this.listaTarefas = listaTarefas;
 	}
 
 	public FormConsultaTarefaDto getFormConsulta() {

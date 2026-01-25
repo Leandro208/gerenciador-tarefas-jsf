@@ -28,7 +28,11 @@
         </f:facet>
         <p:commandLink value="#{equipe.nome}" 
 									style="text-decoration: none; color: blue;"
-									action="#{tarefaBean.visualizarQuadro(equipe)}"/>
+									action="#{tarefaBean.visualizarQuadro}">
+			<f:setPropertyActionListener
+					target="#{tarefaBean.equipe}"
+					value="#{equipe}" />
+		</p:commandLink>
     </p:dataList>
 
 	</h:form>

@@ -38,7 +38,7 @@
 				</div>
 			</h:panelGroup>
 
-			<p:poll interval="2" listener="#{tarefaBean.dashboard}" update="monitor" />
+
 
 			<div class="actions-panel">
 				<h3 style="margin-top: 0; margin-bottom: 20px; font-size: 16px;">Ações Rápidas</h3>
@@ -49,7 +49,7 @@
 					<p:linkButton href="adm/formEquipe.jsf" value="Criar Equipe"
 								  icon="fa fa-users" rendered="#{loginBean.logado.adm}" />
 
-					<p:commandButton action="#{tarefaBean.visualizarQuadro}" value="Minha Equipe"
+					<p:commandButton action="#{tarefaBean.visualizarMeuQuadro}" value="Minha Equipe"
 									 icon="fa fa-th-large" rendered="#{loginBean.logado.equipe != null}"
 									 styleClass="ui-button-success" />
 
@@ -67,8 +67,11 @@
 		<p:dialog header="Equipes Registradas" widgetVar="dialogEquipes" modal="true" responsive="true" width="450">
 			<p:dataTable var="equipe" value="#{equipeBean.listaEquipes}" size="small">
 				<p:column headerText="Equipe">
-					<p:commandLink value="#{equipe.nome}" action="#{tarefaBean.visualizarQuadro(equipe)}"
-								   style="color: var(--primary); font-weight: 500;" />
+					<p:commandLink value="#{equipe.nome}" action="#{tarefaBean.visualizarQuadro}"
+								   style="color: var(--primary); font-weight: 500;" >
+							<f:setPropertyActionListener target="#{tarefaBean.equipe}"
+														 value="#{equipe}"/>
+					</p:commandLink>
 				</p:column>
 			</p:dataTable>
 		</p:dialog>
@@ -79,13 +82,21 @@
 				<p:column headerText="Nome"><h:outputText value="#{r.nome}" /></p:column>
 				<p:column headerText="Opções" width="100">
 					<h:form>
-						<p:commandButton ajax="false" action="#{responsavelBean.alterarFuncao(r.usuario)}"
+						<p:commandButton ajax="false" action="#{responsavelBean.alterarFuncao}"
 										 disabled="#{r.usuario.adm}" icon="fa fa-shield"
-										 styleClass="rounded-button" title="Tornar Admin" />
+										 styleClass="rounded-button" title="Tornar Admin">
+							<f:setPropertyActionListener
+									target="#{responsavelBean.responsavel}"
+									value="#{r}" />
+						</p:commandButton>
 
-						<p:commandButton ajax="false" action="#{responsavelBean.alterarFuncao(r.usuario)}"
+						<p:commandButton ajax="false" action="#{responsavelBean.alterarFuncao}"
 										 disabled="#{!r.usuario.adm}" icon="fa fa-user"
-										 styleClass="rounded-button" title="Tornar Usuário" />
+										 styleClass="rounded-button" title="Tornar Usuário" >
+						<f:setPropertyActionListener
+								target="#{responsavelBean.responsavel}"
+								value="#{r}" />
+						</p:commandButton>
 					</h:form>
 				</p:column>
 			</p:dataTable>

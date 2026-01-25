@@ -53,9 +53,12 @@
 							<span class="dot backlog-dot"></span> Backlog
 						</div>
 						<ui:repeat value="#{tarefaBean.getObjectsForKey(3)}" var="t">
-							<p:commandLink action="#{tarefaBean.visualizarTarefa(t)}" styleClass="task-card-modern">
+							<p:commandLink action="#{tarefaBean.visualizarTarefa}" styleClass="task-card-modern">
 								<div class="task-id-tag">##{t.id}</div>
 								<div class="task-content">#{t.titulo}</div>
+								<f:setPropertyActionListener
+										target="#{tarefaBean.tarefa}"
+										value="#{t}" />
 							</p:commandLink>
 						</ui:repeat>
 					</div>
@@ -65,9 +68,12 @@
 							<span class="dot andamento-dot"></span> Em Andamento
 						</div>
 						<ui:repeat value="#{tarefaBean.getObjectsForKey(1)}" var="t">
-							<p:commandLink action="#{tarefaBean.visualizarTarefa(t)}" styleClass="task-card-modern">
+							<p:commandLink action="#{tarefaBean.visualizarTarefa}" styleClass="task-card-modern">
 								<div class="task-id-tag">##{t.id}</div>
 								<div class="task-content">#{t.titulo}</div>
+								<f:setPropertyActionListener
+										target="#{tarefaBean.tarefa}"
+										value="#{t}" />
 							</p:commandLink>
 						</ui:repeat>
 					</div>
@@ -77,9 +83,12 @@
 							<span class="dot concluido-dot"></span> Concluído
 						</div>
 						<ui:repeat value="#{tarefaBean.getObjectsForKey(2)}" var="t">
-							<p:commandLink action="#{tarefaBean.visualizarTarefa(t)}" styleClass="task-card-modern">
+							<p:commandLink action="#{tarefaBean.visualizarTarefa}" styleClass="task-card-modern">
 								<div class="task-id-tag">##{t.id}</div>
 								<div class="task-content">#{t.titulo}</div>
+								<f:setPropertyActionListener
+										target="#{tarefaBean.tarefa}"
+										value="#{t}" />
 							</p:commandLink>
 						</ui:repeat>
 					</div>
