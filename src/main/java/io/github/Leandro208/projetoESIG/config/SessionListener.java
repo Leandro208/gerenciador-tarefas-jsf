@@ -9,8 +9,9 @@ import javax.servlet.http.HttpSessionListener;
 import io.github.Leandro208.projetoESIG.dao.DAOException;
 import io.github.Leandro208.projetoESIG.dao.GenericDAO;
 import io.github.Leandro208.projetoESIG.dao.GenericDAOImpl;
-import io.github.Leandro208.projetoESIG.entities.RegistroEntrada;
-import io.github.Leandro208.projetoESIG.entities.Responsavel;
+import io.github.Leandro208.projetoESIG.dominio.RegistroEntrada;
+import io.github.Leandro208.projetoESIG.dominio.Usuario;
+import io.github.Leandro208.projetoESIG.dto.UsuarioDTO;
 
 @WebListener
 public class SessionListener implements HttpSessionListener{
@@ -21,10 +22,10 @@ public class SessionListener implements HttpSessionListener{
 
 	    @Override
 	    public void sessionDestroyed(HttpSessionEvent se) {
-	    	Object responsavelObj = se.getSession().getAttribute("responsavel");
-	    	if (responsavelObj instanceof Responsavel) {
-	    	    Responsavel responsavel = (Responsavel) responsavelObj;
-	    	    RegistroEntrada entrada = responsavel.getRegistroEntrada();
+	    	Object usuario = se.getSession().getAttribute("usuario");
+	    	if (usuario instanceof UsuarioDTO) {
+	    	    UsuarioDTO dto = (UsuarioDTO) usuario;
+	    	    RegistroEntrada entrada = dto.getEntrada();
 	    	    if (entrada != null) {
 	    	        entrada.setDataSaida(new Date());
 	    	        GenericDAO daoEntrada = new GenericDAOImpl();

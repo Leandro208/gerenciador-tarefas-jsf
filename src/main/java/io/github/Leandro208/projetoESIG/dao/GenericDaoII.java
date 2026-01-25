@@ -6,7 +6,7 @@ import java.util.List;
 import javax.persistence.EntityManager;
 
 import io.github.Leandro208.projetoESIG.connection.ConnectionFactory;
-import io.github.Leandro208.projetoESIG.entities.BaseEntity;
+import io.github.Leandro208.projetoESIG.dominio.BaseEntity;
 import io.github.Leandro208.projetoESIG.util.Message;
 
 public class GenericDaoII <T extends BaseEntity> implements Serializable {

@@ -1,57 +1,145 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:h="http://java.sun.com/jsf/html"
-	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:p="http://primefaces.org/ui">
+	  xmlns:h="http://java.sun.com/jsf/html"
+	  xmlns:f="http://java.sun.com/jsf/core"
+	  xmlns:p="http://primefaces.org/ui">
+
 <h:head>
-	<title>Formulario Responsável</title>
+	<title>Criar Conta</title>
 	<link rel="icon" type="image/png" href="assets/img/icon.png" />
-	<link rel="stylesheet" href="assets/css/formTarefa.css" />
+	<link rel="stylesheet" href="assets/css/form.css" />
+	<h:outputStylesheet library="css" name="form.css" />
+	<style>
+		body.autocadastro-bg {
+			background-color: #f1f5f9;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			min-height: 100vh;
+			margin: 0;
+			font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+		}
+		.autocadastro-container {
+			width: 100%;
+			max-width: 450px;
+			padding: 20px;
+		}
+		.logo-header {
+			text-align: center;
+			margin-bottom: 25px;
+		}
+		.logo-header img {
+			width: 60px;
+			margin-bottom: 10px;
+		}
+		.ui-password-panel {
+			position: absolute !important;
+			z-index: 9999;
+			box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+			border: 1px solid #e2e8f0 !important;
+			background: white !important;
+			min-width: 150px;
+		}
+
+		/* Garante que o grid de senhas não quebre */
+		.password-grid {
+			display: grid;
+			grid-template-columns: 1fr 1fr;
+			gap: 15px;
+			align-items: start; /* Alinha os campos pelo topo */
+		}
+
+		.ui-password-panel .ui-password-info {
+			color: #1e293b !important; /* Azul bem escuro/Preto */
+			font-weight: bold !important;
+			font-size: 13px !important;
+			opacity: 1 !important;
+		}
+
+		/* Cor do texto de status (Fraca, Boa, Forte) */
+		.ui-password-panel .ui-password-status {
+			color: #1e293b !important;
+			font-weight: 800 !important;
+		}
+
+	</style>
 </h:head>
-<h:body class="fundo">
-	<h:form>
-		<p:messages id="messages" closable="true">
-			<p:autoUpdate />
-		</p:messages>
-		<fieldset>
-			<legend>Formulario Responsável:</legend>
-			<h:panelGrid>
-				<h:panelGroup class="grupo">
-					<h:outputLabel value="Nome:" class="label" />
-					<h:inputText value="#{responsavelBean.responsavel.nome}"
-						class="campo" />
 
-				</h:panelGroup>
-				<h:panelGroup class="grupo">
-					<h:outputLabel value="E-mail:" class="label" />
-					<h:inputText value="#{responsavelBean.responsavel.email}"
-						class="campo" />
-				</h:panelGroup>
+<h:body styleClass="autocadastro-bg">
 
-				<h:panelGroup class="grupo">
-					<h:outputLabel value="Data de nascimento:" class="label" />
-					<h:inputText value="#{responsavelBean.responsavel.dataNascimento}"
-						class="data">
-						<f:convertDateTime pattern="dd/MM/yyyy" />
-					</h:inputText>
-				</h:panelGroup>
+	<div class="autocadastro-container">
+		<div class="logo-header">
+			<img src="assets/img/icon.png" alt="Logo" />
+			<h2 style="color: #1e293b; margin: 0;">Comece agora</h2>
+			<p style="color: #64748b; font-size: 14px;">Crie sua conta para gerenciar tarefas.</p>
+		</div>
 
-				<h:panelGrid id="matchGrid" cellpadding="5">
-					<h:outputLabel for="pwd1" value="Digite a senha:" />
-					<p:password id="pwd1" value="#{responsavelBean.responsavel.senha}"
-						match="pwd2" label="senha" required="true"
-						validatorMessage="Os campos Senha não são iguais" />
-					<h:outputLabel for="pwd2" value="Confirme a senha:" />
-					<p:password id="pwd2" value="#{responsavelBean.responsavel.senha}"
-						label="ConfirmaSenha" />
-				</h:panelGrid>
+		<div class="form-card" style="margin: 0;">
+			<h:form id="formResponsavel">
+				<p:messages id="messages" closable="true"><p:autoUpdate /></p:messages>
 
-				<h:commandButton update="matchGrid"
-					action="#{responsavelBean.salvar}" value="Salvar" class="btn" />
+				<h:outputLabel value="Nome Completo" styleClass="field-label" />
+				<p:inputText value="#{responsavelBean.responsavel.nome}"
+							 required="true"
+							 placeholder="Como quer ser chamado?"
+							 style="width: 100%"/>
 
-			</h:panelGrid>
-		</fieldset>
-	</h:form>
+				<h:outputLabel value="E-mail" styleClass="field-label" />
+				<p:inputText value="#{responsavelBean.responsavel.usuario.email}"
+							 required="true"
+							 placeholder="exemplo@email.com"
+							 style="width: 100%"/>
+
+				<h:outputLabel value="Data de Nascimento" styleClass="field-label" />
+				<p:calendar value="#{responsavelBean.responsavel.dataNascimento}"
+							pattern="dd/MM/yyyy"
+							mask="true"
+							placeholder="00/00/0000"
+							inputStyle="width: 100%"/>
+
+				<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 15px;">
+					<h:panelGroup>
+						<h:outputLabel for="pwd1" value="Senha" styleClass="field-label" />
+						<p:password id="pwd1" value="#{responsavelBean.responsavel.usuario.senha}"
+									match="pwd2"
+									label="Senha"
+									required="true"
+									requiredMessage="A senha é obrigatória"
+									validatorMessage="As senhas não coincidem ou não atendem aos requisitos (mínimo 6 caracteres, letras e números)."
+									placeholder="••••••••"
+									feedback="true"
+									promptLabel="Mínimo 6 caracteres, com letras e números"
+									weakLabel="Fraca" goodLabel="Boa" strongLabel="Forte">
+							<f:validateRegex pattern="^(?=.*[A-Za-z])(?=.*\d).{6,}$" />
+						</p:password>
+					</h:panelGroup>
+
+					<h:panelGroup>
+						<h:outputLabel for="pwd2" value="Confirmar" styleClass="field-label" />
+						<p:password id="pwd2" value="#{responsavelBean.responsavel.usuario.senha}"
+									label="Confirmar Senha"
+									required="true"
+									requiredMessage="A confirmação é obrigatória"
+									placeholder="••••••••" />
+					</h:panelGroup>
+				</div>
+
+				<p:commandButton action="#{responsavelBean.salvar}"
+								 value="Criar minha conta"
+								 styleClass="btn-primary"
+								 update="@form"
+								 style="width: 100%; margin-top: 25px; padding: 12px;"
+								 icon="fa fa-rocket" />
+			</h:form>
+		</div>
+
+		<div style="text-align: center; margin-top: 20px;">
+			<h:link outcome="/login" style="color: #6366f1; text-decoration: none; font-size: 14px; font-weight: 600;">
+				Já possui uma conta? Entrar
+			</h:link>
+		</div>
+	</div>
+
 </h:body>
 </html>

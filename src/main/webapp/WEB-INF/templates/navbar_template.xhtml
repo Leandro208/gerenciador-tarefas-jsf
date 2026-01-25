@@ -18,8 +18,8 @@
                 <h:graphicImage library="img" name="icon.png" width="32" height="32" />
             </h:link>
             <div>
-                <h:outputText value="#{loginBean.responsavel.nome}" style="font-weight: 600;" />
-                <span class="role-badge">#{loginBean.responsavel.funcao}</span>
+                <h:outputText value="#{loginBean.logado.nome}" style="font-weight: 600;" />
+                <span class="role-badge">#{loginBean.logado.funcao}</span>
             </div>
         </div>
         <h:form><p:commandButton action="#{loginBean.logout}" icon="fa fa-sign-out" styleClass="btn-logout" /></h:form>

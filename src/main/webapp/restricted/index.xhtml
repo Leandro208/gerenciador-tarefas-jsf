@@ -44,21 +44,21 @@
 				<h3 style="margin-top: 0; margin-bottom: 20px; font-size: 16px;">Ações Rápidas</h3>
 				<h:form id="formInicio" styleClass="actions-grid">
 					<p:commandButton action="#{tarefaBean.entrarCadastro}" value="Nova Tarefa"
-									 icon="fa fa-plus" rendered="#{loginBean.responsavel.adm}" />
+									 icon="fa fa-plus" rendered="#{loginBean.logado.adm}" />
 
 					<p:linkButton href="adm/formEquipe.jsf" value="Criar Equipe"
-								  icon="fa fa-users" rendered="#{loginBean.responsavel.adm}" />
+								  icon="fa fa-users" rendered="#{loginBean.logado.adm}" />
 
 					<p:commandButton action="#{tarefaBean.visualizarQuadro}" value="Minha Equipe"
-									 icon="fa fa-th-large" rendered="#{loginBean.responsavel.equipe != null}"
+									 icon="fa fa-th-large" rendered="#{loginBean.logado.equipe != null}"
 									 styleClass="ui-button-success" />
 
 					<p:commandButton value="Usuários" icon="fa fa-user-circle"
-									 rendered="#{loginBean.responsavel.adm}" onclick="PF('dialogUsuarios').show();"
+									 rendered="#{loginBean.logado.adm}" onclick="PF('dialogUsuarios').show();"
 									 type="button" />
 
 					<p:commandButton value="Ver Equipes" icon="fa fa-list-ul"
-									 rendered="#{loginBean.responsavel.adm}" onclick="PF('dialogEquipes').show();"
+									 rendered="#{loginBean.logado.adm}" onclick="PF('dialogEquipes').show();"
 									 type="button" />
 				</h:form>
 			</div>
@@ -79,12 +79,12 @@
 				<p:column headerText="Nome"><h:outputText value="#{r.nome}" /></p:column>
 				<p:column headerText="Opções" width="100">
 					<h:form>
-						<p:commandButton ajax="false" action="#{responsavelBean.alterarFuncao(r)}"
-										 disabled="#{r.adm}" icon="fa fa-shield"
+						<p:commandButton ajax="false" action="#{responsavelBean.alterarFuncao(r.usuario)}"
+										 disabled="#{r.usuario.adm}" icon="fa fa-shield"
 										 styleClass="rounded-button" title="Tornar Admin" />
 
-						<p:commandButton ajax="false" action="#{responsavelBean.alterarFuncao(r)}"
-										 disabled="#{!r.adm}" icon="fa fa-user"
+						<p:commandButton ajax="false" action="#{responsavelBean.alterarFuncao(r.usuario)}"
+										 disabled="#{!r.usuario.adm}" icon="fa fa-user"
 										 styleClass="rounded-button" title="Tornar Usuário" />
 					</h:form>
 				</p:column>

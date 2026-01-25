@@ -1,4 +1,4 @@
-package io.github.Leandro208.projetoESIG.entities;
+package io.github.Leandro208.projetoESIG.dominio;
 
 import java.io.Serializable;
 import java.util.Date;

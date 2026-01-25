@@ -1,4 +1,4 @@
-package io.github.Leandro208.projetoESIG.entities;
+package io.github.Leandro208.projetoESIG.dominio;
 
 public interface BaseEntity {
 	 public Long getId();   

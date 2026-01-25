@@ -1,6 +1,6 @@
 package io.github.Leandro208.projetoESIG.persistence;
 
-import io.github.Leandro208.projetoESIG.entities.BaseEntity;
+import io.github.Leandro208.projetoESIG.dominio.BaseEntity;
 
 public interface Operacao {
 	public Comando getComando();

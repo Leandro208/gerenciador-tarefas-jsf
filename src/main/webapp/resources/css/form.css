@@ -1,15 +1,11 @@
-/* --- ESTILO PARA FORMULÁRIOS --- */
-
-/* Container que centraliza o formulário na página */
 .container-principal {
     display: flex;
     flex-direction: column;
     align-items: center;
     padding: 60px 20px;
-    min-height: calc(100vh - 80px); /* Desconta a altura da navbar */
+    min-height: calc(100vh - 80px);
 }
 
-/* Cartão branco que envolve o formulário */
 .form-card {
     background: #ffffff;
     padding: 40px;
@@ -34,9 +30,6 @@
     margin-bottom: 30px;
 }
 
-/* --- ESTILIZAÇÃO DE COMPONENTES PRIMEFACES --- */
-
-/* Labels (Títulos dos campos) */
 .field-label {
     display: block;
     font-weight: 500;
@@ -46,7 +39,6 @@
     margin-top: 15px;
 }
 
-/* Inputs (Campos de Texto) */
 html body .ui-inputfield {
     width: 100% !important;
     padding: 12px 15px !important;
@@ -62,7 +54,6 @@ html body .ui-inputfield:focus {
     box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1) !important;
 }
 
-/* Estilo para a Área de Texto */
 html body .ui-inputtextarea {
     width: 100% !important;
     padding: 12px !important;
@@ -72,7 +63,6 @@ html body .ui-inputtextarea {
     box-sizing: border-box !important;
 }
 
-/* Estilo para SelectOneMenu (Combobox) */
 html body .ui-selectonemenu {
     width: 100% !important;
     border: 1px solid #e5e7eb !important;
@@ -87,54 +77,44 @@ html body .ui-selectonemenu-label {
     color: #374151 !important;
 }
 
-/* Estilo para o Calendário */
 html body .ui-calendar,
 html body .ui-calendar input {
     width: 100% !important;
 }
 
-/* --- BOTÃO ESTILO DASHBOARD (BRANCO COM TEXTO/ÍCONE AZUL) --- */
-
 html body .ui-button.btn-primary,
 html body .ui-button.btn-primary.ui-state-default {
-    /* Força o fundo branco e remove qualquer cor de variável */
     background: #ffffff !important;
     background-color: #ffffff !important;
     background-image: none !important;
 
-    /* Borda e Arredondamento */
     border: 1px solid #e5e7eb !important;
     border-radius: 10px !important;
 
-    /* Espaçamento e Sombra */
     padding: 10px !important;
-    display: block !important;       /* Permite o uso de margin auto */
+    display: block !important;
     margin: 25px auto 0 auto !important;
     width: 50% !important;
     box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05) !important;
 }
 
-/* COR DO TEXTO (AZUL) */
 html body .ui-button.btn-primary .ui-button-text {
-    color: #6366f1 !important; /* O azul/índigo do seu Dashboard */
+    color: #6366f1 !important;
     text-shadow: none !important;
     font-weight: 600 !important;
 }
 
-/* COR DO ÍCONE (AZUL) */
 html body .ui-button.btn-primary .ui-icon-left,
 html body .ui-button.btn-primary .ui-c {
     color: #6366f1 !important;
 }
 
-/* EFEITO AO PASSAR O MOUSE */
 html body .ui-button.btn-primary.ui-state-hover {
     background: #f9fafb !important;
     border-color: #d1d5db !important;
     transform: translateY(-1px);
 }
 
-/* Link de Voltar */
 .back-link {
     margin-top: 25px;
     display: inline-flex;
@@ -150,8 +130,7 @@ html body .ui-button.btn-primary.ui-state-hover {
 }
 
 
-/* --- KANBAN COM LOOK DE CARDS (image_8fd42c.png) --- */
-/* --- BUSCA COMPACTA --- */
+
 .search-bar-card {
     background: #ffffff;
     padding: 20px 30px;
@@ -178,7 +157,6 @@ html body .ui-button.btn-primary.ui-state-hover {
     display: block;
 }
 
-/* Botão de busca circular */
 html body .ui-button.btn-circle {
     width: 45px !important;
     height: 45px !important;
@@ -188,7 +166,6 @@ html body .ui-button.btn-circle {
     color: white !important;
 }
 
-/* --- KANBAN MODERNO --- */
 .kanban-wrapper {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -256,11 +233,10 @@ html body .ui-selectonemenu.custom-select-min {
     background: #f9fafb !important;
 }
 
-/* --- CABEÇALHO DA EQUIPE --- */
 .equipe-header {
     margin-bottom: 25px;
     padding-left: 10px;
-    border-left: 4px solid #6366f1; /* Barra lateral azul igual ao Dashboard */
+    border-left: 4px solid #6366f1;
 }
 
 .equipe-label {
@@ -268,19 +244,33 @@ html body .ui-selectonemenu.custom-select-min {
     font-size: 12px;
     text-transform: uppercase;
     letter-spacing: 1px;
-    color: #9ca3af; /* Cinza suave */
+    color: #9ca3af;
     font-weight: 700;
     margin-bottom: 4px;
 }
 
 .equipe-title {
     font-size: 24px;
-    color: #111827; /* Preto azulado */
+    color: #111827;
     font-weight: 700;
     margin: 0;
 }
 
-/* Ajuste opcional para o Kanban não ficar colado no header */
 .kanban-wrapper {
     margin-top: 10px;
+}
+
+.ui-password {
+    width: 100% !important;
+}
+
+.ui-password-panel {
+    border: none !important;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1) !important;
+    background: white !important;
+}
+
+.ui-password-info {
+    font-size: 11px !important;
+    font-weight: 600;
 }

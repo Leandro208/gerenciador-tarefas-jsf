@@ -1,16 +1,15 @@
 package io.github.Leandro208.projetoESIG.dao;
 
 import java.lang.reflect.Field;
-import java.lang.reflect.ParameterizedType;
 import java.util.Collection;
 import java.util.Date;
 
 import javax.persistence.EntityManager;
 
 import io.github.Leandro208.projetoESIG.connection.ConnectionFactory;
-import io.github.Leandro208.projetoESIG.entities.BaseEntity;
-import io.github.Leandro208.projetoESIG.entities.RegistroEntrada;
-import io.github.Leandro208.projetoESIG.exception.NoDataException;
+import io.github.Leandro208.projetoESIG.dominio.BaseEntity;
+import io.github.Leandro208.projetoESIG.dominio.RegistroEntrada;
+import io.github.Leandro208.projetoESIG.dominio.Usuario;
 import io.github.Leandro208.projetoESIG.util.ReflectionUtils;
 import io.github.Leandro208.projetoESIG.util.UsuarioUtils;
 
@@ -81,11 +80,11 @@ public class GenericDAOImpl implements GenericDAO {
 			return null;
 		if (fieldCriador.getType().equals(RegistroEntrada.class)) {
 			if (UsuarioUtils.getLogado() != null)
-				return UsuarioUtils.getLogado().getRegistroEntrada();
+				return UsuarioUtils.getLogado().getEntrada();
 			else
 				return null;
 		} else {
-			return UsuarioUtils.getLogado();
+			return new Usuario(UsuarioUtils.getLogado().getId());
 		}
 	}
 

@@ -3,7 +3,7 @@ package io.github.Leandro208.projetoESIG.util;
 import java.util.Collection;
 import java.util.Map;
 
-import io.github.Leandro208.projetoESIG.entities.BaseEntity;
+import io.github.Leandro208.projetoESIG.dominio.BaseEntity;
 
 public class ValidatorUtils {
 

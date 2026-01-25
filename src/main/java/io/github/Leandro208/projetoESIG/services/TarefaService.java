@@ -7,20 +7,15 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import io.github.Leandro208.projetoESIG.dao.DAOException;
-import io.github.Leandro208.projetoESIG.dao.GenericDaoII;
 import io.github.Leandro208.projetoESIG.dao.TarefaDAO;
-import io.github.Leandro208.projetoESIG.dao.TarefaDAO;
+import io.github.Leandro208.projetoESIG.dominio.Responsavel;
 import io.github.Leandro208.projetoESIG.dto.FormConsultaTarefaDto;
-import io.github.Leandro208.projetoESIG.entities.Equipe;
-import io.github.Leandro208.projetoESIG.entities.Tarefa;
-import io.github.Leandro208.projetoESIG.enums.Funcao;
+import io.github.Leandro208.projetoESIG.dominio.Tarefa;
 import io.github.Leandro208.projetoESIG.enums.StatusEnum;
 import io.github.Leandro208.projetoESIG.util.MonitorTarefas;
 import io.github.Leandro208.projetoESIG.util.UsuarioUtils;
-import io.github.Leandro208.projetoESIG.util.ValidatorUtils;
 
 public class TarefaService implements BaseService<Tarefa>, Serializable {
 	private static final long serialVersionUID = 1L;
@@ -66,7 +61,8 @@ public class TarefaService implements BaseService<Tarefa>, Serializable {
 
 	public MonitorTarefas monitoramento() {
 		FormConsultaTarefaDto dto = new FormConsultaTarefaDto();
-		dto.setResponsavel(UsuarioUtils.getLogado());
+		dto.setResponsavel(new Responsavel());
+		dto.getResponsavel().setId(UsuarioUtils.getLogado().getIdResponsavel());
 		if(!UsuarioUtils.usuarioTemEquipe()) {
 			return new MonitorTarefas();
 		}

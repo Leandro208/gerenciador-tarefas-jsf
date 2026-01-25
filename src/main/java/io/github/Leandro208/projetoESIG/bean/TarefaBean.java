@@ -10,17 +10,15 @@ import javax.faces.bean.SessionScoped;
 import javax.faces.model.SelectItem;
 
 
-import io.github.Leandro208.projetoESIG.dao.DAOException;
 import io.github.Leandro208.projetoESIG.dto.FormConsultaTarefaDto;
-import io.github.Leandro208.projetoESIG.entities.Equipe;
-import io.github.Leandro208.projetoESIG.entities.Responsavel;
-import io.github.Leandro208.projetoESIG.entities.Tarefa;
+import io.github.Leandro208.projetoESIG.dominio.Equipe;
+import io.github.Leandro208.projetoESIG.dominio.Responsavel;
+import io.github.Leandro208.projetoESIG.dominio.Tarefa;
 import io.github.Leandro208.projetoESIG.enums.PrioridadeEnum;
 import io.github.Leandro208.projetoESIG.enums.StatusEnum;
 import io.github.Leandro208.projetoESIG.services.EquipeService;
 import io.github.Leandro208.projetoESIG.services.ResponsavelService;
 import io.github.Leandro208.projetoESIG.services.TarefaService;
-import io.github.Leandro208.projetoESIG.util.Message;
 import io.github.Leandro208.projetoESIG.util.MonitorTarefas;
 import io.github.Leandro208.projetoESIG.util.UsuarioUtils;
 import io.github.Leandro208.projetoESIG.persistence.OperacaoCadastro;
@@ -78,11 +76,11 @@ public class TarefaBean extends AbstractBean{
 		operacao.setEntidade(tarefa);
 		try {
 			realizarOperacao(operacao);
+			addMensagem("Operação realizada com sucesso!");
 		} catch (Exception e) {
-			e.printStackTrace();
+			addMensagemErroPadrao();
+			return null;
 		}
-		addMensagem("Operação realizada com sucesso!");
-		carregarTarefas();
 		limpar();
 		dashboard();
 		return null;
@@ -128,7 +126,9 @@ public class TarefaBean extends AbstractBean{
 	//atribui  tarefa ao usuario logado
 	public void delegar() throws ParseException {
 		if(tarefa.getResponsavel() == null) {
-			tarefa.setResponsavel(UsuarioUtils.getLogado());
+			tarefa.setResponsavel(new Responsavel());
+			tarefa.getResponsavel().setId(getLogado().getIdResponsavel());
+			tarefa.getResponsavel().setNome(getLogado().getNome());
 		} else  {
 			tarefa.setResponsavel(null);
 		}
@@ -203,7 +203,6 @@ public class TarefaBean extends AbstractBean{
 	public List<SelectItem> getComboResponsaveis() {
 		List<SelectItem> itensComboBoxResponsaveis = new ArrayList<>();
 		List<Responsavel> responsaveis = responsavelService.buscarTodos();
-		itensComboBoxResponsaveis.add(new SelectItem(new Responsavel(), "-SELECIONE-"));
 		for (Responsavel r : responsaveis) {
 			//if(equipe.getId() == r.getEquipe().getId()) {
 				itensComboBoxResponsaveis.add(new SelectItem(r, r.getNome()));
@@ -247,7 +246,7 @@ public class TarefaBean extends AbstractBean{
 		String result = "";
 		if( r == null || r.getId() == null ){
 			result = " | Delegar Para Mim";
-		} else if(r.getId() == UsuarioUtils.getLogado().getId()) {
+		} else if(r.getId().equals(UsuarioUtils.getLogado().getIdResponsavel())) {
 			result = " | Deixar tarefa";
 		}
 		return result;

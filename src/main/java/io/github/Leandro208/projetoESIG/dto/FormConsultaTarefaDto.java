@@ -1,8 +1,8 @@
 package io.github.Leandro208.projetoESIG.dto;
 
-import io.github.Leandro208.projetoESIG.entities.Equipe;
-import io.github.Leandro208.projetoESIG.entities.Responsavel;
-import io.github.Leandro208.projetoESIG.entities.Tarefa;
+import io.github.Leandro208.projetoESIG.dominio.Equipe;
+import io.github.Leandro208.projetoESIG.dominio.Responsavel;
+import io.github.Leandro208.projetoESIG.dominio.Tarefa;
 import io.github.Leandro208.projetoESIG.enums.StatusEnum;
 
 public class FormConsultaTarefaDto {

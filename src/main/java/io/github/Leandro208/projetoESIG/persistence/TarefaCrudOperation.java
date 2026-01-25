@@ -3,7 +3,7 @@ package io.github.Leandro208.projetoESIG.persistence;
 import io.github.Leandro208.projetoESIG.dao.DAOException;
 import io.github.Leandro208.projetoESIG.dao.GenericDAO;
 import io.github.Leandro208.projetoESIG.dao.GenericDAOImpl;
-import io.github.Leandro208.projetoESIG.entities.Tarefa;
+import io.github.Leandro208.projetoESIG.dominio.Tarefa;
 
 public class TarefaCrudOperation extends CadastroCrudOperation {
 
@@ -11,9 +11,9 @@ public class TarefaCrudOperation extends CadastroCrudOperation {
 	public void operar(Operacao operacao) throws DAOException {
 		validate(operacao);
 		if(operacao.getComando().equals(ListaComando.CADASTRAR_TAREFA)) {
-			criar(operacao);
+			criar(operacao.getEntidade());
 		} else if(operacao.getComando().equals(ListaComando.ALTERAR_TAREFA)) {
-			alterar(operacao);
+			alterar(operacao.getEntidade());
 		} else if(operacao.getComando().equals(ListaComando.ATRIBUIR_TAREFA)) {
 			atribuirTarefa(operacao);
 		} else if(operacao.getComando().equals(ListaComando.MOVER_TAREFA)) {

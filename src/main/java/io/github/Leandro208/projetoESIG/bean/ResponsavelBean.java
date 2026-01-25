@@ -7,15 +7,20 @@ import java.util.stream.Collectors;
 import javax.faces.bean.ManagedBean;
 import javax.faces.model.SelectItem;
 
-import io.github.Leandro208.projetoESIG.entities.Equipe;
-import io.github.Leandro208.projetoESIG.entities.Responsavel;
+import io.github.Leandro208.projetoESIG.dominio.Equipe;
+import io.github.Leandro208.projetoESIG.dominio.Responsavel;
+import io.github.Leandro208.projetoESIG.dominio.Usuario;
 import io.github.Leandro208.projetoESIG.enums.Funcao;
+import io.github.Leandro208.projetoESIG.exception.NegocioException;
+import io.github.Leandro208.projetoESIG.persistence.ListaComando;
+import io.github.Leandro208.projetoESIG.persistence.Operacao;
+import io.github.Leandro208.projetoESIG.persistence.OperacaoCadastro;
 import io.github.Leandro208.projetoESIG.services.EquipeService;
 import io.github.Leandro208.projetoESIG.services.ResponsavelService;
 import io.github.Leandro208.projetoESIG.util.UsuarioUtils;
 
 @ManagedBean
-public class ResponsavelBean {
+public class ResponsavelBean extends AbstractBean{
 
 	private Responsavel responsavel;
 	private List<Responsavel> listaReponsaveis;
@@ -29,7 +34,18 @@ public class ResponsavelBean {
 	}
 
 	public String salvar() {
-		responsavelService.salvar(responsavel);
+		Operacao operacao = new OperacaoCadastro();
+		operacao.setComando(ListaComando.CADASTRAR_USUARIO);
+		operacao.setEntidade(responsavel);
+		try {
+			realizarOperacao(operacao);
+		} catch (NegocioException ne){
+			addMensagensErro(ne.getListaMensagens());
+			return null;
+		}
+		catch (Exception e) {
+			addMensagemErroPadrao();
+		}
 		limpar();
 		return "login.jsf";
 	}
@@ -46,13 +62,14 @@ public class ResponsavelBean {
 		listaReponsaveis.remove(UsuarioUtils.getLogado());
 	}
 	
-	public String alterarFuncao(Responsavel r) {
-		 if(r.getFuncao().equals(Funcao.USER)) {
-			 r.setFuncao(Funcao.ADM);
+	public String alterarFuncao(Usuario u) {
+		 if(u.getFuncao().equals(Funcao.USER)) {
+			 u.setFuncao(Funcao.ADM);
 		 } else {
-			 r.setFuncao(Funcao.USER);
+			 u.setFuncao(Funcao.USER);
 		 }
-		 responsavelService.salvar(r);
+		 //TODO refazer
+		// responsavelService.salvar(r);
 		 listarResponsaveis();
 		 return "";
 	}

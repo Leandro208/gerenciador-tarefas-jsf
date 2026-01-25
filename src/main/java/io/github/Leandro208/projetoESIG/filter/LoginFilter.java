@@ -2,8 +2,6 @@ package io.github.Leandro208.projetoESIG.filter;
 
 import java.io.IOException;
 
-import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
@@ -15,7 +13,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import io.github.Leandro208.projetoESIG.entities.Responsavel;
+import io.github.Leandro208.projetoESIG.dominio.Usuario;
+import io.github.Leandro208.projetoESIG.dto.UsuarioDTO;
 import io.github.Leandro208.projetoESIG.enums.Funcao;
 
 public class LoginFilter implements Filter {
@@ -34,19 +33,14 @@ public class LoginFilter implements Filter {
 		HttpSession session = req.getSession();
 		
 		String url = req.getRequestURL().toString();
-		Responsavel responsavel = (Responsavel) session.getAttribute("responsavel");
+		UsuarioDTO usuario = (UsuarioDTO) session.getAttribute("usuario");
 		
-		if(url.contains("/restricted") && (responsavel == null || responsavel.getId() == null)) {
+		if(url.contains("/restricted") && (usuario == null || usuario.getId() == null)) {
 			res.sendRedirect(req.getServletContext().getContextPath() + "/login.jsf");
-		} 
-		
-		else if(url.contains("/adm") && (responsavel.getFuncao().equals(Funcao.USER))) {
+		} else if(url.contains("/adm") && (usuario.getFuncao().equals(Funcao.USER))) {
 			res.sendRedirect(req.getServletContext().getContextPath() + "/restricted/index.jsf");
 			
-		} 
-		
-		
-		else {
+		} else {
 			chain.doFilter(request, response);
 		}
 		

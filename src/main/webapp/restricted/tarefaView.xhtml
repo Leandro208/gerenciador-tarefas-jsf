@@ -27,11 +27,11 @@
 
                         <p:commandButton ajax="false" action="#{tarefaBean.editar}"
                                          icon="fa fa-edit" styleClass="btn-outline"
-                                         rendered="#{loginBean.responsavel.adm}" />
+                                         rendered="#{loginBean.logado.adm}" />
 
                         <p:commandButton action="#{tarefaBean.remover}"
                                          icon="fa fa-trash" styleClass="btn-danger"
-                                         rendered="#{loginBean.responsavel.adm}">
+                                         rendered="#{loginBean.logado.adm}">
                             <p:confirm header="Remover tarefa" message="Deseja excluir permanentemente?" />
                         </p:commandButton>
                     </h:form>

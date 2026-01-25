@@ -8,11 +8,14 @@ import java.util.List;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
 
+import io.github.Leandro208.projetoESIG.dao.DAOException;
 import io.github.Leandro208.projetoESIG.dao.GenericDaoII;
-import io.github.Leandro208.projetoESIG.entities.RegistroEntrada;
-import io.github.Leandro208.projetoESIG.entities.Responsavel;
+import io.github.Leandro208.projetoESIG.dao.UsuarioDAO;
+import io.github.Leandro208.projetoESIG.dominio.RegistroEntrada;
+import io.github.Leandro208.projetoESIG.dominio.Responsavel;
+import io.github.Leandro208.projetoESIG.dominio.Usuario;
+import io.github.Leandro208.projetoESIG.dto.UsuarioDTO;
 import io.github.Leandro208.projetoESIG.util.Criptografar;
-import io.github.Leandro208.projetoESIG.util.Message;
 
 public class ResponsavelService implements BaseService<Responsavel>, Serializable{
 
@@ -25,21 +28,6 @@ public class ResponsavelService implements BaseService<Responsavel>, Serializabl
 	}
 	
 
-
-	public void salvar(Responsavel responsavel) {
-		
-		List<Responsavel> resp = buscarTodos();
-		for(Responsavel r : resp) {
-			if(r.getEmail().equalsIgnoreCase(responsavel.getEmail())) {
-				Message.warn("Ja existe uma conta cadastrada com esse email!");
-				return;
-			}
-		}
-		
-		responsavel.setDataCadastro(new Date());;
-		responsavel.setSenha(Criptografar.encriptografar(responsavel.getSenha()));
-		dao.salvar(responsavel);
-	}
 	
 	public void remover(Responsavel r) {
 		dao.remover(Responsavel.class, r.getId());
@@ -47,23 +35,18 @@ public class ResponsavelService implements BaseService<Responsavel>, Serializabl
 	
 	public List<Responsavel> buscarTodos() {
 		List<Responsavel> resultado = new ArrayList<Responsavel>();
-		StringBuilder hql = new StringBuilder("select r from Responsavel r order by r.nome");
+		StringBuilder hql = new StringBuilder("select r from Responsavel r join fetch r.usuario order by r.nome");
 		resultado = dao.buscarTodos(hql.toString());
 		return resultado;
 	}
 	
-	public Responsavel verificarCredenciais(String email, String senha) {
-		List<Responsavel> res = new ArrayList<>();
-		res = buscarTodos();
-		for (Responsavel r : res) {
-			if (r.getEmail().equalsIgnoreCase(email) && r.getSenha().equals(Criptografar.encriptografar(senha))) {
-				return r;
-			}
-		}
-		return new Responsavel();
+	public UsuarioDTO verificarCredenciais(String email, String senha) throws DAOException {
+		UsuarioDAO dao = new UsuarioDAO();
+		UsuarioDTO usuario = dao.findByEmailSenha(email, Criptografar.encriptografar(senha));
+		return usuario == null ? new UsuarioDTO() : usuario;
 	}
 	
-	public RegistroEntrada registrarEntrada(Responsavel usuario) {
+	public RegistroEntrada registrarEntrada(Usuario usuario) {
 		GenericDaoII<RegistroEntrada> daoEntrada = new GenericDaoII<>();
 		RegistroEntrada entrada = new RegistroEntrada();
 		entrada.setData(new Date());
@@ -88,9 +71,8 @@ public class ResponsavelService implements BaseService<Responsavel>, Serializabl
 
 
 
-	public Responsavel buscarPorId(Long valueOf) {
-		// TODO Auto-generated method stub
-		return null;
+	public Responsavel buscarPorId(Long id) {
+		return dao.buscarPorId(Responsavel.class, id);
 	}
 
 }

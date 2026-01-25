@@ -1,13 +1,8 @@
 package io.github.Leandro208.projetoESIG.bean;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Calendar;
-
-import java.util.List;
 
 
-import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 
 import javax.faces.bean.SessionScoped;
@@ -15,49 +10,40 @@ import javax.faces.context.FacesContext;
 
 import javax.servlet.http.HttpSession;
 
-import io.github.Leandro208.projetoESIG.entities.Responsavel;
+import io.github.Leandro208.projetoESIG.dao.DAOException;
+import io.github.Leandro208.projetoESIG.dominio.Usuario;
+import io.github.Leandro208.projetoESIG.dto.UsuarioDTO;
 import io.github.Leandro208.projetoESIG.services.ResponsavelService;
-import io.github.Leandro208.projetoESIG.util.Criptografar;
 import io.github.Leandro208.projetoESIG.util.Message;
-import io.github.Leandro208.projetoESIG.util.UsuarioUtils;
 
 @ManagedBean
 @SessionScoped
-public class LoginBean implements Serializable {
+public class LoginBean extends AbstractBean implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
 	private String email;
 	private String senha;
-	private Responsavel responsavel;
-	
-	private Calendar horaAtual;
 
 	private ResponsavelService service;
 
 	public LoginBean() {
 		this.email = new String("");
 		this.senha = new String("");
-		responsavel = new Responsavel();
 		service = new ResponsavelService();
-		horaAtual = Calendar.getInstance();
-		horaAtual.set(Calendar.SECOND, 0);
-		horaAtual.set(Calendar.MINUTE, 0);
-		horaAtual.set(Calendar.HOUR_OF_DAY, 0);
-
 	}
 
-	public String logar() {
+	public String logar() throws DAOException {
 		//buscando Responsavel no dao
-		responsavel = service.verificarCredenciais(email, senha);
+		UsuarioDTO usuario = service.verificarCredenciais(email, senha);
 		
-		if (responsavel.getId() != null && responsavel.getId() != 0) {
+		if (usuario.getId() != null && usuario.getId() != 0) {
 			// se for diferente de null ele da o acesso
 			HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext()
 					.getSession(false);
 			session.setMaxInactiveInterval(360);
-			responsavel.setRegistroEntrada(service.registrarEntrada(responsavel));
-			session.setAttribute("responsavel", responsavel);
+			usuario.setEntrada(service.registrarEntrada(new Usuario(usuario.getId())));
+			session.setAttribute("usuario", usuario);
 
 			return "/restricted/index?faces-redirect=true";
 		}
@@ -74,15 +60,10 @@ public class LoginBean implements Serializable {
 	}
 
 	private void limpar() {
-		responsavel = new Responsavel();
 		email = new String("");
 		senha = new String("");
 	}
-	
-	public void relogio(){
-        horaAtual.set(Calendar.SECOND, horaAtual.get(Calendar.SECOND)+1);
-    }
-	
+
 	public String getEmail() {
 		return email;
 	}
@@ -98,23 +79,5 @@ public class LoginBean implements Serializable {
 	public void setSenha(String senha) {
 		this.senha = senha;
 	}
-
-	public Responsavel getResponsavel() {
-		return responsavel;
-	}
-
-	public void setResponsavel(Responsavel responsavel) {
-		this.responsavel = responsavel;
-	}
-
-	public Calendar getHoraAtual() {
-		return horaAtual;
-	}
-
-	public void setHoraAtual(Calendar horaAtual) {
-		this.horaAtual = horaAtual;
-	}
-
-	
 
 }

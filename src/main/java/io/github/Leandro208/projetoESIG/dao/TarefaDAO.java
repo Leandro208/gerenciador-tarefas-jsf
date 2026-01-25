@@ -7,7 +7,7 @@ import java.util.Map;
 import javax.persistence.Query;
 
 import io.github.Leandro208.projetoESIG.dto.FormConsultaTarefaDto;
-import io.github.Leandro208.projetoESIG.entities.Tarefa;
+import io.github.Leandro208.projetoESIG.dominio.Tarefa;
 import io.github.Leandro208.projetoESIG.util.ValidatorUtils;
 
 public class TarefaDAO extends GenericDAOImpl{
@@ -39,7 +39,7 @@ public class TarefaDAO extends GenericDAOImpl{
 	        parameters.put("situacao", form.getSituacao().toString());
 	    }
 
-	    if (!ValidatorUtils.isEmpty(form.getEquipe().getId())) {
+	    if (!ValidatorUtils.isEmpty(form.getEquipe())) {
 	        sql.append(" AND t.id_equipe = :idEquipe");
 	        parameters.put("idEquipe", form.getEquipe().getId());
 	    }

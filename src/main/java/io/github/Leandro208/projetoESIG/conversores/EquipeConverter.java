@@ -5,7 +5,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
 
-import io.github.Leandro208.projetoESIG.entities.Equipe;
+import io.github.Leandro208.projetoESIG.dominio.Equipe;
 import io.github.Leandro208.projetoESIG.services.EquipeService;
 
 @FacesConverter("equipeConverter")
@@ -19,9 +19,7 @@ public class EquipeConverter implements Converter{
 	
 	@Override
 	public Object getAsObject(FacesContext context, UIComponent component, String value) {
-		System.out.println("Converter recebendo valor: " + value);
 		Object resultado = service.buscarPorId(Long.valueOf(value));
-		System.out.println("Converter encontrou equipe: " + resultado);
 		return resultado;
 	}
 

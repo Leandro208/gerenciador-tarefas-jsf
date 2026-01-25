@@ -1,4 +1,4 @@
-package io.github.Leandro208.projetoESIG.entities;
+package io.github.Leandro208.projetoESIG.dominio;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -25,7 +25,7 @@ public class RegistroEntrada implements BaseEntity, Serializable {
 	
 	@ManyToOne
 	@JoinColumn(name = "id_usuario")
-	private Responsavel usuario;
+	private Usuario usuario;
 	
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date data;
@@ -39,7 +39,7 @@ public class RegistroEntrada implements BaseEntity, Serializable {
 	public RegistroEntrada() {
 	}
 
-	public RegistroEntrada(Long id, Responsavel usuario, Date data, String ip) {
+	public RegistroEntrada(Long id, Usuario usuario, Date data, String ip) {
 		this.id = id;
 		this.usuario = usuario;
 		this.data = data;
@@ -55,11 +55,11 @@ public class RegistroEntrada implements BaseEntity, Serializable {
 		this.id = id;
 	}
 
-	public Responsavel getUsuario() {
+	public Usuario getUsuario() {
 		return usuario;
 	}
 
-	public void setUsuario(Responsavel usuario) {
+	public void setUsuario(Usuario usuario) {
 		this.usuario = usuario;
 	}
 
