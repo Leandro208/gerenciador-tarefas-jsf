@@ -13,7 +13,7 @@ import io.github.Leandro208.projetoESIG.util.ValidatorUtils;
 public class TarefaDAO extends GenericDAOImpl{
 
 	public List<Tarefa> filter(FormConsultaTarefaDto form) {
-	    StringBuilder sql = new StringBuilder("SELECT * FROM tarefa t WHERE 1=1");
+	    StringBuilder sql = new StringBuilder("SELECT * FROM gestao.tarefa t WHERE 1=1");
 	    
 	    Map<String, Object> parameters = new HashMap<>();
 

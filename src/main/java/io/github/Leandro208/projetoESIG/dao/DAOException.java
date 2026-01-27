@@ -22,4 +22,8 @@ public class DAOException extends Exception {
 		super(cause);
 	}
 
+	public DAOException(Exception e) {
+		super(e);
+	}
+
 }

@@ -18,7 +18,7 @@ import java.io.Serializable;
 import java.util.Objects;
 
 @Entity
-@Table(name = "usuario")
+@Table(name = "usuario", schema = "pessoa")
 public class Usuario implements BaseEntity, Serializable {
 
     @Id

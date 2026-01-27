@@ -6,19 +6,20 @@
 
 
 	<persistence-unit name="tarefas">
-		<provider>org.hibernate.ejb.HibernatePersistence</provider>
+		<non-jta-data-source>java:/comp/env/jdbc/tarefasDS</non-jta-data-source>
+
+
 		<class>io.github.Leandro208.projetoESIG.dominio.Tarefa</class>
 		<class>io.github.Leandro208.projetoESIG.dominio.Responsavel</class>
 		<class>io.github.Leandro208.projetoESIG.dominio.Equipe</class>
+		<class>io.github.Leandro208.projetoESIG.dominio.Usuario</class>
+		<class>io.github.Leandro208.projetoESIG.dominio.RegistroAcesso</class>
+		<class>io.github.Leandro208.projetoESIG.dominio.LogDB</class>
+
 		<properties>
-			<property name="javax.persistence.jdbc.url" value="jdbc:postgresql://localhost:5432/tarefas"/>
-			<property name="javax.persistence.jdbc.user" value="postgres"/>
-			<property name="javax.persistence.jdbc.password" value="123456"/>
-			<property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver"/>
 			<property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect" />
-			<!--  <property name="hibernate.show_sql" value="true" />-->
-			<property name="hibernate.format_sql" value="true" />
-			<property name="hibernate.hbm2ddl.auto" value="update" />
+			<property name="hibernate.show_sql" value="true" />
+			<!-- <property name="hibernate.format_sql" value="true" />-->
 		</properties>
 	</persistence-unit>
 </persistence>

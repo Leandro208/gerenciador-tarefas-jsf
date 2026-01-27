@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import io.github.Leandro208.projetoESIG.dao.DAOException;
 import io.github.Leandro208.projetoESIG.dao.GenericDaoII;
 import io.github.Leandro208.projetoESIG.dao.UsuarioDAO;
-import io.github.Leandro208.projetoESIG.dominio.RegistroEntrada;
+import io.github.Leandro208.projetoESIG.dominio.RegistroAcesso;
 import io.github.Leandro208.projetoESIG.dominio.Responsavel;
 import io.github.Leandro208.projetoESIG.dominio.Usuario;
 import io.github.Leandro208.projetoESIG.dto.UsuarioDTO;
@@ -46,17 +46,16 @@ public class ResponsavelService implements BaseService<Responsavel>, Serializabl
 		return usuario == null ? new UsuarioDTO() : usuario;
 	}
 	
-	public RegistroEntrada registrarEntrada(Usuario usuario) {
-		GenericDaoII<RegistroEntrada> daoEntrada = new GenericDaoII<>();
-		RegistroEntrada entrada = new RegistroEntrada();
-		entrada.setData(new Date());
-		entrada.setUsuario(usuario);
-		
-	    entrada.setIp(getClientIp());
+	public RegistroAcesso registrarAcesso(Usuario usuario) {
+		GenericDaoII<RegistroAcesso> daoAcesso = new GenericDaoII<>();
+		RegistroAcesso registroAcesso = new RegistroAcesso();
+		registroAcesso.setData(new Date());
+		registroAcesso.setUsuario(usuario);
+
+		registroAcesso.setIp(getClientIp());
 	    
-	    daoEntrada.salvar(entrada);
-	    System.out.println("Registro de entrada: " + entrada);
-		return entrada;
+	    daoAcesso.salvar(registroAcesso);
+		return registroAcesso;
 	}
 	
 	public String getClientIp() {

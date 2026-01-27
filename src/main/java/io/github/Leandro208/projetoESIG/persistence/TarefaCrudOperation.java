@@ -22,7 +22,7 @@ public class TarefaCrudOperation extends CadastroCrudOperation {
 	}
 
 	private void moverTarefa(Operacao operacao) throws DAOException {
-		GenericDAO dao = new GenericDAOImpl();
+		GenericDAO dao = new GenericDAOImpl(operacao);
 		try {
 			Tarefa tarefa = (Tarefa) operacao.getEntidade();
 			dao.updateField(tarefa.getId(), Tarefa.class,"status", tarefa.getStatus());
@@ -32,7 +32,7 @@ public class TarefaCrudOperation extends CadastroCrudOperation {
 	}
 
 	private void atribuirTarefa(Operacao operacao) throws DAOException {
-		GenericDAO dao = new GenericDAOImpl();
+		GenericDAO dao = new GenericDAOImpl(operacao);
 		try {
 			Tarefa tarefa = (Tarefa) operacao.getEntidade();
 			dao.updateField(tarefa.getId(), Tarefa.class,"responsavel", tarefa.getResponsavel());

@@ -25,7 +25,7 @@ public class EquipeService implements BaseService<Equipe>, Serializable {
 
 	public void salvar(Equipe t) {
 		t.setDataCadastro(new Date());
-		t.setRegistroEntrada(UsuarioUtils.getLogado().getEntrada());
+		t.setRegistroAcesso(UsuarioUtils.getLogado().getRegistroAcesso());
 		dao.salvar(t);
 	}
 

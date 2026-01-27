@@ -8,8 +8,10 @@ import javax.persistence.EntityManager;
 
 import io.github.Leandro208.projetoESIG.connection.ConnectionFactory;
 import io.github.Leandro208.projetoESIG.dominio.BaseEntity;
-import io.github.Leandro208.projetoESIG.dominio.RegistroEntrada;
+import io.github.Leandro208.projetoESIG.dominio.LogDB;
+import io.github.Leandro208.projetoESIG.dominio.RegistroAcesso;
 import io.github.Leandro208.projetoESIG.dominio.Usuario;
+import io.github.Leandro208.projetoESIG.persistence.Operacao;
 import io.github.Leandro208.projetoESIG.util.ReflectionUtils;
 import io.github.Leandro208.projetoESIG.util.UsuarioUtils;
 
@@ -19,7 +21,16 @@ public class GenericDAOImpl implements GenericDAO {
 	protected static final int ATUALIZAR = 2;
 	protected static final int REMOVER = 3;
 
+	private int codComando;
+
 	private EntityManager em;
+
+	public GenericDAOImpl() {}
+
+	public GenericDAOImpl(Operacao operacao) {
+		codComando = operacao.getComando().getId();
+	}
+
 
 	protected EntityManager getSession() {
 		if (em == null || !em.isOpen()) {
@@ -53,7 +64,7 @@ public class GenericDAOImpl implements GenericDAO {
 
 	private void initializeCreationFields(BaseEntity entidade) {
         Field[] dataCadastro = ReflectionUtils.getFieldsByName(entidade, "dataCadastro");
-        Field[] registroEntrada = ReflectionUtils.getFieldsByName(entidade, "registroEntrada");
+        Field[] registroAcesso = ReflectionUtils.getFieldsByName(entidade, "registroAcesso");
         Field[] ativo = ReflectionUtils.getFieldsByName(entidade, "ativo");
 
         if (dataCadastro.length > 0) {
@@ -62,10 +73,8 @@ public class GenericDAOImpl implements GenericDAO {
             }
         }
 
-        if (registroEntrada.length > 0) {
-            for (Field field : registroEntrada) {
-                ReflectionUtils.setFieldValue(entidade, field, getCriador(field));
-            }
+        for (Field field : registroAcesso) {
+            ReflectionUtils.setFieldValue(entidade, field, getCriador(field));
         }
 
         if (ativo.length > 0) {
@@ -78,9 +87,9 @@ public class GenericDAOImpl implements GenericDAO {
 	private BaseEntity getCriador(Field fieldCriador) {
 		if (fieldCriador == null)
 			return null;
-		if (fieldCriador.getType().equals(RegistroEntrada.class)) {
+		if (fieldCriador.getType().equals(RegistroAcesso.class)) {
 			if (UsuarioUtils.getLogado() != null)
-				return UsuarioUtils.getLogado().getEntrada();
+				return UsuarioUtils.getLogado().getRegistroAcesso();
 			else
 				return null;
 		} else {
@@ -152,10 +161,39 @@ public class GenericDAOImpl implements GenericDAO {
 	        
 	        entityManager.getTransaction().begin();
 	        entityManager.merge(entity);
+			logUpdateFieldBanco(clazz, entity.getId(),new String[]{fieldName}, new Object[]{newValue});
 	        entityManager.getTransaction().commit();
+
 	    }  catch (Exception e) {
 	        throw new DAOException("Erro inesperado ao atualizar campo", e);
 	    }
 	}
 
+	private void logUpdateFieldBanco(Class<?> classe, Long id, String[] campos, Object[] valores ) throws DAOException {
+		try{
+			LogDB logDB = new LogDB();
+			logDB.setData(new Date());
+			logDB.setCodComando(this.codComando);
+			logDB.setOperacao('U');
+			logDB.setTabela(classe.getName());
+			logDB.setIdElemento(id);
+
+			StringBuilder alteracoes = new StringBuilder();
+			for (int i = 0; i < valores.length; i++) {
+				Object valor = valores[i];
+				String informacao = valor.toString();
+				if(valor instanceof BaseEntity){
+					informacao = ((BaseEntity) valor).getId().toString();
+				}
+				alteracoes.append(campos[i] + ": " + informacao);
+				alteracoes.append("\n");
+			}
+
+			logDB.setAlteracao(alteracoes.toString());
+			logDB.setRegistroAcesso(UsuarioUtils.getLogado().getRegistroAcesso());
+			getSession().persist(logDB);
+		} catch (Exception e) {
+			throw new DAOException(e);
+		}
+	}
 }

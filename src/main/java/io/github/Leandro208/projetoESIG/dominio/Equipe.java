@@ -11,12 +11,14 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 import org.hibernate.validator.constraints.NotEmpty;
 
 @Entity
+@Table(name = "equipe", schema = "gestao")
 public class Equipe implements BaseEntity, Serializable {
 
 
@@ -36,8 +38,8 @@ public class Equipe implements BaseEntity, Serializable {
 	private Date dataCadastro;
 	
 	@ManyToOne
-	@JoinColumn(name="id_registro_entrada")
-	private RegistroEntrada registroEntrada;
+	@JoinColumn(name="id_registro_acesso")
+	private RegistroAcesso registroAcesso;
 
 	public Equipe() {
 	}
@@ -81,12 +83,12 @@ public class Equipe implements BaseEntity, Serializable {
 		this.dataCadastro = dataCadastro;
 	}
 
-	public RegistroEntrada getRegistroEntrada() {
-		return registroEntrada;
+	public RegistroAcesso getRegistroAcesso() {
+		return registroAcesso;
 	}
 
-	public void setRegistroEntrada(RegistroEntrada registroEntrada) {
-		this.registroEntrada = registroEntrada;
+	public void setRegistroAcesso(RegistroAcesso registroAcesso) {
+		this.registroAcesso = registroAcesso;
 	}
 
 	@Override

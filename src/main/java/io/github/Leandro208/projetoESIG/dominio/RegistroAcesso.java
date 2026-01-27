@@ -16,8 +16,8 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 @Entity
-@Table(name = "registro_entrada")
-public class RegistroEntrada implements BaseEntity, Serializable {
+@Table(name = "registro_acesso", schema = "seguranca")
+public class RegistroAcesso implements BaseEntity, Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -36,10 +36,10 @@ public class RegistroEntrada implements BaseEntity, Serializable {
 	
 	private String ip;
 
-	public RegistroEntrada() {
+	public RegistroAcesso() {
 	}
 
-	public RegistroEntrada(Long id, Usuario usuario, Date data, String ip) {
+	public RegistroAcesso(Long id, Usuario usuario, Date data, String ip) {
 		this.id = id;
 		this.usuario = usuario;
 		this.data = data;
@@ -100,7 +100,7 @@ public class RegistroEntrada implements BaseEntity, Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		RegistroEntrada other = (RegistroEntrada) obj;
+		RegistroAcesso other = (RegistroAcesso) obj;
 		return Objects.equals(id, other.id);
 	}
 

@@ -42,7 +42,7 @@ public class LoginBean extends AbstractBean implements Serializable {
 			HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext()
 					.getSession(false);
 			session.setMaxInactiveInterval(360);
-			usuario.setEntrada(service.registrarEntrada(new Usuario(usuario.getId())));
+			usuario.setRegistroAcesso(service.registrarAcesso(new Usuario(usuario.getId())));
 			session.setAttribute("usuario", usuario);
 
 			return "/restricted/index?faces-redirect=true";

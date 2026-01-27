@@ -1,0 +1,13 @@
+<Context>
+    <Resource
+            name="jdbc/tarefasDS"
+            auth="Container"
+            type="javax.sql.DataSource"
+            driverClassName="org.postgresql.Driver"
+            url="${DB_URL}"
+            username="${DB_USER}"
+            password="${DB_PASSWORD}"
+            maxTotal="20"
+            maxIdle="10"
+            maxWaitMillis="10000"/>
+</Context>

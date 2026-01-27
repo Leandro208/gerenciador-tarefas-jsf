@@ -16,6 +16,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
@@ -27,6 +28,7 @@ import io.github.Leandro208.projetoESIG.enums.StatusEnum;
 
 
 @Entity
+@Table(name = "tarefa", schema = "gestao")
 public class Tarefa implements BaseEntity, Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -55,7 +57,9 @@ public class Tarefa implements BaseEntity, Serializable {
 	@Temporal(TemporalType.DATE)
 	@NotNull(message="Deadline precisa ser definido")
 	private Date deadline;
-	
+
+	@Column(name = "data_finalizacao")
+	@Temporal(TemporalType.TIMESTAMP)
 	private Date dataFinalizacao;
 	
 	@ManyToOne(fetch = FetchType.EAGER)
@@ -67,8 +71,8 @@ public class Tarefa implements BaseEntity, Serializable {
 	private Date dataCadastro;
 	
 	@ManyToOne
-	@JoinColumn(name="id_registro_entrada")
-	private RegistroEntrada registroEntrada;
+	@JoinColumn(name="id_registro_acesso")
+	private RegistroAcesso registroAcesso;
 	
 	public Tarefa() {
 		status = StatusEnum.BACKLOG;
@@ -204,12 +208,12 @@ public class Tarefa implements BaseEntity, Serializable {
 	public void setDataCadastro(Date dataCadastro) {
 		this.dataCadastro = dataCadastro;
 	}
-	public RegistroEntrada getRegistroEntrada() {
-		return registroEntrada;
+	public RegistroAcesso getRegistroAcesso() {
+		return registroAcesso;
 	}
 
-	public void setRegistroEntrada(RegistroEntrada registroEntrada) {
-		this.registroEntrada = registroEntrada;
+	public void setRegistroAcesso(RegistroAcesso registroAcesso) {
+		this.registroAcesso = registroAcesso;
 	}
 
 	@Override

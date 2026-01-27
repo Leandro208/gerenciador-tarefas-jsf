@@ -1,7 +1,7 @@
 package io.github.Leandro208.projetoESIG.dto;
 
 import io.github.Leandro208.projetoESIG.dominio.Equipe;
-import io.github.Leandro208.projetoESIG.dominio.RegistroEntrada;
+import io.github.Leandro208.projetoESIG.dominio.RegistroAcesso;
 import io.github.Leandro208.projetoESIG.enums.Funcao;
 
 public class UsuarioDTO {
@@ -11,7 +11,7 @@ public class UsuarioDTO {
     private String email;
     private Equipe equipe;
     private Long idResponsavel;
-    private RegistroEntrada entrada;
+    private RegistroAcesso registroAcesso;
     private Funcao funcao;
 
     public boolean isAdm() {
@@ -26,12 +26,12 @@ public class UsuarioDTO {
         this.funcao = funcao;
     }
 
-    public RegistroEntrada getEntrada() {
-        return entrada;
+    public RegistroAcesso getRegistroAcesso() {
+        return registroAcesso;
     }
 
-    public void setEntrada(RegistroEntrada entrada) {
-        this.entrada = entrada;
+    public void setRegistroAcesso(RegistroAcesso registroAcesso) {
+        this.registroAcesso = registroAcesso;
     }
 
     public Long getIdResponsavel() {

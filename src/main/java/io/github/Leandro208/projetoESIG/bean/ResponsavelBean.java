@@ -30,7 +30,6 @@ public class ResponsavelBean extends AbstractBean{
 		responsavel = new Responsavel();
 		listaReponsaveis = new ArrayList<>();
 		responsavelService = new ResponsavelService();
-		listarResponsaveis();
 	}
 
 	public String salvar() {
