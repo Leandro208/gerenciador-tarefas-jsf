@@ -15,7 +15,7 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-import org.hibernate.validator.constraints.NotEmpty;
+import org.hibernate.validator.constraints.NotBlank;
 
 @Entity
 @Table(name = "equipe", schema = "gestao")
@@ -28,7 +28,7 @@ public class Equipe implements BaseEntity, Serializable {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 	
-	@NotEmpty(message = "O nome não pode estar vazio!")
+	@NotBlank(message = "O nome não pode estar vazio!")
 	private String nome;
 	
 	private Integer tarefas_concluidas;

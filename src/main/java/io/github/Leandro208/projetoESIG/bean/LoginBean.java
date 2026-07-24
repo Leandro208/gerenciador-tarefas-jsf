@@ -28,8 +28,8 @@ public class LoginBean extends AbstractBean implements Serializable {
 	private ResponsavelService service;
 
 	public LoginBean() {
-		this.email = new String("");
-		this.senha = new String("");
+		this.email = "";
+		this.senha = "";
 		service = new ResponsavelService();
 	}
 
@@ -60,8 +60,8 @@ public class LoginBean extends AbstractBean implements Serializable {
 	}
 
 	private void limpar() {
-		email = new String("");
-		senha = new String("");
+		email = "";
+		senha = "";
 	}
 
 	public String getEmail() {

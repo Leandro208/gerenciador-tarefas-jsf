@@ -5,12 +5,14 @@ import io.github.Leandro208.projetoESIG.dominio.Usuario;
 import io.github.Leandro208.projetoESIG.dto.UsuarioDTO;
 import io.github.Leandro208.projetoESIG.enums.Funcao;
 
+import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
 
-public class UsuarioDAO extends GenericDAOImpl{
+public class UsuarioDAO {
 
     public UsuarioDTO findByEmailSenha(String email, String senhaCriptografada) {
+        EntityManager session = new GenericDAOImpl().getSession();
         try {
             String hql =
                     "SELECT u.id, u.email, u.funcao, r.nome, r.id, e.id, e.nome " +
@@ -19,7 +21,7 @@ public class UsuarioDAO extends GenericDAOImpl{
                             "LEFT JOIN r.equipe e " +
                             "WHERE UPPER(u.email) = :email AND u.senha = :senha";
 
-            Object[] result = (Object[]) getSession()
+            Object[] result = (Object[]) session
                     .createQuery(hql)
                     .setParameter("email", email.toUpperCase())
                     .setParameter("senha", senhaCriptografada)
@@ -42,13 +44,20 @@ public class UsuarioDAO extends GenericDAOImpl{
 
         } catch (NoResultException e) {
             return null;
+        } finally {
+            session.close();
         }
     }
 
     public boolean existeUsuarioByEmail(String email) {
         String hql = "FROM Usuario u WHERE UPPER(u.email) = :email";
-        Query query = getSession().createQuery(hql);
-        query.setParameter("email", email.toUpperCase());
-        return !query.getResultList().isEmpty();
+        EntityManager session = new GenericDAOImpl().getSession();
+        try {
+            Query query = session.createQuery(hql);
+            query.setParameter("email", email.toUpperCase());
+            return !query.getResultList().isEmpty();
+        } finally {
+            session.close();
+        }
     }
 }

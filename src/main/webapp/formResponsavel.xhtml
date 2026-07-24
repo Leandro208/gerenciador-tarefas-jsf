@@ -6,76 +6,22 @@
 	  xmlns:p="http://primefaces.org/ui">
 
 <h:head>
-	<title>Criar Conta</title>
-	<link rel="icon" type="image/png" href="assets/img/icon.png" />
-	<link rel="stylesheet" href="assets/css/form.css" />
+	<title>Criar Conta | Gerenciador de Tarefas</title>
+	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet" />
+	<h:outputStylesheet library="css" name="cadastro.css" />
 	<h:outputStylesheet library="css" name="form.css" />
-	<style>
-		body.autocadastro-bg {
-			background-color: #f1f5f9;
-			display: flex;
-			align-items: center;
-			justify-content: center;
-			min-height: 100vh;
-			margin: 0;
-			font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-		}
-		.autocadastro-container {
-			width: 100%;
-			max-width: 450px;
-			padding: 20px;
-		}
-		.logo-header {
-			text-align: center;
-			margin-bottom: 25px;
-		}
-		.logo-header img {
-			width: 60px;
-			margin-bottom: 10px;
-		}
-		.ui-password-panel {
-			position: absolute !important;
-			z-index: 9999;
-			box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-			border: 1px solid #e2e8f0 !important;
-			background: white !important;
-			min-width: 150px;
-		}
-
-		/* Garante que o grid de senhas não quebre */
-		.password-grid {
-			display: grid;
-			grid-template-columns: 1fr 1fr;
-			gap: 15px;
-			align-items: start; /* Alinha os campos pelo topo */
-		}
-
-		.ui-password-panel .ui-password-info {
-			color: #1e293b !important; /* Azul bem escuro/Preto */
-			font-weight: bold !important;
-			font-size: 13px !important;
-			opacity: 1 !important;
-		}
-
-		/* Cor do texto de status (Fraca, Boa, Forte) */
-		.ui-password-panel .ui-password-status {
-			color: #1e293b !important;
-			font-weight: 800 !important;
-		}
-
-	</style>
 </h:head>
 
 <h:body styleClass="autocadastro-bg">
 
 	<div class="autocadastro-container">
 		<div class="logo-header">
-			<img src="assets/img/icon.png" alt="Logo" />
-			<h2 style="color: #1e293b; margin: 0;">Comece agora</h2>
-			<p style="color: #64748b; font-size: 14px;">Crie sua conta para gerenciar tarefas.</p>
+			<h:graphicImage library="img" name="icon.png" alt="Logo" />
+			<h2>Comece agora</h2>
+			<p>Crie sua conta para gerenciar tarefas.</p>
 		</div>
 
-		<div class="form-card" style="margin: 0;">
+		<div class="form-card">
 			<h:form id="formResponsavel">
 				<p:messages id="messages" closable="true"><p:autoUpdate /></p:messages>
 
@@ -95,10 +41,10 @@
 				<p:calendar value="#{responsavelBean.responsavel.dataNascimento}"
 							pattern="dd/MM/yyyy"
 							mask="true"
-							placeholder="00/00/0000"
+							placeholder="DD/MM/AAAA"
 							inputStyle="width: 100%"/>
 
-				<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 15px;">
+				<div class="password-grid">
 					<h:panelGroup>
 						<h:outputLabel for="pwd1" value="Senha" styleClass="field-label" />
 						<p:password id="pwd1" value="#{responsavelBean.responsavel.usuario.senha}"
@@ -106,7 +52,6 @@
 									label="Senha"
 									required="true"
 									requiredMessage="A senha é obrigatória"
-									validatorMessage="As senhas não coincidem ou não atendem aos requisitos (mínimo 6 caracteres, letras e números)."
 									placeholder="••••••••"
 									feedback="true"
 									promptLabel="Mínimo 6 caracteres, com letras e números"
@@ -116,7 +61,7 @@
 					</h:panelGroup>
 
 					<h:panelGroup>
-						<h:outputLabel for="pwd2" value="Confirmar" styleClass="field-label" />
+						<h:outputLabel for="pwd2" value="Confirmar Senha" styleClass="field-label" />
 						<p:password id="pwd2" value="#{responsavelBean.responsavel.usuario.senha}"
 									label="Confirmar Senha"
 									required="true"
@@ -134,8 +79,8 @@
 			</h:form>
 		</div>
 
-		<div style="text-align: center; margin-top: 20px;">
-			<h:link outcome="/login" style="color: #6366f1; text-decoration: none; font-size: 14px; font-weight: 600;">
+		<div class="register-link">
+			<h:link outcome="/login">
 				Já possui uma conta? Entrar
 			</h:link>
 		</div>

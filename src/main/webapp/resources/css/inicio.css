@@ -1,21 +1,18 @@
-/* Container Principal */
-.main-content {
-    max-width: 1100px;
-    margin: 40px auto;
-    padding: 0 20px;
-}
-
 .page-header {
     margin-bottom: 30px;
 }
 
 .page-header h1 {
     font-size: 28px;
-    margin: 0;
+    margin: 0 0 8px 0;
     color: #111827;
 }
 
-/* Cards de Dashboard */
+.page-header p {
+    color: var(--text-sub);
+    margin: 0;
+}
+
 .dashboard-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -26,11 +23,11 @@
 .stat-card {
     background: white;
     padding: 24px;
-    border-radius: 16px;
+    border-radius: var(--card-radius);
     display: flex;
     align-items: center;
     gap: 20px;
-    box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+    box-shadow: var(--card-shadow);
 }
 
 .icon-circle {
@@ -42,6 +39,7 @@
     justify-content: center;
     font-size: 24px;
     color: white;
+    flex-shrink: 0;
 }
 
 .bg-andamento { background: var(--warning); }
@@ -50,21 +48,22 @@
 .stat-info span {
     display: block;
     font-size: 14px;
-    color: #6b7280;
+    color: var(--text-sub);
+    margin-bottom: 2px;
 }
 
 .stat-value {
-    font-size: 24px;
+    font-size: 28px;
     font-weight: 700;
     color: #111827;
+    line-height: 1;
 }
 
-/* Painel de Ações */
 .actions-panel {
     background: white;
-    padding: 24px;
-    border-radius: 16px;
-    box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+    padding: 28px;
+    border-radius: var(--card-radius);
+    box-shadow: var(--card-shadow);
 }
 
 .actions-grid {
@@ -73,54 +72,40 @@
     gap: 12px;
 }
 
-/* Estilização Customizada PrimeFaces */
-.ui-button {
+body .ui-button {
     border-radius: 10px !important;
-    padding: 8px !important;
+    padding: 10px 16px !important;
     font-weight: 500 !important;
 }
 
-
-.ui-datatable thead th {
-    background: #f9fafb !important;
-    border: none !important;
-    text-align: left !important;
-    padding: 12px !important;
-    font-size: 12px !important;
-    color: #6b7280 !important;
-}
-
-/* Remove o degradê antigo e padroniza os botões de ações */
 .actions-grid .ui-button {
-    background: #ffffff !important; /* Fundo branco sólido */
-    background-image: none !important; /* Remove o degradê do tema Aristo/antigo */
-    border: 1px solid #e5e7eb !important; /* Borda cinza clara moderna */
-    color: #374151 !important; /* Texto cinza escuro */
-    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05) !important; /* Sombra sutil */
-    text-shadow: none !important; /* Remove sombra no texto */
-    padding: 8px 16px !important;
+    background: #ffffff !important;
+    background-image: none !important;
+    border: 1px solid var(--border) !important;
+    color: var(--text-main) !important;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05) !important;
+    text-shadow: none !important;
+    padding: 10px 16px !important;
     transition: all 0.2s ease-in-out !important;
+    justify-content: flex-start !important;
 }
 
-/* Efeito de Hover (Passar o mouse) */
 .actions-grid .ui-button:hover {
     background: #f9fafb !important;
     border-color: #d1d5db !important;
-    transform: translateY(-1px); /* Leve subida */
+    transform: translateY(-1px);
     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1) !important;
 }
 
-/* Estilo para os ícones FontAwesome dentro dos botões */
 .actions-grid .ui-button .ui-c.fa {
-    color: #6366f1 !important; /* Ícones em azul/índigo para destaque */
+    color: var(--primary) !important;
     margin-right: 8px !important;
     font-size: 14px !important;
 }
 
-/* Ajuste específico para o botão de 'Minha Equipe' (Sucesso) */
 .actions-grid .ui-button.ui-button-success {
-    background: #10b981 !important;
-    border-color: #10b981 !important;
+    background: var(--success) !important;
+    border-color: var(--success) !important;
     color: white !important;
 }
 
@@ -128,16 +113,14 @@
     color: white !important;
 }
 
-/* --- Estilização dos Diálogos (Modais) --- */
 .ui-dialog {
     border: none !important;
-    border-radius: 16px !important;
+    border-radius: var(--card-radius) !important;
     box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04) !important;
     padding: 0 !important;
     overflow: hidden !important;
 }
 
-/* Cabeçalho do Diálogo */
 .ui-dialog .ui-dialog-titlebar {
     background: #ffffff !important;
     border-bottom: 1px solid #f3f4f6 !important;
@@ -151,20 +134,17 @@
     color: #111827 !important;
 }
 
-/* Botão de Fechar (X) */
 .ui-dialog .ui-dialog-titlebar-close {
     margin-top: 4px !important;
     padding: 5px !important;
     border-radius: 8px !important;
 }
 
-/* Conteúdo interno do Diálogo */
 .ui-dialog .ui-dialog-content {
     padding: 24px !important;
     background: #ffffff !important;
 }
 
-/* --- Estilização das DataTables dentro dos Modais --- */
 .ui-datatable {
     border: 1px solid #f3f4f6 !important;
     border-radius: 12px !important;
@@ -178,7 +158,7 @@
     padding: 12px 16px !important;
     font-size: 12px !important;
     font-weight: 600 !important;
-    color: #6b7280 !important;
+    color: var(--text-sub) !important;
     text-transform: uppercase !important;
     text-align: left !important;
 }
@@ -188,10 +168,9 @@
     border-bottom: 1px solid #f9fafb !important;
     padding: 14px 16px !important;
     font-size: 14px !important;
-    color: #374151 !important;
+    color: var(--text-main) !important;
 }
 
-/* Paginação (Paginator) */
 .ui-paginator {
     background: #ffffff !important;
     border: none !important;
@@ -199,7 +178,6 @@
     padding: 10px !important;
 }
 
-/* Botões redondos e flat dentro da tabela */
 .ui-datatable .ui-button.rounded-button {
     width: 32px !important;
     height: 32px !important;

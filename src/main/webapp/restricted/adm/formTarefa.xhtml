@@ -21,15 +21,53 @@
 								 placeholder="Ex: Revisar relatório mensal" />
 
 					<h:outputLabel value="Descrição detalhada" styleClass="field-label" />
-					<p:inputTextarea value="#{tarefaBean.tarefa.descricao}" rows="3"
-									 placeholder="Descreva o que precisa ser feito..." />
+					<p:editor id="descEditor" widgetVar="descEditor"
+							  value="#{tarefaBean.tarefa.descricao}" height="300"
+							  placeholder="Descreva o que precisa ser feito...">
+						<f:facet name="toolbar">
+							<span class="ql-formats">
+								<button class="ql-bold"></button>
+								<button class="ql-italic"></button>
+								<button class="ql-underline"></button>
+								<button class="ql-strike"></button>
+							</span>
+							<span class="ql-formats">
+								<select class="ql-header">
+									<option value="1"></option>
+									<option value="2"></option>
+									<option value="3"></option>
+									<option value=""></option>
+								</select>
+							</span>
+							<span class="ql-formats">
+								<button class="ql-list" value="ordered"></button>
+								<button class="ql-list" value="bullet"></button>
+							</span>
+							<span class="ql-formats">
+								<button class="ql-code-block"></button>
+								<button class="ql-blockquote"></button>
+							</span>
+							<span class="ql-formats">
+								<button class="ql-link"></button>
+								<button class="ql-clean"></button>
+							</span>
+						</f:facet>
+					</p:editor>
+
+					<div style="display: flex; gap: 8px; justify-content: flex-end; margin: 8px 0;">
+						<p:commandButton value="Preview"
+										 icon="fa fa-eye"
+										 styleClass="btn-outline"
+										 update="previewContent"
+										 process="@this descEditor"
+										 oncomplete="PF('previewDialog').show()" />
+					</div>
 
 					<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
 						<h:panelGroup>
 							<h:outputLabel value="Equipe" styleClass="field-label" />
 							<p:selectOneMenu value="#{tarefaBean.tarefa.equipe}" styleClass="custom-select">
 								<f:converter converterId="equipeConverter" />
-
 								<f:selectItems value="#{tarefaBean.comboEquipes}" />
 							</p:selectOneMenu>
 						</h:panelGroup>
@@ -54,8 +92,25 @@
 									 update="@form"
 									 process="@form" />
 				</h:form>
+
+				<p:dialog header="Preview da Descrição" widgetVar="previewDialog"
+						  modal="true" responsive="true" width="600" height="400">
+					<h:panelGroup id="previewContent" layout="block">
+						<div style="padding: 10px; line-height: 1.7; font-size: 14px;">
+							<h:outputText value="#{tarefaBean.tarefa.descricao}" escape="false" />
+						</div>
+					</h:panelGroup>
+					<f:facet name="footer">
+						<p:commandButton type="button" value="Fechar"
+										 styleClass="btn-outline"
+										 onclick="PF('previewDialog').hide()" />
+					</f:facet>
+				</p:dialog>
 			</div>
 
+			<h:link outcome="/restricted/index" styleClass="back-link">
+				<i class="fa fa-arrow-left"></i> Voltar ao Dashboard
+			</h:link>
 		</main>
 	</ui:define>
 </ui:composition>

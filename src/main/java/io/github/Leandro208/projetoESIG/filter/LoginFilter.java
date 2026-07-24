@@ -13,7 +13,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import io.github.Leandro208.projetoESIG.dominio.Usuario;
 import io.github.Leandro208.projetoESIG.dto.UsuarioDTO;
 import io.github.Leandro208.projetoESIG.enums.Funcao;
 
@@ -21,8 +20,6 @@ public class LoginFilter implements Filter {
 
 	@Override
 	public void init(FilterConfig filterConfig) throws ServletException {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override
@@ -35,21 +32,21 @@ public class LoginFilter implements Filter {
 		String url = req.getRequestURL().toString();
 		UsuarioDTO usuario = (UsuarioDTO) session.getAttribute("usuario");
 		
-		if(url.contains("/restricted") && (usuario == null || usuario.getId() == null)) {
-			res.sendRedirect(req.getServletContext().getContextPath() + "/login.jsf");
-		} else if(url.contains("/adm") && (usuario.getFuncao().equals(Funcao.USER))) {
+		if (usuario == null || usuario.getId() == null) {
+			if (url.contains("/restricted")) {
+				res.sendRedirect(req.getServletContext().getContextPath() + "/login.jsf");
+				return;
+			}
+		} else if (url.contains("/adm") && usuario.getFuncao().equals(Funcao.USER)) {
 			res.sendRedirect(req.getServletContext().getContextPath() + "/restricted/index.jsf");
-			
-		} else {
-			chain.doFilter(request, response);
+			return;
 		}
 		
+		chain.doFilter(request, response);
 	}
 
 	@Override
 	public void destroy() {
-		// TODO Auto-generated method stub
-
 	}
 
 }

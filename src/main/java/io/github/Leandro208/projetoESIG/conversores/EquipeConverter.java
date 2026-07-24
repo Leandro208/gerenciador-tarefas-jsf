@@ -19,12 +19,17 @@ public class EquipeConverter implements Converter{
 	
 	@Override
 	public Object getAsObject(FacesContext context, UIComponent component, String value) {
-		Object resultado = service.buscarPorId(Long.valueOf(value));
-		return resultado;
+		if (value == null || value.isEmpty()) {
+			return null;
+		}
+		return service.buscarPorId(Long.valueOf(value));
 	}
 
 	@Override
 	public String getAsString(FacesContext context, UIComponent component, Object value) {
+		if (value == null) {
+			return "";
+		}
 		return ((Equipe) value).getId().toString();
 	}
 

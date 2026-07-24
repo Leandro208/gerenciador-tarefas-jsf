@@ -16,8 +16,10 @@ public class ValidatorUtils {
 			Number i = (Number) o;
 			return (i.doubleValue() == 0.0);
 		}
-		if (o instanceof BaseEntity)
-			return ((BaseEntity) o).getId() == 0;
+		if (o instanceof BaseEntity) {
+			Long id = ((BaseEntity) o).getId();
+			return id == null || id == 0;
+		}
 		if (o instanceof Object[])
 			return ((Object[]) o).length == 0;
 		if (o instanceof int[])

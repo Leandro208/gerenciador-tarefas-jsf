@@ -1,40 +1,37 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+<ui:composition template="/WEB-INF/templates/navbar_template.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
 
-<html xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:h="http://java.sun.com/jsf/html"
-	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:p="http://primefaces.org/ui">
-<h:head>
-	<title>Formulário JSF</title>
-	<link rel="stylesheet" href="../../assets/css/formEquipe.css" />
-</h:head>
+    <ui:define name="conteudo">
+        <main class="main-content">
+            <div class="page-header">
+                <h1>Equipes</h1>
+                <p style="color: var(--text-sub);">Selecione uma equipe para ver suas tarefas.</p>
+            </div>
 
-<style type="text/css">
-.ui-datalist {
-	width: 300px;
-	margin-bottom: 20px;
-}
+            <div style="background: white; border-radius: var(--card-radius); padding: 24px; box-shadow: var(--card-shadow);">
+                <h:form id="form">
+                    <p:dataList value="#{equipeBean.listaEquipes}" var="equipe" type="definition">
+                        <f:facet name="header">
+                            Equipes Registradas
+                        </f:facet>
+                        <p:commandLink value="#{equipe.nome}" 
+                                        style="text-decoration: none; color: var(--primary); font-weight: 500;"
+                                        action="#{tarefaBean.visualizarQuadro}">
+                            <f:setPropertyActionListener
+                                    target="#{tarefaBean.equipe}"
+                                    value="#{equipe}" />
+                        </p:commandLink>
+                    </p:dataList>
+                </h:form>
 
-.ui-datalist-item {
-	padding: 3px;
-}
-</style>
-
-<h:body>
-	<h:form id="form">
-		<p:dataList value="#{equipeBean.listaEquipes}" var="equipe" type="definition">
-			<f:facet name="header">
-            Equipes
-        </f:facet>
-        <p:commandLink value="#{equipe.nome}" 
-									style="text-decoration: none; color: blue;"
-									action="#{tarefaBean.visualizarQuadro}">
-			<f:setPropertyActionListener
-					target="#{tarefaBean.equipe}"
-					value="#{equipe}" />
-		</p:commandLink>
-    </p:dataList>
-
-	</h:form>
-</h:body>
-</html>
+                <h:link outcome="/restricted/index" styleClass="back-link">
+                    <i class="fa fa-arrow-left"></i> Voltar ao Dashboard
+                </h:link>
+            </div>
+        </main>
+    </ui:define>
+</ui:composition>

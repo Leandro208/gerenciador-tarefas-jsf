@@ -23,22 +23,14 @@ public class TarefaCrudOperation extends CadastroCrudOperation {
 
 	private void moverTarefa(Operacao operacao) throws DAOException {
 		GenericDAO dao = new GenericDAOImpl(operacao);
-		try {
-			Tarefa tarefa = (Tarefa) operacao.getEntidade();
-			dao.updateField(tarefa.getId(), Tarefa.class,"status", tarefa.getStatus());
-		}finally {
-			dao.commit();
-		}
+		Tarefa tarefa = (Tarefa) operacao.getEntidade();
+		dao.updateField(tarefa.getId(), Tarefa.class,"status", tarefa.getStatus());
 	}
 
 	private void atribuirTarefa(Operacao operacao) throws DAOException {
 		GenericDAO dao = new GenericDAOImpl(operacao);
-		try {
-			Tarefa tarefa = (Tarefa) operacao.getEntidade();
-			dao.updateField(tarefa.getId(), Tarefa.class,"responsavel", tarefa.getResponsavel());
-		}finally {
-            dao.commit();
-		}
+		Tarefa tarefa = (Tarefa) operacao.getEntidade();
+		dao.updateField(tarefa.getId(), Tarefa.class,"responsavel", tarefa.getResponsavel());
 	}
 
 	@Override

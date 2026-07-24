@@ -11,6 +11,7 @@ import io.github.Leandro208.projetoESIG.dominio.BaseEntity;
 import io.github.Leandro208.projetoESIG.dominio.LogDB;
 import io.github.Leandro208.projetoESIG.dominio.RegistroAcesso;
 import io.github.Leandro208.projetoESIG.dominio.Usuario;
+import io.github.Leandro208.projetoESIG.dto.UsuarioDTO;
 import io.github.Leandro208.projetoESIG.persistence.Operacao;
 import io.github.Leandro208.projetoESIG.util.ReflectionUtils;
 import io.github.Leandro208.projetoESIG.util.UsuarioUtils;
@@ -40,24 +41,26 @@ public class GenericDAOImpl implements GenericDAO {
 	}
 
 	protected void changeOperation(BaseEntity entidade, int operacao) throws DAOException {
-
+		EntityManager session = getSession();
 		try {
+			session.getTransaction().begin();
 			switch (operacao) {
 			case INSERIR:
 				initializeCreationFields(entidade);
-				getSession().persist(entidade);
+				session.persist(entidade);
 				break;
 			case ATUALIZAR:
-				getSession().merge(entidade);
+				session.merge(entidade);
 				break;
 			case REMOVER:
-				getSession().remove(entidade);
+				session.remove(session.contains(entidade) ? entidade : session.merge(entidade));
 				break;
 			}
-			commit();
-
+			session.getTransaction().commit();
 		} catch (Exception e) {
-			e.printStackTrace();
+			if (session.getTransaction().isActive()) {
+				session.getTransaction().rollback();
+			}
 			throw new DAOException(e);
 		}
 	}
@@ -93,7 +96,11 @@ public class GenericDAOImpl implements GenericDAO {
 			else
 				return null;
 		} else {
-			return new Usuario(UsuarioUtils.getLogado().getId());
+			UsuarioDTO logado = UsuarioUtils.getLogado();
+			if (logado != null) {
+				return new Usuario(logado.getId());
+			}
+			return null;
 		}
 	}
 
@@ -110,13 +117,6 @@ public class GenericDAOImpl implements GenericDAO {
 	
 	@Override
 	public void commit(){
-		try {
-			em.getTransaction().begin();
-			em.getTransaction().commit();
-		} catch (Exception e) {
-			em.getTransaction().rollback();
-			e.printStackTrace();
-		}
 	}
 
 	@Override
@@ -149,6 +149,7 @@ public class GenericDAOImpl implements GenericDAO {
 	public <T extends BaseEntity> void updateField(Long id, Class<T> clazz, String fieldName, Object newValue) throws DAOException {
 	    try {
 	        EntityManager entityManager = getSession();
+	        entityManager.getTransaction().begin();
 	        T entity = entityManager.find(clazz, id);
 	        
 	        if (entity == null) {
@@ -159,7 +160,6 @@ public class GenericDAOImpl implements GenericDAO {
 	        field.setAccessible(true);
 	        field.set(entity, newValue);
 	        
-	        entityManager.getTransaction().begin();
 	        entityManager.merge(entity);
 			logUpdateFieldBanco(clazz, entity.getId(),new String[]{fieldName}, new Object[]{newValue});
 	        entityManager.getTransaction().commit();
@@ -190,7 +190,10 @@ public class GenericDAOImpl implements GenericDAO {
 			}
 
 			logDB.setAlteracao(alteracoes.toString());
-			logDB.setRegistroAcesso(UsuarioUtils.getLogado().getRegistroAcesso());
+			UsuarioDTO logado = UsuarioUtils.getLogado();
+			if (logado != null) {
+				logDB.setRegistroAcesso(logado.getRegistroAcesso());
+			}
 			getSession().persist(logDB);
 		} catch (Exception e) {
 			throw new DAOException(e);

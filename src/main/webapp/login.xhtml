@@ -5,120 +5,19 @@
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:p="http://primefaces.org/ui">
 <h:head>
-    <title>Login | Sistema</title>
+    <title>Login | Gerenciador de Tarefas</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet" />
-
-    <style>
-        body {
-            margin: 0;
-            font-family: 'Inter', sans-serif;
-            background-color: #f9fafb;
-            display: flex;
-            height: 100vh;
-        }
-
-        /* Lado Esquerdo: Design Visual */
-        .brand-side {
-            flex: 1;
-            background: #000000;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            padding: 60px;
-            color: white;
-        }
-
-        @media (max-width: 850px) {
-            .brand-side { display: none; }
-        }
-
-        /* Lado Direito: Formulário */
-        .form-side {
-            width: 450px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            padding: 40px;
-            background: white;
-        }
-
-        @media (max-width: 850px) {
-            .form-side { width: 100%; padding: 20px; }
-        }
-
-        .login-header {
-            margin-bottom: 32px;
-        }
-
-        .login-header h1 {
-            font-size: 24px;
-            font-weight: 600;
-            color: #111827;
-            margin: 0 0 8px 0;
-        }
-
-        .login-header p {
-            color: #6b7280;
-            font-size: 14px;
-            margin: 0;
-        }
-
-        /* Customização PrimeFaces */
-        .ui-inputfield {
-            width: 100% !important;
-            padding: 12px 16px !important;
-            border: 1px solid #e5e7eb !important;
-            border-radius: 8px !important;
-            font-size: 14px !important;
-            margin-bottom: 16px !important;
-            box-shadow: none !important;
-            transition: border-color 0.2s;
-        }
-
-        .ui-inputfield:focus {
-            border-color: #000 !important;
-            outline: none;
-        }
-
-        .btn-submit {
-            width: 100% !important;
-            background: #000 !important;
-            border: none !important;
-            padding: 12px !important;
-            border-radius: 8px !important;
-            font-weight: 500 !important;
-            margin-top: 10px !important;
-        }
-
-        .btn-register {
-            width: 100% !important;
-            background: white !important;
-            color: #374151 !important;
-            border: 1px solid #e5e7eb !important;
-            padding: 12px !important;
-            border-radius: 8px !important;
-            margin-top: 12px !important;
-        }
-
-        .ui-messages {
-            margin-bottom: 20px !important;
-            font-size: 13px !important;
-        }
-
-        .footer-text {
-            text-align: center;
-            margin-top: 24px;
-            font-size: 13px;
-            color: #6b7280;
-        }
-    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet" />
+    <h:outputStylesheet library="css" name="login.css" />
 </h:head>
 
 <h:body>
     <div class="brand-side">
-        <div style="font-size: 24px; font-weight: 600; margin-bottom: 20px;"><h:graphicImage library="img" name="icon.png" width="32" height="32" /></div>
-        <h2 style="font-size: 32px; font-weight: 400; line-height: 1.2;">Gerencie seus projetos com <br/><span style="color: #9ca3af;">eficiência e simplicidade.</span></h2>
+        <div class="brand-logo">
+            <h:graphicImage library="img" name="icon.png" width="36" height="36" />
+        </div>
+        <h2 class="brand-title">Gerencie seus projetos com <br/><strong>eficiência e simplicidade.</strong></h2>
+        <p class="brand-desc">Organize tarefas, acompanhe prazos e colabore com sua equipe em tempo real.</p>
     </div>
 
     <div class="form-side">
@@ -130,12 +29,12 @@
         <h:form id="loginForm">
             <p:messages id="messages" closable="true" />
 
-            <h:outputLabel for="email" value="Endereço de e-mail" style="font-size: 14px; font-weight: 500; display: block; margin-bottom: 6px;" />
+            <h:outputLabel for="email" value="Endereço de e-mail" styleClass="field-label" />
             <p:inputText id="email" value="#{loginBean.email}" required="true"
                          placeholder="nome@empresa.com" />
 
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
-                <h:outputLabel for="password" value="Senha" style="font-size: 14px; font-weight: 500;" />
+            <div class="field-header-row">
+                <h:outputLabel for="password" value="Senha" styleClass="field-label" style="margin: 0;" />
                 <p:commandLink value="Esqueceu?" style="font-size: 13px; color: #6b7280; text-decoration: none;" />
             </div>
             <p:password id="password" value="#{loginBean.senha}" required="true"
@@ -144,9 +43,9 @@
             <p:commandButton value="Continuar" action="#{loginBean.logar}" ajax="false"
                              styleClass="btn-submit" />
 
-            <div style="position: relative; text-align: center; margin: 25px 0;">
-                <span style="background: white; padding: 0 10px; color: #9ca3af; font-size: 12px; position: relative; z-index: 1;">OU</span>
-                <hr style="position: absolute; top: 50%; width: 100%; border: 0; border-top: 1px solid #f3f4f6; margin: 0;"/>
+            <div class="divider">
+                <span>OU</span>
+                <hr />
             </div>
 
             <p:linkButton href="formResponsavel.jsf" value="Criar conta gratuita"

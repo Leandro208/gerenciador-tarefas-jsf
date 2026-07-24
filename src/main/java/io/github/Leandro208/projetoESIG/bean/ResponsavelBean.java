@@ -51,7 +51,10 @@ public class ResponsavelBean extends AbstractBean{
 
 	public void listarResponsaveis() {
 		listaReponsaveis = responsavelService.buscarTodos();
-		listaReponsaveis.remove(UsuarioUtils.getLogado());
+		Long idLogado = UsuarioUtils.getLogado().getIdResponsavel();
+		listaReponsaveis = listaReponsaveis.stream()
+			.filter(r -> !r.getId().equals(idLogado))
+			.collect(Collectors.toList());
 	}
 	
 	public String alterarFuncao() {
@@ -60,8 +63,6 @@ public class ResponsavelBean extends AbstractBean{
 		 } else {
 			 responsavel.getUsuario().setFuncao(Funcao.USER);
 		 }
-		 //TODO refazer
-		// responsavelService.salvar(r);
 		 listarResponsaveis();
 		 return "";
 	}

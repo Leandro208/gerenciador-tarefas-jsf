@@ -10,7 +10,7 @@ import io.github.Leandro208.projetoESIG.services.EquipeService;
 
 @ManagedBean
 @SessionScoped
-public class EquipeBean {
+public class EquipeBean extends AbstractBean {
 
 	private EquipeService service;
 	private Equipe equipe;
@@ -26,6 +26,7 @@ public class EquipeBean {
 		service.salvar(equipe);
 		carregarEquipes();
 		limpar();
+		addMensagem("Equipe cadastrada com sucesso!");
 		return "";
 	}
 	

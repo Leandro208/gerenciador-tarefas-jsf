@@ -1,23 +1,21 @@
 package io.github.Leandro208.projetoESIG.util;
 
-import java.math.BigInteger;
 import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
 public class Criptografar {
 
 	public static String encriptografar(String senha) {
-		String retorno = "";
-
-		MessageDigest md;
-
 		try {
-			md = MessageDigest.getInstance("MD5");
-			BigInteger hash = new BigInteger(1, md.digest(senha.getBytes()));
-			retorno = hash.toString(16);
-		} catch (Exception e) {
-
+			MessageDigest md = MessageDigest.getInstance("SHA-256");
+			byte[] hash = md.digest(senha.getBytes());
+			StringBuilder hexString = new StringBuilder();
+			for (byte b : hash) {
+				hexString.append(String.format("%02x", b));
+			}
+			return hexString.toString();
+		} catch (NoSuchAlgorithmException e) {
+			throw new RuntimeException("Erro ao criptografar senha", e);
 		}
-
-		return retorno;
 	}
 }

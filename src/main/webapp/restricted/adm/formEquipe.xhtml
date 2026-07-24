@@ -24,7 +24,9 @@
                     <p:commandButton value="Salvar"
                                      action="#{equipeBean.cadastrar}"
                                      styleClass="btn-primary"
-                                     icon="fa fa-check" />
+                                     icon="fa fa-check"
+                                     update="@form"
+                                     process="@form" />
                 </h:form>
             </div>
 

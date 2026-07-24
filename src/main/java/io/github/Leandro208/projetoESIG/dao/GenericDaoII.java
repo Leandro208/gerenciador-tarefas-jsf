@@ -7,7 +7,6 @@ import javax.persistence.EntityManager;
 
 import io.github.Leandro208.projetoESIG.connection.ConnectionFactory;
 import io.github.Leandro208.projetoESIG.dominio.BaseEntity;
-import io.github.Leandro208.projetoESIG.util.Message;
 
 public class GenericDaoII <T extends BaseEntity> implements Serializable {
 
@@ -42,12 +41,12 @@ public class GenericDaoII <T extends BaseEntity> implements Serializable {
 			} else {
 				manager.merge(entidade);
 			}
-			Message.info("Operação realizada com sucesso!");
 			manager.getTransaction().commit();
 		} catch (Exception e) {
-			System.out.println(e.getMessage());
-			e.printStackTrace();
-			manager.getTransaction().rollback();
+			if (manager.getTransaction().isActive()) {
+				manager.getTransaction().rollback();
+			}
+			throw new RuntimeException("Erro ao salvar entidade", e);
 		} finally {
 			manager.close();
 		}
@@ -57,13 +56,15 @@ public class GenericDaoII <T extends BaseEntity> implements Serializable {
 	public void remover(Class<T> clazz, Long id) {
 		EntityManager manager = ConnectionFactory.getEntityManager();
 		try {
-			T entidade = manager.find(clazz, id);
 			manager.getTransaction().begin();
+			T entidade = manager.find(clazz, id);
 			manager.remove(entidade);
-			Message.info("Excluido com sucesso!");
 			manager.getTransaction().commit();
 		} catch (Exception e) {
-			manager.getTransaction().rollback();
+			if (manager.getTransaction().isActive()) {
+				manager.getTransaction().rollback();
+			}
+			throw new RuntimeException("Erro ao remover entidade", e);
 		} finally {
 			manager.close();
 		}

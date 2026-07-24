@@ -2,8 +2,8 @@ package io.github.Leandro208.projetoESIG.bean;
 
 import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
@@ -35,7 +35,7 @@ public class TarefaBean extends AbstractBean{
 
 	private FormConsultaTarefaDto formConsulta;
 
-	private HashMap<Integer, List<Tarefa>> listaTarefas;
+	private Map<Integer, List<Tarefa>> listaTarefas;
 
 	private TarefaService tarefaService;
 
@@ -56,7 +56,7 @@ public class TarefaBean extends AbstractBean{
 		tarefaService = new TarefaService();
 		responsavelService = new ResponsavelService();
 		formConsulta = new FormConsultaTarefaDto();
-		listaTarefas = new HashMap<>();
+		listaTarefas = new java.util.HashMap<>();
 		monitor = tarefaService.monitoramento();
 	}
 	
@@ -115,7 +115,7 @@ public class TarefaBean extends AbstractBean{
 		carregarTarefas();
 		dashboard();
 		limpar();
-		return "listaTarefa.jsf";
+		return navegar(LISTA_TAREFA);
 	}
 	
 	public String visualizarTarefa() {
@@ -232,7 +232,7 @@ public class TarefaBean extends AbstractBean{
 		this.tarefa = tarefa;
 	}
 
-	public HashMap<Integer, List<Tarefa>> getListaTarefas() {
+	public Map<Integer, List<Tarefa>> getListaTarefas() {
 		return listaTarefas;
 	}
 

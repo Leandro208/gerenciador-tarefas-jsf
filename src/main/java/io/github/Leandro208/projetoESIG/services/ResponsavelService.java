@@ -1,7 +1,6 @@
 package io.github.Leandro208.projetoESIG.services;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -34,16 +33,14 @@ public class ResponsavelService implements BaseService<Responsavel>, Serializabl
 	}
 	
 	public List<Responsavel> buscarTodos() {
-		List<Responsavel> resultado = new ArrayList<Responsavel>();
 		StringBuilder hql = new StringBuilder("select r from Responsavel r join fetch r.usuario order by r.nome");
-		resultado = dao.buscarTodos(hql.toString());
-		return resultado;
+		return dao.buscarTodos(hql.toString());
 	}
 	
 	public UsuarioDTO verificarCredenciais(String email, String senha) throws DAOException {
 		UsuarioDAO dao = new UsuarioDAO();
 		UsuarioDTO usuario = dao.findByEmailSenha(email, Criptografar.encriptografar(senha));
-		return usuario == null ? new UsuarioDTO() : usuario;
+		return usuario != null ? usuario : new UsuarioDTO();
 	}
 	
 	public RegistroAcesso registrarAcesso(Usuario usuario) {
@@ -51,7 +48,6 @@ public class ResponsavelService implements BaseService<Responsavel>, Serializabl
 		RegistroAcesso registroAcesso = new RegistroAcesso();
 		registroAcesso.setData(new Date());
 		registroAcesso.setUsuario(usuario);
-
 		registroAcesso.setIp(getClientIp());
 	    
 	    daoAcesso.salvar(registroAcesso);

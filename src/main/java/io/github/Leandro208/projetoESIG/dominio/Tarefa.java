@@ -21,7 +21,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 
-import org.hibernate.validator.constraints.NotEmpty;
+import org.hibernate.validator.constraints.NotBlank;
 
 import io.github.Leandro208.projetoESIG.enums.PrioridadeEnum;
 import io.github.Leandro208.projetoESIG.enums.StatusEnum;
@@ -37,10 +37,10 @@ public class Tarefa implements BaseEntity, Serializable {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 	
-	@NotEmpty(message="Título não pode ser nulo")
+	@NotBlank(message="Título não pode ser vazio")
 	private String titulo;
 	
-	@NotEmpty(message="Descrição não pode ser nulo")
+	@NotBlank(message="Descrição não pode ser vazia")
 	@Column(columnDefinition = "TEXT")
 	private String descricao;
 

@@ -32,8 +32,6 @@ public class CadastroCrudOperation implements CrudOperation {
 			dao.create(entidade);
 		} catch (DAOException e) {
 			e.printStackTrace();
-		} finally {
-			dao.commit();
 		}
 		return entidade;
 	}
@@ -44,8 +42,6 @@ public class CadastroCrudOperation implements CrudOperation {
 			dao.update(entidade);
 		} catch (DAOException e) {
 			e.printStackTrace();
-		} finally {
-			dao.commit();
 		}
 		return entidade;
 	}
@@ -56,8 +52,6 @@ public class CadastroCrudOperation implements CrudOperation {
 			dao.remove(entidade);
 		} catch (DAOException e) {
 			e.printStackTrace();
-		} finally {
-			dao.commit();
 		}
 		return entidade;
 	}

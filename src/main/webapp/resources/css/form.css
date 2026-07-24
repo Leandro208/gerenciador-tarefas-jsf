@@ -1,23 +1,15 @@
-.container-principal {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 60px 20px;
-    min-height: calc(100vh - 80px);
-}
-
 .form-card {
     background: #ffffff;
     padding: 40px;
-    border-radius: 16px;
-    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    border-radius: var(--card-radius);
+    box-shadow: var(--card-shadow);
     width: 100%;
-    max-width: 450px;
-    margin-top: 50px;
+    max-width: 520px;
+    margin: 20px auto;
 }
 
 .form-card h2 {
-    margin: 0 0 10px 0;
+    margin: 0 0 8px 0;
     font-size: 22px;
     text-align: center;
     color: var(--text-main);
@@ -28,6 +20,7 @@
     text-align: center;
     font-size: 14px;
     margin-bottom: 30px;
+    margin-top: 0;
 }
 
 .field-label {
@@ -35,11 +28,15 @@
     font-weight: 500;
     font-size: 14px;
     color: var(--text-main);
-    margin-bottom: 8px;
-    margin-top: 15px;
+    margin-bottom: 6px;
+    margin-top: 16px;
 }
 
-html body .ui-inputfield {
+.field-label:first-child {
+    margin-top: 0;
+}
+
+body .ui-inputfield {
     width: 100% !important;
     padding: 12px 15px !important;
     border: 1px solid #d1d5db !important;
@@ -47,72 +44,72 @@ html body .ui-inputfield {
     box-shadow: none !important;
     box-sizing: border-box !important;
     transition: all 0.2s;
+    font-size: 14px !important;
 }
 
-html body .ui-inputfield:focus {
+body .ui-inputfield:focus {
     border-color: var(--primary) !important;
     box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1) !important;
+    outline: none;
 }
 
-html body .ui-inputtextarea {
+body .ui-inputtextarea {
     width: 100% !important;
     padding: 12px !important;
-    border: 1px solid #e5e7eb !important;
+    border: 1px solid var(--border) !important;
     border-radius: 10px !important;
     font-family: inherit !important;
     box-sizing: border-box !important;
+    resize: vertical !important;
 }
 
-html body .ui-selectonemenu {
+body .ui-selectonemenu {
     width: 100% !important;
-    border: 1px solid #e5e7eb !important;
+    border: 1px solid var(--border) !important;
     border-radius: 10px !important;
     padding: 2px !important;
     background: #ffffff !important;
 }
 
-html body .ui-selectonemenu-label {
+body .ui-selectonemenu-label {
     text-align: left !important;
     padding: 8px !important;
-    color: #374151 !important;
+    color: var(--text-main) !important;
 }
 
-html body .ui-calendar,
-html body .ui-calendar input {
+body .ui-calendar,
+body .ui-calendar input {
     width: 100% !important;
 }
 
-html body .ui-button.btn-primary,
-html body .ui-button.btn-primary.ui-state-default {
-    background: #ffffff !important;
-    background-color: #ffffff !important;
-    background-image: none !important;
-
-    border: 1px solid #e5e7eb !important;
+body .ui-button.btn-primary {
+    background: var(--primary) !important;
+    border: none !important;
     border-radius: 10px !important;
-
-    padding: 10px !important;
+    padding: 12px 24px !important;
     display: block !important;
     margin: 25px auto 0 auto !important;
-    width: 50% !important;
-    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05) !important;
+    min-width: 160px;
+    font-weight: 600 !important;
+    transition: all 0.2s !important;
+    box-shadow: 0 1px 3px rgba(79, 70, 229, 0.3) !important;
 }
 
-html body .ui-button.btn-primary .ui-button-text {
-    color: #6366f1 !important;
+body .ui-button.btn-primary:hover {
+    background: var(--primary-hover) !important;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 6px rgba(79, 70, 229, 0.3) !important;
+}
+
+body .ui-button.btn-primary .ui-button-text {
+    color: #ffffff !important;
     text-shadow: none !important;
     font-weight: 600 !important;
 }
 
-html body .ui-button.btn-primary .ui-icon-left,
-html body .ui-button.btn-primary .ui-c {
-    color: #6366f1 !important;
-}
-
-html body .ui-button.btn-primary.ui-state-hover {
-    background: #f9fafb !important;
-    border-color: #d1d5db !important;
-    transform: translateY(-1px);
+body .ui-button.btn-primary .ui-icon-left,
+body .ui-button.btn-primary .ui-c {
+    color: #ffffff !important;
 }
 
 .back-link {
@@ -123,19 +120,18 @@ html body .ui-button.btn-primary.ui-state-hover {
     color: var(--text-sub);
     text-decoration: none;
     font-size: 14px;
+    transition: color 0.2s;
 }
 
 .back-link:hover {
     color: var(--primary);
 }
 
-
-
 .search-bar-card {
     background: #ffffff;
     padding: 20px 30px;
     border-radius: 20px;
-    box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+    box-shadow: var(--card-shadow);
     margin-bottom: 40px;
 }
 
@@ -152,44 +148,53 @@ html body .ui-button.btn-primary.ui-state-hover {
     font-size: 11px;
     font-weight: 700;
     text-transform: uppercase;
+    letter-spacing: 0.5px;
     color: #9ca3af;
-    margin-bottom: 5px;
+    margin-bottom: 6px;
     display: block;
 }
 
-html body .ui-button.btn-circle {
+body .ui-button.btn-circle {
     width: 45px !important;
     height: 45px !important;
     border-radius: 50% !important;
-    background: #6366f1 !important;
+    background: var(--primary) !important;
     border: none !important;
     color: white !important;
+    transition: all 0.2s !important;
+}
+
+body .ui-button.btn-circle:hover {
+    background: var(--primary-hover) !important;
+    transform: scale(1.05);
 }
 
 .kanban-wrapper {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 25px;
+    margin-top: 10px;
 }
 
 .kanban-col {
     background: #f3f4f6;
-    border-radius: 16px;
-    padding: 15px;
-    min-height: 500px;
+    border-radius: var(--card-radius);
+    padding: 16px;
+    min-height: 400px;
 }
 
 .col-header {
     font-weight: 700;
-    color: #374151;
-    margin-bottom: 20px;
+    color: var(--text-main);
+    margin-bottom: 16px;
     display: flex;
     align-items: center;
     gap: 8px;
     font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
 }
 
-/* Cartões das Tarefas */
 .task-card-modern {
     background: #ffffff !important;
     border-radius: 12px !important;
@@ -198,45 +203,52 @@ html body .ui-button.btn-circle {
     display: block !important;
     text-decoration: none !important;
     border: 1px solid transparent !important;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.1) !important;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.08) !important;
     transition: all 0.2s ease !important;
+    cursor: pointer;
 }
 
 .task-card-modern:hover {
     transform: translateY(-3px);
-    border-color: #6366f1 !important;
+    border-color: var(--primary) !important;
     box-shadow: 0 10px 15px -3px rgba(99,102,241,0.1) !important;
 }
 
 .task-id-tag {
     font-size: 10px;
     font-weight: 800;
-    color: #6366f1;
+    color: var(--primary);
     margin-bottom: 4px;
+    letter-spacing: 0.5px;
 }
 
 .task-content {
     font-size: 14px;
     color: #1f2937;
     font-weight: 500;
+    line-height: 1.4;
 }
 
-/* Indicadores de Status (Bolinhas) */
-.dot { width: 8px; height: 8px; border-radius: 50%; }
+.dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
 .backlog-dot { background: #9ca3af; }
-.andamento-dot { background: #6366f1; }
-.concluido-dot { background: #10b981; }
+.andamento-dot { background: var(--primary); }
+.concluido-dot { background: var(--success); }
 
-/* Reset do PrimeFaces para não estragar o layout */
-html body .ui-selectonemenu.custom-select-min {
-    border: 1px solid #e5e7eb !important;
+body .ui-selectonemenu.custom-select-min {
+    border: 1px solid var(--border) !important;
     background: #f9fafb !important;
+}
+
+body .ui-selectonemenu.custom-select {
+    border: 1px solid #d1d5db !important;
+    border-radius: 8px !important;
+    background: #ffffff !important;
 }
 
 .equipe-header {
     margin-bottom: 25px;
-    padding-left: 10px;
-    border-left: 4px solid #6366f1;
+    padding-left: 12px;
+    border-left: 4px solid var(--primary);
 }
 
 .equipe-label {
@@ -256,10 +268,6 @@ html body .ui-selectonemenu.custom-select-min {
     margin: 0;
 }
 
-.kanban-wrapper {
-    margin-top: 10px;
-}
-
 .ui-password {
     width: 100% !important;
 }
@@ -268,9 +276,110 @@ html body .ui-selectonemenu.custom-select-min {
     border: none !important;
     box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1) !important;
     background: white !important;
+    border-radius: 8px !important;
 }
 
 .ui-password-info {
     font-size: 11px !important;
     font-weight: 600;
+}
+
+body .ui-button.btn-outline {
+    background: #ffffff !important;
+    border: 1px solid var(--border) !important;
+    border-radius: 10px !important;
+    color: var(--text-main) !important;
+    padding: 8px 16px !important;
+    transition: all 0.2s !important;
+}
+
+body .ui-button.btn-outline:hover {
+    background: #f9fafb !important;
+    border-color: #d1d5db !important;
+}
+
+body .ui-button.btn-danger {
+    background: var(--danger-light) !important;
+    border: 1px solid #fecaca !important;
+    border-radius: 10px !important;
+    color: var(--danger) !important;
+    padding: 8px 16px !important;
+    transition: all 0.2s !important;
+}
+
+body .ui-button.btn-danger:hover {
+    background: #fecaca !important;
+}
+
+body .ui-editor {
+    border: 1px solid #d1d5db !important;
+    border-radius: 8px !important;
+    overflow: hidden !important;
+}
+
+body .ui-editor .ql-toolbar {
+    background: #f9fafb !important;
+    border-bottom: 1px solid #e5e7eb !important;
+    border-radius: 8px 8px 0 0 !important;
+}
+
+body .ui-editor .ql-container {
+    border: none !important;
+    font-family: 'Inter', sans-serif !important;
+    font-size: 14px !important;
+}
+
+body .ui-editor .ql-editor {
+    min-height: 250px !important;
+    line-height: 1.7 !important;
+}
+
+body .ui-editor .ql-editor.ql-blank::before {
+    color: #9ca3af !important;
+    font-style: normal !important;
+}
+
+.description-text h1,
+.description-text h2,
+.description-text h3 {
+    margin-top: 16px;
+    margin-bottom: 8px;
+}
+
+.description-text p {
+    margin: 0 0 8px 0;
+}
+
+.description-text ul,
+.description-text ol {
+    padding-left: 20px;
+}
+
+.description-text blockquote {
+    border-left: 3px solid var(--primary);
+    margin: 12px 0;
+    padding: 8px 16px;
+    background: #f9fafb;
+    border-radius: 4px;
+}
+
+.description-text code {
+    background: #f3f4f6;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 13px;
+}
+
+.description-text pre {
+    background: #1f2937;
+    color: #e5e7eb;
+    padding: 16px;
+    border-radius: 8px;
+    overflow-x: auto;
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+.description-text a {
+    color: var(--primary);
 }

@@ -1,8 +1,9 @@
 package io.github.Leandro208.projetoESIG.persistence;
 
+import javax.persistence.EntityManager;
+
+import io.github.Leandro208.projetoESIG.connection.ConnectionFactory;
 import io.github.Leandro208.projetoESIG.dao.DAOException;
-import io.github.Leandro208.projetoESIG.dao.GenericDAO;
-import io.github.Leandro208.projetoESIG.dao.GenericDAOImpl;
 import io.github.Leandro208.projetoESIG.dao.UsuarioDAO;
 import io.github.Leandro208.projetoESIG.dominio.Responsavel;
 import io.github.Leandro208.projetoESIG.dominio.Usuario;
@@ -21,13 +22,26 @@ public class ResponsavelCrudOperation extends CadastroCrudOperation {
     }
 
     private void cadastrar(Operacao operacao) throws DAOException {
-        GenericDAO dao = new GenericDAOImpl();
         Responsavel responsavel = (Responsavel) operacao.getEntidade();
         Usuario usuario = responsavel.getUsuario();
         usuario.setSenha(Criptografar.encriptografar(usuario.getSenha()));
-        dao.create(usuario);
-        dao.create(responsavel);
+
+        EntityManager manager = ConnectionFactory.getEntityManager();
+        try {
+            manager.getTransaction().begin();
+            manager.persist(usuario);
+            manager.persist(responsavel);
+            manager.getTransaction().commit();
+        } catch (Exception e) {
+            if (manager.getTransaction().isActive()) {
+                manager.getTransaction().rollback();
+            }
+            throw new DAOException("Erro ao cadastrar usuário", e);
+        } finally {
+            manager.close();
+        }
     }
+    
     @Override
     public void validate(Operacao operacao) throws NegocioException {
         ListaMensagens msg = new ListaMensagens();

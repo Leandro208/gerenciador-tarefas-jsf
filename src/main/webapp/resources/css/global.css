@@ -1,27 +1,43 @@
-/* Este é o seu arquivo global.css */
 :root {
     --primary: #4f46e5;
+    --primary-hover: #4338ca;
+    --primary-light: #eef2ff;
     --success: #10b981;
+    --success-light: #d1fae5;
     --warning: #f59e0b;
+    --warning-light: #fef3c7;
+    --danger: #ef4444;
+    --danger-light: #fee2e2;
     --bg: #f3f4f6;
     --text-main: #1f2937;
+    --text-sub: #6b7280;
+    --border: #e5e7eb;
+    --card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+    --card-radius: 16px;
+}
+
+* {
+    box-sizing: border-box;
 }
 
 body {
     margin: 0;
-    font-family: 'Inter', sans-serif;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
     background-color: var(--bg);
     color: var(--text-main);
+    -webkit-font-smoothing: antialiased;
 }
 
-/* Estilos da Navbar (Copiados do seu Index) */
 .navbar {
     background: white;
     padding: 0.75rem 2rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+    position: sticky;
+    top: 0;
+    z-index: 100;
 }
 
 .user-profile {
@@ -30,69 +46,106 @@ body {
     gap: 12px;
 }
 
+.user-profile a {
+    display: flex;
+    align-items: center;
+}
+
 .role-badge {
-    background: #eef2ff;
+    background: var(--primary-light);
     color: var(--primary);
     padding: 4px 12px;
     border-radius: 20px;
     font-size: 11px;
     font-weight: 600;
     text-transform: uppercase;
+    letter-spacing: 0.5px;
 }
 
-/* Botão de Logout Vermelho */
 body .btn-logout.ui-button {
-    background: #fee2e2 !important;
+    background: var(--danger-light) !important;
     border: 1px solid #fecaca !important;
     width: 40px !important;
     height: 40px !important;
     border-radius: 10px !important;
+    transition: all 0.2s;
+}
+
+body .btn-logout.ui-button:hover {
+    background: #fecaca !important;
 }
 
 body .btn-logout.ui-button .ui-button-icon-left {
-    color: #ef4444 !important;
-    margin-left: -8px !important; /* Ajuste para o FontAwesome fa-sign-out */
+    color: var(--danger) !important;
+    margin-left: -8px !important;
 }
 
-/* --- MENSAGENS ESTILO MINIMALISTA (DASHBOARD) --- */
+.container-principal {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 40px 20px 60px;
+    min-height: calc(100vh - 80px);
+}
 
-html body .ui-messages {
+.main-content {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 20px;
+    width: 100%;
+}
+
+body .ui-messages {
     margin: 0 0 20px 0 !important;
     border: none !important;
 }
 
-/* Container de Info (Sucesso) */
-html body .ui-messages-info {
-    background-color: #ffffff !important; /* Fundo branco para não "gritar" */
-    border: 1px solid #e5e7eb !important; /* Borda cinza igual aos cards */
-    color: #374151 !important; /* Texto neutro */
+body .ui-messages-info {
+    background-color: #ffffff !important;
+    border: 1px solid var(--border) !important;
+    color: var(--text-main) !important;
     padding: 12px 16px !important;
     border-radius: 12px !important;
-    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05) !important;
+    box-shadow: var(--card-shadow) !important;
 }
 
-/* Ícone de Info (Azul/Índigo do seu Dashboard) */
-html body .ui-messages-info-icon {
+body .ui-messages-info-icon {
     background: none !important;
-    color: #6366f1 !important; /* O azul dos seus ícones */
+    color: var(--primary) !important;
     font-size: 16px !important;
 }
 
-/* Texto da Mensagem */
-html body .ui-messages-info-summary {
-    color: #4f46e5 !important; /* Texto levemente azulado para indicar sucesso */
+body .ui-messages-info-summary {
+    color: var(--primary) !important;
     font-weight: 500 !important;
     margin-left: 5px !important;
 }
 
-/* Botão de Fechar (X) */
-html body .ui-messages-close {
+body .ui-messages-error {
+    background-color: #ffffff !important;
+    border: 1px solid #fecaca !important;
+    color: var(--danger) !important;
+    padding: 12px 16px !important;
+    border-radius: 12px !important;
+    box-shadow: var(--card-shadow) !important;
+}
+
+body .ui-messages-error-icon {
+    background: none !important;
+    color: var(--danger) !important;
+}
+
+body .ui-messages-error-summary {
+    color: var(--danger) !important;
+    font-weight: 500 !important;
+}
+
+body .ui-messages-close {
     color: #9ca3af !important;
     top: 14px !important;
 }
 
-/* Remove marcadores de lista que o PrimeFaces coloca */
-html body .ui-messages ul {
+body .ui-messages ul {
     list-style: none !important;
     margin: 0 !important;
     padding: 0 !important;

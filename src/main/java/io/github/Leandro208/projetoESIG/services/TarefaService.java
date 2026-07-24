@@ -7,8 +7,11 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import io.github.Leandro208.projetoESIG.dao.DAOException;
+import io.github.Leandro208.projetoESIG.dao.GenericDAO;
+import io.github.Leandro208.projetoESIG.dao.GenericDAOImpl;
 import io.github.Leandro208.projetoESIG.dao.TarefaDAO;
 import io.github.Leandro208.projetoESIG.dominio.Responsavel;
 import io.github.Leandro208.projetoESIG.dto.FormConsultaTarefaDto;
@@ -20,11 +23,6 @@ import io.github.Leandro208.projetoESIG.util.UsuarioUtils;
 public class TarefaService implements BaseService<Tarefa>, Serializable {
 	private static final long serialVersionUID = 1L;
 
-	public TarefaService() {
-
-	}
-
-
 	public void concluir(Tarefa t) throws ParseException, DAOException {
 		TarefaDAO dao = new TarefaDAO();
 		t.setStatus(StatusEnum.CONCLUIDO);
@@ -35,27 +33,17 @@ public class TarefaService implements BaseService<Tarefa>, Serializable {
 		dao.update(t);
 	}
 
-	public HashMap<Integer, List<Tarefa>> buscarTodos(FormConsultaTarefaDto form) {
-		
+	public Map<Integer, List<Tarefa>> buscarTodos(FormConsultaTarefaDto form) {
 		TarefaDAO dao = new TarefaDAO();
-		 
 		List<Tarefa> tarefas = dao.filter(form);
-		
-		HashMap<Integer, List<Tarefa>> mapTarefas = new HashMap<>();
+
+		Map<Integer, List<Tarefa>> mapTarefas = new HashMap<>();
 		mapTarefas.put(StatusEnum.BACKLOG.getCodigo(), new ArrayList<Tarefa>());
 		mapTarefas.put(StatusEnum.CONCLUIDO.getCodigo(), new ArrayList<Tarefa>());
 		mapTarefas.put(StatusEnum.EM_ANDAMENTO.getCodigo(), new ArrayList<Tarefa>());
-		for(Tarefa t : tarefas) {
-			if(t.getStatus() == StatusEnum.BACKLOG) {
-				mapTarefas.get(StatusEnum.BACKLOG.getCodigo()).add(t);
-			} else if(t.getStatus() == StatusEnum.CONCLUIDO) {
-				mapTarefas.get(StatusEnum.CONCLUIDO.getCodigo()).add(t);
-			} else if(t.getStatus() == StatusEnum.EM_ANDAMENTO) {
-				mapTarefas.get(StatusEnum.EM_ANDAMENTO.getCodigo()).add(t);
-			}
-			
+		for (Tarefa t : tarefas) {
+			mapTarefas.get(t.getStatus().getCodigo()).add(t);
 		}
-		
 		return mapTarefas;
 	}
 
@@ -63,29 +51,32 @@ public class TarefaService implements BaseService<Tarefa>, Serializable {
 		FormConsultaTarefaDto dto = new FormConsultaTarefaDto();
 		dto.setResponsavel(new Responsavel());
 		dto.getResponsavel().setId(UsuarioUtils.getLogado().getIdResponsavel());
-		if(!UsuarioUtils.usuarioTemEquipe()) {
+		if (!UsuarioUtils.usuarioTemEquipe()) {
 			return new MonitorTarefas();
 		}
 		dto.setEquipe(UsuarioUtils.getLogado().getEquipe());
-		int encerrados = buscarTodos(dto)
-				.get(StatusEnum.CONCLUIDO.getCodigo()).size();
-		int andamento = buscarTodos(dto)
-				.get(StatusEnum.EM_ANDAMENTO.getCodigo()).size();
 
-		MonitorTarefas monitor = new MonitorTarefas(andamento, encerrados);
-
-		return monitor;
+		Map<Integer, List<Tarefa>> tarefas = buscarTodos(dto);
+		int encerrados = tarefas.get(StatusEnum.CONCLUIDO.getCodigo()).size();
+		int andamento = tarefas.get(StatusEnum.EM_ANDAMENTO.getCodigo()).size();
+		return new MonitorTarefas(andamento, encerrados);
 	}
-
 
 	public void salvar(Tarefa tarefa) {
-		// TODO Auto-generated method stub
-		
+		GenericDAO dao = new GenericDAOImpl();
+		try {
+			dao.create(tarefa);
+		} catch (DAOException e) {
+			throw new RuntimeException("Erro ao salvar tarefa", e);
+		}
 	}
 
-
 	public void remover(Tarefa tarefa) {
-		// TODO Auto-generated method stub
-		
+		GenericDAO dao = new GenericDAOImpl();
+		try {
+			dao.remove(tarefa);
+		} catch (DAOException e) {
+			throw new RuntimeException("Erro ao remover tarefa", e);
+		}
 	}
 }
