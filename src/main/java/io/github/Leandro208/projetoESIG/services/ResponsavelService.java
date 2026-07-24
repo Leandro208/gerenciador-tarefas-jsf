@@ -44,6 +44,7 @@ public class ResponsavelService implements BaseService<Responsavel>, Serializabl
 	}
 	
 	public RegistroAcesso registrarAcesso(Usuario usuario) {
+		//TODO: Remover esse metodo do service
 		GenericDaoII<RegistroAcesso> daoAcesso = new GenericDaoII<>();
 		RegistroAcesso registroAcesso = new RegistroAcesso();
 		registroAcesso.setData(new Date());
@@ -63,8 +64,6 @@ public class ResponsavelService implements BaseService<Responsavel>, Serializabl
 	    }
 	    return ip;
 	}
-
-
 
 	public Responsavel buscarPorId(Long id) {
 		return dao.buscarPorId(Responsavel.class, id);

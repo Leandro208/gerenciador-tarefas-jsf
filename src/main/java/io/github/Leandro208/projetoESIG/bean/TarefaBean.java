@@ -111,7 +111,16 @@ public class TarefaBean extends AbstractBean{
 	}
 
 	public String remover() throws ParseException {
-		tarefaService.remover(tarefa);
+		Operacao operacao = new OperacaoCadastro();
+		operacao.setComando(ListaComando.REMOVER);
+		operacao.setEntidade(tarefa);
+		try {
+			realizarOperacao(operacao);
+			addMensagem("Operação realizada com sucesso!");
+		} catch (Exception e) {
+			addMensagemErroPadrao();
+			return null;
+		}
 		carregarTarefas();
 		dashboard();
 		limpar();
@@ -119,7 +128,7 @@ public class TarefaBean extends AbstractBean{
 	}
 	
 	public String visualizarTarefa() {
-		return "tarefaView.jsf";
+		return "tarefaView.jsf?faces-redirect=true";
 	}
 	
 	//atribui  tarefa ao usuario logado

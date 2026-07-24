@@ -6,6 +6,10 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 
 import io.github.Leandro208.projetoESIG.dominio.Equipe;
+import io.github.Leandro208.projetoESIG.exception.NegocioException;
+import io.github.Leandro208.projetoESIG.persistence.ListaComando;
+import io.github.Leandro208.projetoESIG.persistence.Operacao;
+import io.github.Leandro208.projetoESIG.persistence.OperacaoCadastro;
 import io.github.Leandro208.projetoESIG.services.EquipeService;
 
 @ManagedBean
@@ -23,7 +27,17 @@ public class EquipeBean extends AbstractBean {
 	}
 	
 	public String cadastrar() {
-		service.salvar(equipe);
+		Operacao operacao = new OperacaoCadastro();
+		operacao.setComando(ListaComando.CADASTRAR);
+		operacao.setEntidade(equipe);
+		try {
+			realizarOperacao(operacao);
+		} catch (NegocioException ne){
+			addMensagensErro(ne.getListaMensagens());
+			return null;
+		} catch (Exception e) {
+			addMensagemErroPadrao();
+		}
 		carregarEquipes();
 		limpar();
 		addMensagem("Equipe cadastrada com sucesso!");

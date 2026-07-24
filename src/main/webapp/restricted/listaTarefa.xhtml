@@ -56,6 +56,12 @@
 							<p:commandLink action="#{tarefaBean.visualizarTarefa}" styleClass="task-card-modern">
 								<div class="task-id-tag">##{t.id}</div>
 								<div class="task-content">#{t.titulo}</div>
+								<div class="task-meta">
+									<span class="priority-badge priority-#{t.prioridade.toString().toLowerCase()}">#{t.prioridade}</span>
+									<span class="task-responsavel">
+										<i class="fa fa-user"></i> #{t.responsavel == null ? 'Sem Responsável' : t.responsavel.nome}
+									</span>
+								</div>
 								<f:setPropertyActionListener
 										target="#{tarefaBean.tarefa}"
 										value="#{t}" />
@@ -71,6 +77,12 @@
 							<p:commandLink action="#{tarefaBean.visualizarTarefa}" styleClass="task-card-modern">
 								<div class="task-id-tag">##{t.id}</div>
 								<div class="task-content">#{t.titulo}</div>
+								<div class="task-meta">
+									<span class="priority-badge priority-#{t.prioridade.toString().toLowerCase()}">#{t.prioridade}</span>
+									<span class="task-responsavel">
+										<i class="fa fa-user"></i> #{t.responsavel == null ? 'Sem Responsável' : t.responsavel.nome}
+									</span>
+								</div>
 								<f:setPropertyActionListener
 										target="#{tarefaBean.tarefa}"
 										value="#{t}" />
@@ -86,6 +98,12 @@
 							<p:commandLink action="#{tarefaBean.visualizarTarefa}" styleClass="task-card-modern">
 								<div class="task-id-tag">##{t.id}</div>
 								<div class="task-content">#{t.titulo}</div>
+								<div class="task-meta">
+									<span class="priority-badge priority-#{t.prioridade.toString().toLowerCase()}">#{t.prioridade}</span>
+									<span class="task-responsavel">
+										<i class="fa fa-user"></i> #{t.responsavel == null ? 'Sem Responsável' : t.responsavel.nome}
+									</span>
+								</div>
 								<f:setPropertyActionListener
 										target="#{tarefaBean.tarefa}"
 										value="#{t}" />

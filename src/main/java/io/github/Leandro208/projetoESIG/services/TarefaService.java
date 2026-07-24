@@ -23,16 +23,6 @@ import io.github.Leandro208.projetoESIG.util.UsuarioUtils;
 public class TarefaService implements BaseService<Tarefa>, Serializable {
 	private static final long serialVersionUID = 1L;
 
-	public void concluir(Tarefa t) throws ParseException, DAOException {
-		TarefaDAO dao = new TarefaDAO();
-		t.setStatus(StatusEnum.CONCLUIDO);
-		SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
-		t.setDataFinalizacao(new Date());
-		String data = df.format(t.getDataFinalizacao());
-		t.setDataFinalizacao(df.parse(data));
-		dao.update(t);
-	}
-
 	public Map<Integer, List<Tarefa>> buscarTodos(FormConsultaTarefaDto form) {
 		TarefaDAO dao = new TarefaDAO();
 		List<Tarefa> tarefas = dao.filter(form);
@@ -60,23 +50,5 @@ public class TarefaService implements BaseService<Tarefa>, Serializable {
 		int encerrados = tarefas.get(StatusEnum.CONCLUIDO.getCodigo()).size();
 		int andamento = tarefas.get(StatusEnum.EM_ANDAMENTO.getCodigo()).size();
 		return new MonitorTarefas(andamento, encerrados);
-	}
-
-	public void salvar(Tarefa tarefa) {
-		GenericDAO dao = new GenericDAOImpl();
-		try {
-			dao.create(tarefa);
-		} catch (DAOException e) {
-			throw new RuntimeException("Erro ao salvar tarefa", e);
-		}
-	}
-
-	public void remover(Tarefa tarefa) {
-		GenericDAO dao = new GenericDAOImpl();
-		try {
-			dao.remove(tarefa);
-		} catch (DAOException e) {
-			throw new RuntimeException("Erro ao remover tarefa", e);
-		}
 	}
 }

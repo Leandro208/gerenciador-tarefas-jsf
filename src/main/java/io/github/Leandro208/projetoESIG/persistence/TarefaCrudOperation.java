@@ -18,6 +18,8 @@ public class TarefaCrudOperation extends CadastroCrudOperation {
 			atribuirTarefa(operacao);
 		} else if(operacao.getComando().equals(ListaComando.MOVER_TAREFA)) {
 			moverTarefa(operacao);
+		} else if (operacao.getComando().equals(ListaComando.REMOVER_TAREFA)) {
+			remover(operacao.getEntidade());
 		}
 	}
 

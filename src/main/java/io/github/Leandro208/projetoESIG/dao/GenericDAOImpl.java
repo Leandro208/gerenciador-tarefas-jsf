@@ -56,6 +56,7 @@ public class GenericDAOImpl implements GenericDAO {
 				session.remove(session.contains(entidade) ? entidade : session.merge(entidade));
 				break;
 			}
+			logOperationBanco(entidade,operacao);
 			session.getTransaction().commit();
 		} catch (Exception e) {
 			if (session.getTransaction().isActive()) {
@@ -181,15 +182,43 @@ public class GenericDAOImpl implements GenericDAO {
 			StringBuilder alteracoes = new StringBuilder();
 			for (int i = 0; i < valores.length; i++) {
 				Object valor = valores[i];
-				String informacao = valor.toString();
+				String informacao = valor == null ? "null" : valor.toString();
 				if(valor instanceof BaseEntity){
-					informacao = ((BaseEntity) valor).getId().toString();
+					informacao = ((BaseEntity) valor).getId() == null ? "null" : ((BaseEntity) valor).getId().toString();
 				}
 				alteracoes.append(campos[i] + ": " + informacao);
 				alteracoes.append("\n");
 			}
 
 			logDB.setAlteracao(alteracoes.toString());
+			UsuarioDTO logado = UsuarioUtils.getLogado();
+			if (logado != null) {
+				logDB.setRegistroAcesso(logado.getRegistroAcesso());
+			}
+			getSession().persist(logDB);
+		} catch (Exception e) {
+			throw new DAOException(e);
+		}
+	}
+
+	private void logOperationBanco(BaseEntity entidade, int operacao ) throws DAOException {
+		try{
+			LogDB logDB = new LogDB();
+			logDB.setData(new Date());
+			logDB.setCodComando(this.codComando);
+
+			if(operacao == INSERIR){
+				logDB.setOperacao('I');
+			} else if(operacao == ATUALIZAR){
+				logDB.setOperacao('U');
+			} else if(operacao == REMOVER){
+				logDB.setOperacao('D');
+			}
+
+			logDB.setTabela(entidade.getClass().getName());
+			logDB.setIdElemento(entidade.getId());
+
+			logDB.setAlteracao(entidade.toString());
 			UsuarioDTO logado = UsuarioUtils.getLogado();
 			if (logado != null) {
 				logDB.setRegistroAcesso(logado.getRegistroAcesso());

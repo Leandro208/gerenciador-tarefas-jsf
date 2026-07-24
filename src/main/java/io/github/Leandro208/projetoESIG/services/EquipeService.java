@@ -10,9 +10,6 @@ import io.github.Leandro208.projetoESIG.util.UsuarioUtils;
 
 public class EquipeService implements BaseService<Equipe>, Serializable {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 
 	private GenericDaoII<Equipe> dao;
@@ -20,25 +17,11 @@ public class EquipeService implements BaseService<Equipe>, Serializable {
 	public EquipeService() {
 		this.dao = new GenericDaoII<Equipe>();
 	}
-
-
-
-	public void salvar(Equipe t) {
-		t.setDataCadastro(new Date());
-		t.setRegistroAcesso(UsuarioUtils.getLogado().getRegistroAcesso());
-		dao.salvar(t);
-	}
-
-	public void remover(Equipe t) {
-		dao.remover(Equipe.class, t.getId());	
-	}
 	
 	public List<Equipe> buscarTodos(){
 		StringBuilder hql = new StringBuilder("select e from Equipe e order by e.nome");
 		return dao.buscarTodos(hql.toString());
 	}
-
-
 
 	public Equipe buscarPorId(Long valueOf) {
 		return dao.buscarPorId(Equipe.class, valueOf);
