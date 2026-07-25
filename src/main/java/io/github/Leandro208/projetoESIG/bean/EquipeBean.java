@@ -1,10 +1,12 @@
 package io.github.Leandro208.projetoESIG.bean;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 
+import io.github.Leandro208.projetoESIG.dao.DAOException;
 import io.github.Leandro208.projetoESIG.dominio.Equipe;
 import io.github.Leandro208.projetoESIG.exception.NegocioException;
 import io.github.Leandro208.projetoESIG.persistence.ListaComando;
@@ -23,10 +25,9 @@ public class EquipeBean extends AbstractBean {
 	public EquipeBean() {
 		service = new EquipeService();
 		equipe = new Equipe();
-		listaEquipes = service.buscarTodos();
 	}
 	
-	public String cadastrar() {
+	public String cadastrar() throws DAOException {
 		Operacao operacao = new OperacaoCadastro();
 		operacao.setComando(ListaComando.CADASTRAR);
 		operacao.setEntidade(equipe);
@@ -38,14 +39,9 @@ public class EquipeBean extends AbstractBean {
 		} catch (Exception e) {
 			addMensagemErroPadrao();
 		}
-		carregarEquipes();
 		limpar();
 		addMensagem("Equipe cadastrada com sucesso!");
 		return "";
-	}
-	
-	public void carregarEquipes() {
-		listaEquipes = service.buscarTodos();
 	}
 	
 	private void limpar() {
@@ -61,6 +57,11 @@ public class EquipeBean extends AbstractBean {
 	}
 
 	public List<Equipe> getListaEquipes() {
+		try {
+			listaEquipes = service.buscarTodos();
+		} catch (DAOException e) {
+			listaEquipes = new ArrayList<>();
+		}
 		return listaEquipes;
 	}
 

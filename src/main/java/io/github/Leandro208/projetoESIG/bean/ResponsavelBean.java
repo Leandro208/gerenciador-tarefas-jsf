@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 import javax.faces.bean.ManagedBean;
 import javax.faces.model.SelectItem;
 
+import io.github.Leandro208.projetoESIG.dao.DAOException;
 import io.github.Leandro208.projetoESIG.dominio.Equipe;
 import io.github.Leandro208.projetoESIG.dominio.Responsavel;
 import io.github.Leandro208.projetoESIG.dominio.Usuario;
@@ -49,7 +50,7 @@ public class ResponsavelBean extends AbstractBean{
 		return "login.jsf";
 	}
 
-	public void listarResponsaveis() {
+	public void listarResponsaveis() throws DAOException {
 		listaReponsaveis = responsavelService.buscarTodos();
 		Long idLogado = UsuarioUtils.getLogado().getIdResponsavel();
 		listaReponsaveis = listaReponsaveis.stream()
@@ -57,13 +58,24 @@ public class ResponsavelBean extends AbstractBean{
 			.collect(Collectors.toList());
 	}
 	
-	public String alterarFuncao() {
+	public String alterarFuncao() throws DAOException {
 		 if(responsavel.getUsuario().getFuncao().equals(Funcao.USER)) {
 			 responsavel.getUsuario().setFuncao(Funcao.ADM);
 		 } else {
 			 responsavel.getUsuario().setFuncao(Funcao.USER);
 		 }
-		 listarResponsaveis();
+		Operacao operacao = new OperacaoCadastro();
+		operacao.setComando(ListaComando.ALTERAR_FUNCAO_USUARIO);
+		operacao.setEntidade(responsavel);
+		try {
+			realizarOperacao(operacao);
+		} catch (NegocioException ne){
+			addMensagensErro(ne.getListaMensagens());
+			return null;
+		}
+		catch (Exception e) {
+			addMensagemErroPadrao();
+		}
 		 return "";
 	}
 	
@@ -79,7 +91,8 @@ public class ResponsavelBean extends AbstractBean{
 		this.responsavel = responsavel;
 	}
 
-	public List<Responsavel> getListaReponsaveis() {
+	public List<Responsavel> getListaReponsaveis() throws DAOException {
+		listarResponsaveis();
 		return listaReponsaveis;
 	}
 

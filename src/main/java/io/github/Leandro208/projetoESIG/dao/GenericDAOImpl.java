@@ -43,6 +43,7 @@ public class GenericDAOImpl implements GenericDAO {
 	protected void changeOperation(BaseEntity entidade, int operacao) throws DAOException {
 		EntityManager session = getSession();
 		try {
+
 			session.getTransaction().begin();
 			switch (operacao) {
 			case INSERIR:

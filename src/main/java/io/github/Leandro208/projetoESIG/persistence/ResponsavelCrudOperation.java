@@ -4,6 +4,8 @@ import javax.persistence.EntityManager;
 
 import io.github.Leandro208.projetoESIG.connection.ConnectionFactory;
 import io.github.Leandro208.projetoESIG.dao.DAOException;
+import io.github.Leandro208.projetoESIG.dao.GenericDAO;
+import io.github.Leandro208.projetoESIG.dao.GenericDAOImpl;
 import io.github.Leandro208.projetoESIG.dao.UsuarioDAO;
 import io.github.Leandro208.projetoESIG.dominio.Responsavel;
 import io.github.Leandro208.projetoESIG.dominio.Usuario;
@@ -18,7 +20,13 @@ public class ResponsavelCrudOperation extends CadastroCrudOperation {
        validate(operacao);
        if (operacao.getComando().equals(ListaComando.CADASTRAR_USUARIO)){
            cadastrar(operacao);
+       } else if (operacao.getComando().equals(ListaComando.ALTERAR_FUNCAO_USUARIO)){
+           alterarFuncao(operacao);
        }
+    }
+
+    private void alterarFuncao(Operacao operacao) {
+        GenericDAO dao = new GenericDAOImpl()
     }
 
     private void cadastrar(Operacao operacao) throws DAOException {

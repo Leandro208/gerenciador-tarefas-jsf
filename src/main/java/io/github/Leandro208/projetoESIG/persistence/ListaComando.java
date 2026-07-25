@@ -15,5 +15,6 @@ public class ListaComando {
 	public static final Comando REMOVER_TAREFA = new Comando(14, "io.github.Leandro208.projetoESIG.persistence.TarefaCrudOperation");
 
 	public static final Comando CADASTRAR_USUARIO = new Comando(20, "io.github.Leandro208.projetoESIG.persistence.ResponsavelCrudOperation");
+	public static final Comando ALTERAR_FUNCAO_USUARIO = new Comando(20, "io.github.Leandro208.projetoESIG.persistence.ResponsavelCrudOperation");
 
 }

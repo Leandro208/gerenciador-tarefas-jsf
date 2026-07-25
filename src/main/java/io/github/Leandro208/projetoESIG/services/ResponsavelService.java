@@ -8,7 +8,8 @@ import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
 
 import io.github.Leandro208.projetoESIG.dao.DAOException;
-import io.github.Leandro208.projetoESIG.dao.GenericDaoII;
+import io.github.Leandro208.projetoESIG.dao.GenericDAO;
+import io.github.Leandro208.projetoESIG.dao.GenericDAOImpl;
 import io.github.Leandro208.projetoESIG.dao.UsuarioDAO;
 import io.github.Leandro208.projetoESIG.dominio.RegistroAcesso;
 import io.github.Leandro208.projetoESIG.dominio.Responsavel;
@@ -20,21 +21,14 @@ public class ResponsavelService implements BaseService<Responsavel>, Serializabl
 
 	private static final long serialVersionUID = 1L;
 	
-	private GenericDaoII<Responsavel> dao;
+	private GenericDAO dao;
 	
 	public ResponsavelService() {
-		dao = new GenericDaoII<Responsavel>();
+		dao = new GenericDAOImpl();
 	}
-	
 
-	
-	public void remover(Responsavel r) {
-		dao.remover(Responsavel.class, r.getId());
-	}
-	
-	public List<Responsavel> buscarTodos() {
-		StringBuilder hql = new StringBuilder("select r from Responsavel r join fetch r.usuario order by r.nome");
-		return dao.buscarTodos(hql.toString());
+	public List<Responsavel> buscarTodos() throws DAOException {
+		return (List<Responsavel>) dao.findAll(Responsavel.class);
 	}
 	
 	public UsuarioDTO verificarCredenciais(String email, String senha) throws DAOException {
@@ -43,15 +37,15 @@ public class ResponsavelService implements BaseService<Responsavel>, Serializabl
 		return usuario != null ? usuario : new UsuarioDTO();
 	}
 	
-	public RegistroAcesso registrarAcesso(Usuario usuario) {
+	public RegistroAcesso registrarAcesso(Usuario usuario) throws DAOException {
 		//TODO: Remover esse metodo do service
-		GenericDaoII<RegistroAcesso> daoAcesso = new GenericDaoII<>();
+		GenericDAO dao = new GenericDAOImpl();
 		RegistroAcesso registroAcesso = new RegistroAcesso();
 		registroAcesso.setData(new Date());
 		registroAcesso.setUsuario(usuario);
 		registroAcesso.setIp(getClientIp());
 	    
-	    daoAcesso.salvar(registroAcesso);
+	    dao.create(registroAcesso);
 		return registroAcesso;
 	}
 	
@@ -66,7 +60,11 @@ public class ResponsavelService implements BaseService<Responsavel>, Serializabl
 	}
 
 	public Responsavel buscarPorId(Long id) {
-		return dao.buscarPorId(Responsavel.class, id);
-	}
+        try {
+            return dao.findById(id,Responsavel.class);
+        } catch (DAOException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
 }

@@ -10,6 +10,7 @@ import javax.faces.bean.SessionScoped;
 import javax.faces.model.SelectItem;
 
 
+import io.github.Leandro208.projetoESIG.dao.DAOException;
 import io.github.Leandro208.projetoESIG.dto.FormConsultaTarefaDto;
 import io.github.Leandro208.projetoESIG.dominio.Equipe;
 import io.github.Leandro208.projetoESIG.dominio.Responsavel;
@@ -191,7 +192,7 @@ public class TarefaBean extends AbstractBean{
 	}
 	
 
-	public List<SelectItem> getComboEquipes(){
+	public List<SelectItem> getComboEquipes() throws DAOException {
 		List<SelectItem> itensComboBoxEquipe = new ArrayList<>();
 		List<Equipe> equipes = new EquipeService().buscarTodos();
 		for(Equipe equipe : equipes) {
@@ -204,7 +205,7 @@ public class TarefaBean extends AbstractBean{
 		return itensComboBoxEquipe;
 	}
 	
-	public List<SelectItem> getComboResponsaveis() {
+	public List<SelectItem> getComboResponsaveis() throws DAOException {
 		List<SelectItem> itensComboBoxResponsaveis = new ArrayList<>();
 		List<Responsavel> responsaveis = responsavelService.buscarTodos();
 		for (Responsavel r : responsaveis) {

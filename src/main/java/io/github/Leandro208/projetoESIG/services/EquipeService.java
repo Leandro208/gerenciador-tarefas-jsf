@@ -1,30 +1,33 @@
 package io.github.Leandro208.projetoESIG.services;
 
 import java.io.Serializable;
-import java.util.Date;
 import java.util.List;
 
-import io.github.Leandro208.projetoESIG.dao.GenericDaoII;
+import io.github.Leandro208.projetoESIG.dao.DAOException;
+import io.github.Leandro208.projetoESIG.dao.EquipeDAO;
+import io.github.Leandro208.projetoESIG.dao.GenericDAO;
 import io.github.Leandro208.projetoESIG.dominio.Equipe;
-import io.github.Leandro208.projetoESIG.util.UsuarioUtils;
 
 public class EquipeService implements BaseService<Equipe>, Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	private GenericDaoII<Equipe> dao;
+	private GenericDAO dao;
 	
 	public EquipeService() {
-		this.dao = new GenericDaoII<Equipe>();
+		this.dao = new EquipeDAO();
 	}
 	
-	public List<Equipe> buscarTodos(){
-		StringBuilder hql = new StringBuilder("select e from Equipe e order by e.nome");
-		return dao.buscarTodos(hql.toString());
+	public List<Equipe> buscarTodos() throws DAOException {
+		return (List<Equipe>) dao.findAll(Equipe.class);
 	}
 
-	public Equipe buscarPorId(Long valueOf) {
-		return dao.buscarPorId(Equipe.class, valueOf);
-	}
+	public Equipe buscarPorId(Long idEquipe) {
+        try {
+            return dao.findById(idEquipe,Equipe.class);
+        } catch (DAOException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
 }
