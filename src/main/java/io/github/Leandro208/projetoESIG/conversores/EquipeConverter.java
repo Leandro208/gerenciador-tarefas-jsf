@@ -5,6 +5,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
 
+import io.github.Leandro208.projetoESIG.dao.DAOException;
 import io.github.Leandro208.projetoESIG.dominio.Equipe;
 import io.github.Leandro208.projetoESIG.services.EquipeService;
 
@@ -22,8 +23,12 @@ public class EquipeConverter implements Converter{
 		if (value == null || value.isEmpty()) {
 			return null;
 		}
-		return service.buscarPorId(Long.valueOf(value));
-	}
+        try {
+            return service.buscarPorId(Long.valueOf(value));
+        } catch (DAOException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
 	@Override
 	public String getAsString(FacesContext context, UIComponent component, Object value) {

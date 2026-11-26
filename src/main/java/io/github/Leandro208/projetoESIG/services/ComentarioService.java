@@ -12,14 +12,21 @@ public class ComentarioService implements BaseService<Comentario>, Serializable 
 	private static final long serialVersionUID = 1L;
 
 	public List<Comentario> buscarPorTarefa(Long idTarefa) {
-		return new ComentarioDAO().buscarPorTarefa(idTarefa);
+		ComentarioDAO dao = new ComentarioDAO();
+		try {
+			return dao.buscarPorTarefa(idTarefa);
+		} finally {
+			dao.close();
+		}
 	}
 
-	public Comentario buscarPorId(Long id) {
+	public Comentario buscarPorId(Long id) throws DAOException {
+		ComentarioDAO dao = new ComentarioDAO();
 		try {
-			return new ComentarioDAO().findById(id, Comentario.class);
-		} catch (DAOException e) {
-			throw new RuntimeException(e);
+			return dao.findById(id, Comentario.class);
+		} finally {
+			dao.close();
 		}
+
 	}
 }

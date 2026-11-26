@@ -55,10 +55,15 @@ public class ResponsavelCrudOperation extends CadastroCrudOperation {
         ListaMensagens msg = new ListaMensagens();
         if(operacao.getComando() == ListaComando.CADASTRAR_USUARIO ){
             UsuarioDAO daoUsuario = new UsuarioDAO();
-            Usuario usuario = ((Responsavel) operacao.getEntidade()).getUsuario();
-            if(daoUsuario.existeUsuarioByEmail(usuario.getEmail())){
-                msg.addErro("Já existe um usuário cadastrado com esse email!");
+            try {
+                Usuario usuario = ((Responsavel) operacao.getEntidade()).getUsuario();
+                if(daoUsuario.existeUsuarioByEmail(usuario.getEmail())){
+                    msg.addErro("Já existe um usuário cadastrado com esse email!");
+                }
+            } finally {
+                daoUsuario.close();
             }
+
         }
 
         checkValidation(msg);

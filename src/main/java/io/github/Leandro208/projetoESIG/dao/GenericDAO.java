@@ -20,4 +20,5 @@ public interface GenericDAO {
 
 	<T extends BaseEntity> void updateField(Long id, Class<T> clazz, String fieldName, Object newValue) throws DAOException;
 
+	void close();
 }

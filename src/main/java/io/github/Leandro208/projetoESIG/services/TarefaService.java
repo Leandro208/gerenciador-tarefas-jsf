@@ -25,16 +25,20 @@ public class TarefaService implements BaseService<Tarefa>, Serializable {
 
 	public Map<Integer, List<Tarefa>> buscarTodos(FormConsultaTarefaDto form) {
 		TarefaDAO dao = new TarefaDAO();
-		List<Tarefa> tarefas = dao.filter(form);
+		try{
+			List<Tarefa> tarefas = dao.filter(form);
 
-		Map<Integer, List<Tarefa>> mapTarefas = new HashMap<>();
-		mapTarefas.put(StatusEnum.BACKLOG.getCodigo(), new ArrayList<Tarefa>());
-		mapTarefas.put(StatusEnum.CONCLUIDO.getCodigo(), new ArrayList<Tarefa>());
-		mapTarefas.put(StatusEnum.EM_ANDAMENTO.getCodigo(), new ArrayList<Tarefa>());
-		for (Tarefa t : tarefas) {
-			mapTarefas.get(t.getStatus().getCodigo()).add(t);
+			Map<Integer, List<Tarefa>> mapTarefas = new HashMap<>();
+			mapTarefas.put(StatusEnum.BACKLOG.getCodigo(), new ArrayList<Tarefa>());
+			mapTarefas.put(StatusEnum.CONCLUIDO.getCodigo(), new ArrayList<Tarefa>());
+			mapTarefas.put(StatusEnum.EM_ANDAMENTO.getCodigo(), new ArrayList<Tarefa>());
+			for (Tarefa t : tarefas) {
+				mapTarefas.get(t.getStatus().getCodigo()).add(t);
+			}
+			return mapTarefas;
+		} finally {
+			dao.close();
 		}
-		return mapTarefas;
 	}
 
 	public MonitorTarefas monitoramento() {

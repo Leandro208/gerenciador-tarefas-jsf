@@ -20,21 +20,25 @@ import io.github.Leandro208.projetoESIG.util.Criptografar;
 public class ResponsavelService implements BaseService<Responsavel>, Serializable{
 
 	private static final long serialVersionUID = 1L;
-	
-	private GenericDAO dao;
-	
-	public ResponsavelService() {
-		dao = new GenericDAOImpl();
-	}
 
 	public List<Responsavel> buscarTodos() throws DAOException {
-		return (List<Responsavel>) dao.findAll(Responsavel.class);
+		GenericDAO dao = new GenericDAOImpl();
+		try {
+			return (List<Responsavel>) dao.findAll(Responsavel.class);
+		} finally {
+			dao.close();
+		}
 	}
 	
 	public UsuarioDTO verificarCredenciais(String email, String senha) throws DAOException {
 		UsuarioDAO dao = new UsuarioDAO();
-		UsuarioDTO usuario = dao.findByEmailSenha(email, Criptografar.encriptografar(senha));
-		return usuario != null ? usuario : new UsuarioDTO();
+		try{
+			UsuarioDTO usuario = dao.findByEmailSenha(email, Criptografar.encriptografar(senha));
+			return usuario != null ? usuario : new UsuarioDTO();
+		} finally {
+			dao.close();
+		}
+
 	}
 	
 	public RegistroAcesso registrarAcesso(Usuario usuario) throws DAOException {
@@ -59,12 +63,13 @@ public class ResponsavelService implements BaseService<Responsavel>, Serializabl
 	    return ip;
 	}
 
-	public Responsavel buscarPorId(Long id) {
+	public Responsavel buscarPorId(Long id) throws DAOException {
+       	GenericDAO dao = new GenericDAOImpl();
         try {
             return dao.findById(id,Responsavel.class);
-        } catch (DAOException e) {
-            throw new RuntimeException(e);
-        }
+        } finally {
+			dao.close();
+		}
     }
 
 }

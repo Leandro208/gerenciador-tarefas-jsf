@@ -5,6 +5,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
 
+import io.github.Leandro208.projetoESIG.dao.DAOException;
 import io.github.Leandro208.projetoESIG.dominio.Responsavel;
 import io.github.Leandro208.projetoESIG.services.ResponsavelService;
 
@@ -20,8 +21,12 @@ public class ResponsavelConverter implements Converter {
 
 	@Override
 	public Object getAsObject(FacesContext context, UIComponent component, String value) {
-		return (Responsavel) service.buscarPorId(Long.valueOf(value));
-	}
+        try {
+            return (Responsavel) service.buscarPorId(Long.valueOf(value));
+        } catch (DAOException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
 	@Override
 	public String getAsString(FacesContext context, UIComponent component, Object value) {

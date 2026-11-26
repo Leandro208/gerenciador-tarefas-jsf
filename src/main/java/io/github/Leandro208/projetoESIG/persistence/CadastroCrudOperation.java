@@ -13,11 +13,11 @@ public class CadastroCrudOperation implements CrudOperation {
 	public void operar(Operacao operacao) throws DAOException, NegocioException {
 		validate(operacao);
 		if(operacao.getComando().equals(ListaComando.CADASTRAR)) {
-			criar(operacao.getEntidade());
+			criar(operacao);
 		} else if(operacao.getComando().equals(ListaComando.ALTERAR)) {
-			alterar(operacao.getEntidade());
+			alterar(operacao);
 		} else if(operacao.getComando().equals(ListaComando.REMOVER)) {
-			remover(operacao.getEntidade());
+			remover(operacao);
 		}
 	}
 
@@ -26,34 +26,34 @@ public class CadastroCrudOperation implements CrudOperation {
 
 	}
 
-	protected Object criar(BaseEntity entidade) {
-		GenericDAO dao = new GenericDAOImpl();
+	protected Object criar(Operacao operacao) {
+		GenericDAO dao = new GenericDAOImpl(operacao);
 		try {
-			dao.create(entidade);
+			dao.create(operacao.getEntidade());
 		} catch (DAOException e) {
 			e.printStackTrace();
 		}
-		return entidade;
+		return operacao.getEntidade();
 	}
 
-	protected Object alterar(BaseEntity entidade) {
-		GenericDAO dao = new GenericDAOImpl();
+	protected Object alterar(Operacao operacao) {
+		GenericDAO dao = new GenericDAOImpl(operacao);
 		try {
-			dao.update(entidade);
+			dao.update(operacao.getEntidade());
 		} catch (DAOException e) {
 			e.printStackTrace();
 		}
-		return entidade;
+		return operacao.getEntidade();
 	}
 	
-	protected Object remover(BaseEntity entidade) {
-		GenericDAO dao = new GenericDAOImpl();
+	protected Object remover(Operacao operacao) {
+		GenericDAO dao = new GenericDAOImpl(operacao);
 		try {
-			dao.remove(entidade);
+			dao.remove(operacao.getEntidade());
 		} catch (DAOException e) {
 			e.printStackTrace();
 		}
-		return entidade;
+		return operacao.getEntidade();
 	}
 
 	public void checkValidation(ListaMensagens mensagens) throws NegocioException {

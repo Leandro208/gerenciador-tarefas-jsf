@@ -32,6 +32,8 @@ public class SessionListener implements HttpSessionListener{
 						daoEntrada.update(entrada);
 					} catch (DAOException e) {
 						e.printStackTrace();
+					} finally {
+						daoEntrada.close();
 					}
 	    	    }
 	    	}

@@ -9,55 +9,43 @@ import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
 
-public class UsuarioDAO {
+public class UsuarioDAO extends GenericDAOImpl {
 
     public UsuarioDTO findByEmailSenha(String email, String senhaCriptografada) {
-        EntityManager session = new GenericDAOImpl().getSession();
-        try {
-            String hql =
-                    "SELECT u.id, u.email, u.funcao, r.nome, r.id, e.id, e.nome " +
-                            "FROM Responsavel r " +
-                            "JOIN r.usuario u " +
-                            "LEFT JOIN r.equipe e " +
-                            "WHERE UPPER(u.email) = :email AND u.senha = :senha";
+        String hql =
+                "SELECT u.id, u.email, u.funcao, r.nome, r.id, e.id, e.nome " +
+                        "FROM Responsavel r " +
+                        "JOIN r.usuario u " +
+                        "LEFT JOIN r.equipe e " +
+                        "WHERE UPPER(u.email) = :email AND u.senha = :senha";
 
-            Object[] result = (Object[]) session
-                    .createQuery(hql)
-                    .setParameter("email", email.toUpperCase())
-                    .setParameter("senha", senhaCriptografada)
-                    .getSingleResult();
+        Object[] result = (Object[]) getSession()
+                .createQuery(hql)
+                .setParameter("email", email.toUpperCase())
+                .setParameter("senha", senhaCriptografada)
+                .getSingleResult();
 
-            UsuarioDTO dto = new UsuarioDTO();
-            dto.setId((Long) result[0]);
-            dto.setEmail((String) result[1]);
-            dto.setFuncao((Funcao) result[2]);
-            dto.setNome((String) result[3]);
-            dto.setIdResponsavel((Long) result[4]);
+        UsuarioDTO dto = new UsuarioDTO();
+        dto.setId((Long) result[0]);
+        dto.setEmail((String) result[1]);
+        dto.setFuncao((Funcao) result[2]);
+        dto.setNome((String) result[3]);
+        dto.setIdResponsavel((Long) result[4]);
 
-            Long idEquipe = (Long) result[5];
-            if (idEquipe != null) {
-                dto.setEquipe(new Equipe());
-                dto.getEquipe().setId(idEquipe);
-                dto.getEquipe().setNome((String) result[6]);
-            }
-            return dto;
-
-        } catch (NoResultException e) {
-            return null;
-        } finally {
-            session.close();
+        Long idEquipe = (Long) result[5];
+        if (idEquipe != null) {
+            dto.setEquipe(new Equipe());
+            dto.getEquipe().setId(idEquipe);
+            dto.getEquipe().setNome((String) result[6]);
         }
+        return dto;
     }
 
     public boolean existeUsuarioByEmail(String email) {
         String hql = "FROM Usuario u WHERE UPPER(u.email) = :email";
-        EntityManager session = new GenericDAOImpl().getSession();
-        try {
-            Query query = session.createQuery(hql);
-            query.setParameter("email", email.toUpperCase());
-            return !query.getResultList().isEmpty();
-        } finally {
-            session.close();
-        }
+        Query query = getSession().createQuery(hql);
+        query.setParameter("email", email.toUpperCase());
+        return !query.getResultList().isEmpty();
+
     }
 }

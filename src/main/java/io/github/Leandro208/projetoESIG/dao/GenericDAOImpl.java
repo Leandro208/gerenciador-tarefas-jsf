@@ -171,6 +171,14 @@ public class GenericDAOImpl implements GenericDAO {
 	    }
 	}
 
+	@Override
+	public void close() {
+		if (em != null && em.isOpen()) {
+			em.close();
+			em = null;
+		}
+	}
+
 	private void logUpdateFieldBanco(Class<?> classe, Long id, String[] campos, Object[] valores ) throws DAOException {
 		try{
 			LogDB logDB = new LogDB();
@@ -229,4 +237,6 @@ public class GenericDAOImpl implements GenericDAO {
 			throw new DAOException(e);
 		}
 	}
+
+
 }

@@ -11,15 +11,15 @@ public class TarefaCrudOperation extends CadastroCrudOperation {
 	public void operar(Operacao operacao) throws DAOException {
 		validate(operacao);
 		if(operacao.getComando().equals(ListaComando.CADASTRAR_TAREFA)) {
-			criar(operacao.getEntidade());
+			criar(operacao);
 		} else if(operacao.getComando().equals(ListaComando.ALTERAR_TAREFA)) {
-			alterar(operacao.getEntidade());
+			alterar(operacao);
 		} else if(operacao.getComando().equals(ListaComando.ATRIBUIR_TAREFA)) {
 			atribuirTarefa(operacao);
 		} else if(operacao.getComando().equals(ListaComando.MOVER_TAREFA)) {
 			moverTarefa(operacao);
 		} else if (operacao.getComando().equals(ListaComando.REMOVER_TAREFA)) {
-			remover(operacao.getEntidade());
+			remover(operacao);
 		}
 	}
 

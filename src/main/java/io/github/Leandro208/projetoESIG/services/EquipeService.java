@@ -11,23 +11,23 @@ import io.github.Leandro208.projetoESIG.dominio.Equipe;
 public class EquipeService implements BaseService<Equipe>, Serializable {
 
 	private static final long serialVersionUID = 1L;
-
-	private GenericDAO dao;
-	
-	public EquipeService() {
-		this.dao = new EquipeDAO();
-	}
 	
 	public List<Equipe> buscarTodos() throws DAOException {
-		return (List<Equipe>) dao.findAll(Equipe.class);
+		EquipeDAO dao = new EquipeDAO();
+		try {
+			return (List<Equipe>) dao.findAll(Equipe.class);
+		} finally {
+			dao.close();
+		}
 	}
 
-	public Equipe buscarPorId(Long idEquipe) {
-        try {
+	public Equipe buscarPorId(Long idEquipe) throws DAOException {
+		EquipeDAO dao = new EquipeDAO();
+		try {
             return dao.findById(idEquipe,Equipe.class);
-        } catch (DAOException e) {
-            throw new RuntimeException(e);
-        }
+        } finally {
+			dao.close();
+		}
     }
 
 }
