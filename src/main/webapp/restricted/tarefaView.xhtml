@@ -3,11 +3,12 @@
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:ui="http://java.sun.com/jsf/facelets"
-                xmlns:p="http://primefaces.org/ui">
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:fn="http://java.sun.com/jsp/jstl/functions">
 
     <ui:define name="conteudo">
-        <h:outputStylesheet library="css" name="form.css" />
-        <h:outputStylesheet library="css" name="view_tarefa.css" />
+        <h:outputStylesheet library="css" name="form.css"/>
+        <h:outputStylesheet library="css" name="view_tarefa.css"/>
 
         <main class="main-content">
             <h:panelGroup id="bodyContent" layout="block" styleClass="view-container">
@@ -19,20 +20,21 @@
                     </div>
 
                     <h:form id="form-op" styleClass="header-actions">
-                        <p:selectOneMenu value="#{tarefaBean.tarefa.status}" styleClass="custom-select-min status-select">
-                            <f:converter converterId="statusConverter" />
-                            <f:selectItems value="#{tarefaBean.niveisStatus}" />
-                            <p:ajax event="change" update=":bodyContent" listener="#{tarefaBean.moverTarefa}" />
+                        <p:selectOneMenu value="#{tarefaBean.tarefa.status}"
+                                         styleClass="custom-select-min status-select">
+                            <f:converter converterId="statusConverter"/>
+                            <f:selectItems value="#{tarefaBean.niveisStatus}"/>
+                            <p:ajax event="change" update=":bodyContent" listener="#{tarefaBean.moverTarefa}"/>
                         </p:selectOneMenu>
 
                         <p:commandButton ajax="false" action="#{tarefaBean.editar}"
                                          icon="fa fa-edit" styleClass="btn-outline"
-                                         rendered="#{loginBean.logado.adm}" />
+                                         rendered="#{loginBean.logado.adm}"/>
 
                         <p:commandButton action="#{tarefaBean.remover}"
                                          icon="fa fa-trash" styleClass="btn-danger"
                                          rendered="#{loginBean.logado.adm}">
-                            <p:confirm header="Remover tarefa" message="Deseja excluir permanentemente?" />
+                            <p:confirm header="Remover tarefa" message="Deseja excluir permanentemente?"/>
                         </p:commandButton>
                     </h:form>
                 </div>
@@ -42,9 +44,84 @@
                         <div class="detail-card">
                             <label class="field-label-min">Descrição da Atividade</label>
                             <div class="description-text">
-                                <h:outputText value="#{tarefaBean.tarefa.descricao}" escape="false" />
+                                <h:outputText value="#{tarefaBean.tarefa.descricao}" escape="false"/>
                             </div>
                         </div>
+
+                        <!-- Seção de Comentários -->
+                        <h:panelGroup id="commentsWrapper" layout="block" styleClass="detail-card comments-section">
+                            <h:form id="formComentario">
+                                <p:messages id="msgComentario" closable="true"/>
+
+                                <div class="comments-header">
+                                    <div class="comments-title-group">
+                                        <label class="field-label-min" style="margin-bottom: 0;">Comentários</label>
+                                        <span class="comments-count">#{fn:length(tarefaBean.comentarios)}</span>
+                                    </div>
+
+                                    <p:commandButton value="Novo Comentário"
+                                                     icon="fa fa-plus"
+                                                     action="#{tarefaBean.abrirFormComentario}"
+                                                     process="@this"
+                                                     update=":commentsWrapper"
+                                                     rendered="#{!tarefaBean.exibindoFormComentario}"
+                                                     styleClass="btn-new-comment"/>
+                                </div>
+
+                                <!-- Formulário renderizado apenas ao clicar em Novo Comentário -->
+                                <h:panelGroup layout="block" styleClass="new-comment-box"
+                                              rendered="#{tarefaBean.exibindoFormComentario}">
+                                    <p:inputTextarea id="txtComentario"
+                                                     rows="3"
+                                                     placeholder="Escreva uma atualização ou observação sobre esta tarefa..."
+                                                     autoResize="true"
+                                                     value="#{tarefaBean.comentario.texto}"/>
+
+                                    <div class="new-comment-actions">
+                                        <p:commandButton value="Cancelar"
+                                                         action="#{tarefaBean.cancelarComentario}"
+                                                         process="@this"
+                                                         update=":commentsWrapper"
+                                                         styleClass="btn-cancel-comment"/>
+
+                                        <p:commandButton value="Publicar"
+                                                         icon="fa fa-paper-plane"
+                                                         action="#{tarefaBean.comentar}"
+                                                         process="@form"
+                                                         update=":commentsWrapper"
+                                                         styleClass="btn-submit-comment"/>
+                                    </div>
+                                </h:panelGroup>
+                            </h:form>
+
+                            <!-- Lista de Comentários (Modelo Estático) -->
+                            <div class="comments-list">
+                                <h:panelGroup rendered="#{empty tarefaBean.comentarios}">
+                                    <p style="color: var(--text-sub); font-size: 13px; text-align: center; margin: 10px 0;">
+                                        Nenhum comentário registrado até o momento.
+                                    </p>
+                                </h:panelGroup>
+
+                                <ui:repeat value="#{tarefaBean.comentarios}" var="c">
+                                    <div class="comment-item">
+                                        <div class="comment-avatar">
+                                            <i class="fa fa-user"></i>
+                                        </div>
+                                        <div class="comment-body">
+                                            <div class="comment-meta">
+                                                <span class="comment-author">#{c.autorNome}</span>
+                                                <span class="comment-date">
+                                                    <h:outputText value="#{c.dataCadastro}">
+                                                        <f:convertDateTime pattern="dd/MM/yyyy 'às' HH:mm"/>
+                                                    </h:outputText>
+                                                </span>
+                                            </div>
+                                            <p class="comment-text">#{c.texto}</p>
+                                        </div>
+                                    </div>
+                                </ui:repeat>
+                            </div>
+                        </h:panelGroup>
                     </div>
 
                     <div class="view-sidebar">
@@ -54,7 +131,7 @@
                                 <span>
                                     #{tarefaBean.tarefa.responsavel == null ? 'Não atribuída' : tarefaBean.tarefa.responsavel.nome}
                                     <p:commandLink action="#{tarefaBean.delegar}" update=":bodyContent"
-                                                   styleClass="action-link" value="#{tarefaBean.campoAtribuir}" />
+                                                   styleClass="action-link" value="#{tarefaBean.campoAtribuir}"/>
                                 </span>
                             </div>
 
@@ -73,7 +150,7 @@
                                 <span class="text-date">
                                     <i class="fa fa-calendar-o"></i>
                                     <h:outputText value="#{tarefaBean.tarefa.deadline}">
-                                        <f:convertDateTime pattern="dd/MM/yyyy" />
+                                        <f:convertDateTime pattern="dd/MM/yyyy"/>
                                     </h:outputText>
                                 </span>
                             </div>
@@ -87,8 +164,8 @@
             </h:panelGroup>
 
             <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
-                <p:commandButton value="Não" type="button" styleClass="ui-confirmdialog-no btn-outline" />
-                <p:commandButton value="Sim" type="button" styleClass="ui-confirmdialog-yes btn-danger" />
+                <p:commandButton value="Não" type="button" styleClass="ui-confirmdialog-no btn-outline"/>
+                <p:commandButton value="Sim" type="button" styleClass="ui-confirmdialog-yes btn-danger"/>
             </p:confirmDialog>
         </main>
     </ui:define>

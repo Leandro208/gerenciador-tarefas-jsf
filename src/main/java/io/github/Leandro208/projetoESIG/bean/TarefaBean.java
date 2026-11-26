@@ -2,6 +2,7 @@ package io.github.Leandro208.projetoESIG.bean;
 
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -12,12 +13,14 @@ import javax.faces.model.SelectItem;
 
 
 import io.github.Leandro208.projetoESIG.dao.DAOException;
+import io.github.Leandro208.projetoESIG.dominio.Comentario;
 import io.github.Leandro208.projetoESIG.dto.FormConsultaTarefaDto;
 import io.github.Leandro208.projetoESIG.dominio.Equipe;
 import io.github.Leandro208.projetoESIG.dominio.Responsavel;
 import io.github.Leandro208.projetoESIG.dominio.Tarefa;
 import io.github.Leandro208.projetoESIG.enums.PrioridadeEnum;
 import io.github.Leandro208.projetoESIG.enums.StatusEnum;
+import io.github.Leandro208.projetoESIG.services.ComentarioService;
 import io.github.Leandro208.projetoESIG.services.EquipeService;
 import io.github.Leandro208.projetoESIG.services.ResponsavelService;
 import io.github.Leandro208.projetoESIG.services.TarefaService;
@@ -35,19 +38,27 @@ public class TarefaBean extends AbstractBean{
 	
 	private Equipe equipe;
 
+	private Comentario comentario;
+
 	private FormConsultaTarefaDto formConsulta;
 
 	private Map<Integer, List<Tarefa>> listaTarefas;
 
+	private List<Comentario> comentarios;
+
 	private TarefaService tarefaService;
 
 	private ResponsavelService responsavelService;
+
+	private ComentarioService comentarioService;
 
 	private MonitorTarefas monitor;
 	
 	private final String FORM_TAREFA = "adm/formTarefa.jsf";
 
 	private final String LISTA_TAREFA = "/restricted/listaTarefa.jsf";
+
+	private boolean exibindoFormComentario = false;
 	
 	public TarefaBean() throws ParseException {
 		tarefa = new Tarefa();
@@ -57,9 +68,12 @@ public class TarefaBean extends AbstractBean{
 		}
 		tarefaService = new TarefaService();
 		responsavelService = new ResponsavelService();
+		comentarioService = new ComentarioService();
 		formConsulta = new FormConsultaTarefaDto();
-		listaTarefas = new java.util.HashMap<>();
+		listaTarefas = new HashMap<>();
 		monitor = tarefaService.monitoramento();
+		comentario = new Comentario();
+		comentarios = new ArrayList<>();
 	}
 	
 	public String entrarCadastro() {
@@ -159,6 +173,7 @@ public class TarefaBean extends AbstractBean{
 	}
 	
 	public String visualizarTarefa() {
+		carregarComentarios();
 		return "tarefaView.jsf?faces-redirect=true";
 	}
 	
@@ -195,7 +210,41 @@ public class TarefaBean extends AbstractBean{
 		this.equipe = UsuarioUtils.getLogado().getEquipe();
 		return visualizarQuadro();
 	}
-	
+
+	public void abrirFormComentario() {
+		this.comentario = new Comentario();
+		this.exibindoFormComentario = true;
+	}
+
+	public void cancelarComentario() {
+		this.comentario = new Comentario();
+		this.exibindoFormComentario = false;
+	}
+
+	public void comentar() {
+		comentario.setTarefa(tarefa);
+		comentario.setAutor(new Responsavel());
+		comentario.getAutor().setId(getLogado().getIdResponsavel());
+
+		Operacao operacao = new OperacaoCadastro();
+		operacao.setEntidade(comentario);
+		operacao.setComando(ListaComando.CADASTRAR);
+		try {
+			realizarOperacao(operacao);
+			comentario = new Comentario();
+			exibindoFormComentario = false;
+			carregarComentarios();
+			addMensagem("Comentário publicado com sucesso!");
+		} catch (Exception e) {
+			e.printStackTrace();
+			addMensagemErroPadrao();
+		}
+	}
+
+	public void carregarComentarios(){
+		comentarios = comentarioService.buscarPorTarefa(tarefa.getId());
+	}
+
 	public List<Tarefa> getObjectsForKey(int key) {
         return listaTarefas.get(key);
     }
@@ -300,4 +349,23 @@ public class TarefaBean extends AbstractBean{
 		this.equipe = equipe;
 	}
 
+	public Comentario getComentario() {
+		return comentario;
+	}
+
+	public void setComentario(Comentario comentario) {
+		this.comentario = comentario;
+	}
+
+	public boolean isExibindoFormComentario() {
+		return exibindoFormComentario;
+	}
+
+	public void setExibindoFormComentario(boolean exibindoFormComentario) {
+		this.exibindoFormComentario = exibindoFormComentario;
+	}
+
+	public List<Comentario> getComentarios() {
+		return comentarios;
+	}
 }
