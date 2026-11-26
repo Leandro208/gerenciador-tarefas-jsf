@@ -26,7 +26,7 @@ public class ResponsavelCrudOperation extends CadastroCrudOperation {
     }
 
     private void alterarFuncao(Operacao operacao) {
-        GenericDAO dao = new GenericDAOImpl()
+        GenericDAO dao = new GenericDAOImpl();
     }
 
     private void cadastrar(Operacao operacao) throws DAOException {
