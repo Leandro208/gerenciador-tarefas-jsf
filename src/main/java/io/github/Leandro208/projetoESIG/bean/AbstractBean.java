@@ -8,6 +8,10 @@ import io.github.Leandro208.projetoESIG.util.UsuarioUtils;
 import io.github.Leandro208.projetoESIG.validacao.ListaMensagens;
 import io.github.Leandro208.projetoESIG.validacao.MensagemAviso;
 
+import javax.faces.context.ExternalContext;
+import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpServletRequest;
+
 public abstract class AbstractBean {
 
 	protected final String BOTAO_CADASTRAR = "Cadastrar";
@@ -74,4 +78,14 @@ public abstract class AbstractBean {
 		return UsuarioUtils.getLogado();
 	}
 
+	/**
+	 * Acessa o external context do JavaServer Faces
+	 **/
+	private ExternalContext getExternalContext() {
+		return FacesContext.getCurrentInstance().getExternalContext();
+	}
+
+	public HttpServletRequest getCurrentRequest() {
+		return (HttpServletRequest) getExternalContext().getRequest();
+	}
 }

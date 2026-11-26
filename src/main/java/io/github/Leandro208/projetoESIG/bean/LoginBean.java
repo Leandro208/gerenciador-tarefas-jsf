@@ -1,19 +1,20 @@
 package io.github.Leandro208.projetoESIG.bean;
 
 import java.io.Serializable;
+import java.util.Date;
 
 
 import javax.faces.bean.ManagedBean;
-
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
-
 import javax.servlet.http.HttpSession;
 
 import io.github.Leandro208.projetoESIG.dao.DAOException;
+import io.github.Leandro208.projetoESIG.dominio.RegistroAcesso;
 import io.github.Leandro208.projetoESIG.dominio.Usuario;
 import io.github.Leandro208.projetoESIG.dto.UsuarioDTO;
 import io.github.Leandro208.projetoESIG.services.ResponsavelService;
+import io.github.Leandro208.projetoESIG.sincronizacao.SincronizadorRegistroAcesso;
 import io.github.Leandro208.projetoESIG.util.Message;
 
 @ManagedBean
@@ -35,15 +36,26 @@ public class LoginBean extends AbstractBean implements Serializable {
 
 	public String logar() throws DAOException {
 		//buscando Responsavel no dao
-		UsuarioDTO usuario = service.verificarCredenciais(email, senha);
+		UsuarioDTO usuarioDTO = service.verificarCredenciais(email, senha);
 		
-		if (usuario.getId() != null && usuario.getId() != 0) {
+		if (usuarioDTO.getId() != null && usuarioDTO.getId() != 0) {
 			// se for diferente de null ele da o acesso
 			HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext()
 					.getSession(false);
 			session.setMaxInactiveInterval(360);
-			usuario.setRegistroAcesso(service.registrarAcesso(new Usuario(usuario.getId())));
-			session.setAttribute("usuario", usuario);
+			
+			SincronizadorRegistroAcesso sincronizador = SincronizadorRegistroAcesso.novoInstancia();
+
+			RegistroAcesso registroAcesso = new RegistroAcesso();
+			registroAcesso.setData(new Date());
+			registroAcesso.setUsuario(new Usuario(usuarioDTO.getId()));
+			registroAcesso.setIp(getCurrentRequest().getRemoteAddr());
+
+			sincronizador.registrarAcesso(registroAcesso);
+			
+			usuarioDTO.setRegistroAcesso(registroAcesso);
+			
+			session.setAttribute("usuario", usuarioDTO);
 
 			return "/restricted/index?faces-redirect=true";
 		}
