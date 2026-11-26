@@ -205,7 +205,8 @@ body .ui-button.btn-circle:hover {
     border: 1px solid transparent !important;
     box-shadow: 0 1px 3px rgba(0,0,0,0.08) !important;
     transition: all 0.2s ease !important;
-    cursor: pointer;
+    cursor: grab;
+    -webkit-user-drag: element;
 }
 
 .task-card-modern:hover {
@@ -435,4 +436,20 @@ body .ui-editor .ql-editor.ql-blank::before {
 
 .description-text a {
     color: var(--primary);
+}
+
+.task-card-modern:active {
+    cursor: grabbing;
+}
+
+.task-card-modern.is-dragging {
+    opacity: 0.45;
+    transform: none !important;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08) !important;
+}
+
+.kanban-col.is-drop-target {
+    background: var(--primary-light);
+    outline: 2px dashed var(--primary);
+    outline-offset: -2px;
 }

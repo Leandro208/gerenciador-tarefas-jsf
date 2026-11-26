@@ -7,6 +7,7 @@
 
 	<ui:define name="conteudo">
 		<h:outputStylesheet library="css" name="form.css" />
+		<h:outputScript library="js" name="kanban-dnd.js" target="head" />
 
 		<main class="main-content">
 			<div class="search-bar-card">
@@ -38,6 +39,11 @@
 											 styleClass="btn-circle" />
 						</div>
 					</div>
+
+					<p:remoteCommand name="moverTarefaKanban"
+									 action="#{tarefaBean.moverTarefaArrastada}"
+									 process="@this"
+									 update="messages :kanbanBoard" />
 				</h:form>
 			</div>
 
@@ -48,13 +54,13 @@
 
 			<h:panelGroup id="kanbanBoard" layout="block">
 				<div class="kanban-wrapper">
-					<div class="kanban-col">
+					<div class="kanban-col" data-status="3">
 						<div class="col-header">
 							<span class="dot backlog-dot"></span> Backlog
 						</div>
 						<ui:repeat value="#{tarefaBean.getObjectsForKey(3)}" var="t">
 							<p:commandLink action="#{tarefaBean.visualizarTarefa}" styleClass="task-card-modern">
-								<div class="task-id-tag">##{t.id}</div>
+								<div class="task-id-tag" data-tarefa-id="#{t.id}" data-tarefa-status="#{t.status.codigo}">##{t.id}</div>
 								<div class="task-content">#{t.titulo}</div>
 								<div class="task-meta">
 									<span class="priority-badge priority-#{t.prioridade.toString().toLowerCase()}">#{t.prioridade}</span>
@@ -69,13 +75,13 @@
 						</ui:repeat>
 					</div>
 
-					<div class="kanban-col">
+					<div class="kanban-col" data-status="1">
 						<div class="col-header">
 							<span class="dot andamento-dot"></span> Em Andamento
 						</div>
 						<ui:repeat value="#{tarefaBean.getObjectsForKey(1)}" var="t">
 							<p:commandLink action="#{tarefaBean.visualizarTarefa}" styleClass="task-card-modern">
-								<div class="task-id-tag">##{t.id}</div>
+								<div class="task-id-tag" data-tarefa-id="#{t.id}" data-tarefa-status="#{t.status.codigo}">##{t.id}</div>
 								<div class="task-content">#{t.titulo}</div>
 								<div class="task-meta">
 									<span class="priority-badge priority-#{t.prioridade.toString().toLowerCase()}">#{t.prioridade}</span>
@@ -90,13 +96,13 @@
 						</ui:repeat>
 					</div>
 
-					<div class="kanban-col">
+					<div class="kanban-col" data-status="2">
 						<div class="col-header">
 							<span class="dot concluido-dot"></span> Concluído
 						</div>
 						<ui:repeat value="#{tarefaBean.getObjectsForKey(2)}" var="t">
 							<p:commandLink action="#{tarefaBean.visualizarTarefa}" styleClass="task-card-modern">
-								<div class="task-id-tag">##{t.id}</div>
+								<div class="task-id-tag" data-tarefa-id="#{t.id}" data-tarefa-status="#{t.status.codigo}">##{t.id}</div>
 								<div class="task-content">#{t.titulo}</div>
 								<div class="task-meta">
 									<span class="priority-badge priority-#{t.prioridade.toString().toLowerCase()}">#{t.prioridade}</span>

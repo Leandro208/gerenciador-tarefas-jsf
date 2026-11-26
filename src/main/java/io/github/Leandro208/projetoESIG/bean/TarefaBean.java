@@ -7,6 +7,7 @@ import java.util.Map;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 
 
@@ -98,17 +99,46 @@ public class TarefaBean extends AbstractBean{
 	}
 
 	public void moverTarefa() throws ParseException  {
+		executarMoverTarefa(this.tarefa);
+	}
+
+	private boolean executarMoverTarefa(Tarefa tarefa) throws ParseException {
 		Operacao operacao = new OperacaoCadastro();
 		operacao.setComando(ListaComando.MOVER_TAREFA);
 		operacao.setEntidade(tarefa);
+		boolean sucesso = true;
 		try {
 			realizarOperacao(operacao);
 		} catch (Exception e) {
 			e.printStackTrace();
+			sucesso = false;
 		}
 		carregarTarefas();
 		dashboard();
-		//PrimeFaces.current().executeScript("window.location.reload();");
+		return sucesso;
+	}
+
+	public void moverTarefaArrastada() {
+		Map<String, String> parametros = FacesContext.getCurrentInstance()
+				.getExternalContext().getRequestParameterMap();
+		String id = parametros.get("tarefaId");
+		String status = parametros.get("status");
+
+		if (id == null || status == null) {
+			return;
+		}
+
+		try {
+			Tarefa tarefaMovida = new Tarefa();
+			tarefaMovida.setId(Long.valueOf(id));
+			tarefaMovida.setStatus(StatusEnum.valueOf(Integer.parseInt(status)));
+
+			if (!executarMoverTarefa(tarefaMovida)) {
+				addMensagemErro("Não foi possível mover a tarefa.");
+			}
+		} catch (Exception e) {
+			addMensagemErro("Não foi possível mover a tarefa.");
+		}
 	}
 
 	public String remover() throws ParseException {
