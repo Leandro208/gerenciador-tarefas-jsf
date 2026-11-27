@@ -15,6 +15,7 @@ import javax.faces.model.SelectItem;
 import io.github.Leandro208.projetoESIG.dao.DAOException;
 import io.github.Leandro208.projetoESIG.dominio.Comentario;
 import io.github.Leandro208.projetoESIG.dto.FormConsultaTarefaDto;
+import io.github.Leandro208.projetoESIG.dto.UsuarioDTO;
 import io.github.Leandro208.projetoESIG.dominio.Equipe;
 import io.github.Leandro208.projetoESIG.dominio.Responsavel;
 import io.github.Leandro208.projetoESIG.dominio.Tarefa;
@@ -25,6 +26,7 @@ import io.github.Leandro208.projetoESIG.services.EquipeService;
 import io.github.Leandro208.projetoESIG.services.ResponsavelService;
 import io.github.Leandro208.projetoESIG.services.TarefaService;
 import io.github.Leandro208.projetoESIG.util.MonitorTarefas;
+import io.github.Leandro208.projetoESIG.util.HtmlSanitizer;
 import io.github.Leandro208.projetoESIG.util.UsuarioUtils;
 import io.github.Leandro208.projetoESIG.persistence.OperacaoCadastro;
 import io.github.Leandro208.projetoESIG.persistence.ListaComando;
@@ -59,6 +61,8 @@ public class TarefaBean extends AbstractBean{
 	private final String LISTA_TAREFA = "/restricted/listaTarefa.jsf";
 
 	private boolean exibindoFormComentario = false;
+
+	private boolean modoEdicao = false;
 	
 	public TarefaBean() throws ParseException {
 		tarefa = new Tarefa();
@@ -173,6 +177,7 @@ public class TarefaBean extends AbstractBean{
 	}
 	
 	public String visualizarTarefa() {
+		cancelarComentario();
 		carregarComentarios();
 		return "tarefaView.jsf?faces-redirect=true";
 	}
@@ -212,36 +217,139 @@ public class TarefaBean extends AbstractBean{
 	}
 
 	public void abrirFormComentario() {
+		if (!isPodeComentar()) {
+			addMensagemErro("Apenas membros da equipe da tarefa podem comentar.");
+			return;
+		}
 		this.comentario = new Comentario();
+		this.modoEdicao = false;
+		this.exibindoFormComentario = true;
+	}
+
+	public void editarComentario(Comentario comentarioSelecionado) {
+		if (!podeEditar(comentarioSelecionado)) {
+			addMensagemErro("Você só pode editar os seus próprios comentários.");
+			return;
+		}
+		Comentario copia = new Comentario();
+		copia.setId(comentarioSelecionado.getId());
+		// Sanitiza tambem na edicao: comentarios antigos podem ter sido
+		// gravados como texto puro e nao devem ser injetados no editor.
+		copia.setTexto(HtmlSanitizer.sanitizar(comentarioSelecionado.getTexto()));
+		copia.setAutor(comentarioSelecionado.getAutor());
+		this.comentario = copia;
+		this.modoEdicao = true;
 		this.exibindoFormComentario = true;
 	}
 
 	public void cancelarComentario() {
 		this.comentario = new Comentario();
 		this.exibindoFormComentario = false;
+		this.modoEdicao = false;
 	}
 
 	public void comentar() {
-		comentario.setTarefa(tarefa);
-		comentario.setAutor(new Responsavel());
-		comentario.getAutor().setId(getLogado().getIdResponsavel());
+		if (comentario == null) {
+			addMensagemErroPadrao();
+			return;
+		}
+		boolean edicao = this.modoEdicao;
+		if (edicao) {
+			if (!podeEditar(comentario)) {
+				addMensagemErro("Você só pode editar os seus próprios comentários.");
+				return;
+			}
+		} else if (!isPodeComentar()) {
+			addMensagemErro("Apenas membros da equipe da tarefa podem comentar.");
+			return;
+		}
+
+		String textoSanitizado = HtmlSanitizer.sanitizar(comentario.getTexto());
+		if (HtmlSanitizer.vazio(textoSanitizado)) {
+			addMensagemErro("O comentário não pode estar vazio.");
+			return;
+		}
+		comentario.setTexto(textoSanitizado);
 
 		Operacao operacao = new OperacaoCadastro();
 		operacao.setEntidade(comentario);
-		operacao.setComando(ListaComando.CADASTRAR);
+		if (edicao) {
+			operacao.setComando(ListaComando.ALTERAR_COMENTARIO);
+		} else {
+			comentario.setTarefa(tarefa);
+			UsuarioDTO logado = getLogado();
+			if (logado != null && logado.getIdResponsavel() != null) {
+				Responsavel autor = new Responsavel();
+				autor.setId(logado.getIdResponsavel());
+				comentario.setAutor(autor);
+			}
+			operacao.setComando(ListaComando.CADASTRAR_COMENTARIO);
+		}
+
 		try {
 			realizarOperacao(operacao);
-			comentario = new Comentario();
-			exibindoFormComentario = false;
+			cancelarComentario();
 			carregarComentarios();
-			addMensagem("Comentário publicado com sucesso!");
+			addMensagem(edicao ? "Comentário atualizado com sucesso!" : "Comentário publicado com sucesso!");
 		} catch (Exception e) {
 			e.printStackTrace();
 			addMensagemErroPadrao();
 		}
 	}
 
+	public void removerComentario(Comentario comentarioSelecionado) {
+		if (!podeExcluir(comentarioSelecionado)) {
+			addMensagemErro("Você não tem permissão para excluir este comentário.");
+			return;
+		}
+		Operacao operacao = new OperacaoCadastro();
+		operacao.setComando(ListaComando.REMOVER_COMENTARIO);
+		operacao.setEntidade(comentarioSelecionado);
+		try {
+			realizarOperacao(operacao);
+			if (comentario != null && comentario.getId() != null
+					&& comentario.getId().equals(comentarioSelecionado.getId())) {
+				cancelarComentario();
+			}
+			carregarComentarios();
+			addMensagem("Comentário removido com sucesso!");
+		} catch (Exception e) {
+			e.printStackTrace();
+			addMensagemErroPadrao();
+		}
+	}
+
+	public boolean isPodeComentar() {
+		UsuarioDTO logado = getLogado();
+		if (logado == null || tarefa == null) {
+			return false;
+		}
+		if (logado.isAdm()) {
+			return true;
+		}
+		return tarefa.getEquipe() != null && logado.getEquipe() != null
+				&& tarefa.getEquipe().equals(logado.getEquipe());
+	}
+
+	public boolean podeEditar(Comentario comentarioSelecionado) {
+		UsuarioDTO logado = getLogado();
+		return comentarioSelecionado != null
+				&& comentarioSelecionado.getAutor() != null
+				&& comentarioSelecionado.getAutor().getId() != null
+				&& logado != null
+				&& comentarioSelecionado.getAutor().getId().equals(logado.getIdResponsavel());
+	}
+
+	public boolean podeExcluir(Comentario comentarioSelecionado) {
+		UsuarioDTO logado = getLogado();
+		return logado != null && (logado.isAdm() || podeEditar(comentarioSelecionado));
+	}
+
 	public void carregarComentarios(){
+		if (tarefa == null || tarefa.getId() == null) {
+			comentarios = new ArrayList<>();
+			return;
+		}
 		comentarios = comentarioService.buscarPorTarefa(tarefa.getId());
 	}
 
@@ -363,6 +471,14 @@ public class TarefaBean extends AbstractBean{
 
 	public void setExibindoFormComentario(boolean exibindoFormComentario) {
 		this.exibindoFormComentario = exibindoFormComentario;
+	}
+
+	public boolean isModoEdicao() {
+		return modoEdicao;
+	}
+
+	public void setModoEdicao(boolean modoEdicao) {
+		this.modoEdicao = modoEdicao;
 	}
 
 	public List<Comentario> getComentarios() {

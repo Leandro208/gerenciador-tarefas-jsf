@@ -18,6 +18,8 @@ import javax.persistence.TemporalType;
 
 import org.hibernate.validator.constraints.NotBlank;
 
+import io.github.Leandro208.projetoESIG.util.HtmlSanitizer;
+
 @Entity
 @Table(name = "comentario", schema = "gestao")
 public class Comentario implements BaseEntity, Serializable {
@@ -96,6 +98,15 @@ public class Comentario implements BaseEntity, Serializable {
 
 	public void setRegistroAcesso(RegistroAcesso registroAcesso) {
 		this.registroAcesso = registroAcesso;
+	}
+
+	/**
+	 * HTML pronto para renderizacao com escape="false". A sanitizacao ja
+	 * ocorre na gravacao; repetir aqui protege comentarios antigos, gravados
+	 * antes da sanitizacao existir.
+	 */
+	public String getTextoSeguro() {
+		return HtmlSanitizer.sanitizar(texto);
 	}
 
 	public String getAutorNome() {

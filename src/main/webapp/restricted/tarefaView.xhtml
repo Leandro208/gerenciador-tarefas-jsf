@@ -64,18 +64,18 @@
                                                      action="#{tarefaBean.abrirFormComentario}"
                                                      process="@this"
                                                      update=":commentsWrapper"
-                                                     rendered="#{!tarefaBean.exibindoFormComentario}"
+                                                     rendered="#{tarefaBean.podeComentar and !tarefaBean.exibindoFormComentario}"
                                                      styleClass="btn-new-comment"/>
                                 </div>
 
-                                <!-- Formulário renderizado apenas ao clicar em Novo Comentário -->
+                                <!-- Editor renderizado ao clicar em Novo Comentário ou Editar -->
                                 <h:panelGroup layout="block" styleClass="new-comment-box"
                                               rendered="#{tarefaBean.exibindoFormComentario}">
-                                    <p:inputTextarea id="txtComentario"
-                                                     rows="3"
-                                                     placeholder="Escreva uma atualização ou observação sobre esta tarefa..."
-                                                     autoResize="true"
-                                                     value="#{tarefaBean.comentario.texto}"/>
+                                    <p:editor id="txtComentario"
+                                              widgetVar="editorComentario"
+                                              value="#{tarefaBean.comentario.texto}"
+                                              controls="bold italic underline strikethrough | style | removeformat | bullets numbering | undo redo | link unlink | pastetext"
+                                              height="150"/>
 
                                     <div class="new-comment-actions">
                                         <p:commandButton value="Cancelar"
@@ -84,7 +84,7 @@
                                                          update=":commentsWrapper"
                                                          styleClass="btn-cancel-comment"/>
 
-                                        <p:commandButton value="Publicar"
+                                        <p:commandButton value="#{tarefaBean.modoEdicao ? 'Salvar' : 'Publicar'}"
                                                          icon="fa fa-paper-plane"
                                                          action="#{tarefaBean.comentar}"
                                                          process="@form"
@@ -94,33 +94,57 @@
                                 </h:panelGroup>
                             </h:form>
 
-                            <!-- Lista de Comentários (Modelo Estático) -->
-                            <div class="comments-list">
-                                <h:panelGroup rendered="#{empty tarefaBean.comentarios}">
-                                    <p style="color: var(--text-sub); font-size: 13px; text-align: center; margin: 10px 0;">
-                                        Nenhum comentário registrado até o momento.
-                                    </p>
-                                </h:panelGroup>
+                            <h:form id="formAcoesComentario">
+                                <div class="comments-list">
+                                    <h:panelGroup rendered="#{empty tarefaBean.comentarios}">
+                                        <p style="color: var(--text-sub); font-size: 13px; text-align: center; margin: 10px 0;">
+                                            Nenhum comentário registrado até o momento.
+                                        </p>
+                                    </h:panelGroup>
 
-                                <ui:repeat value="#{tarefaBean.comentarios}" var="c">
-                                    <div class="comment-item">
-                                        <div class="comment-avatar">
-                                            <i class="fa fa-user"></i>
-                                        </div>
-                                        <div class="comment-body">
-                                            <div class="comment-meta">
-                                                <span class="comment-author">#{c.autorNome}</span>
-                                                <span class="comment-date">
-                                                    <h:outputText value="#{c.dataCadastro}">
-                                                        <f:convertDateTime pattern="dd/MM/yyyy 'às' HH:mm"/>
-                                                    </h:outputText>
-                                                </span>
+                                    <ui:repeat value="#{tarefaBean.comentarios}" var="c">
+                                        <div class="comment-item">
+                                            <div class="comment-avatar">
+                                                <i class="fa fa-user"></i>
                                             </div>
-                                            <p class="comment-text">#{c.texto}</p>
+                                            <div class="comment-body">
+                                                <div class="comment-meta">
+                                                    <div class="comment-author-date">
+                                                        <span class="comment-author">#{c.autorNome}</span>
+                                                        <span class="comment-date">
+                                                            <h:outputText value="#{c.dataCadastro}">
+                                                                <f:convertDateTime pattern="dd/MM/yyyy 'às' HH:mm"/>
+                                                            </h:outputText>
+                                                        </span>
+                                                    </div>
+                                                    <div class="comment-actions">
+                                                        <p:commandButton rendered="#{tarefaBean.podeEditar(c)}"
+                                                                         icon="fa fa-pencil"
+                                                                         title="Editar comentário"
+                                                                         action="#{tarefaBean.editarComentario(c)}"
+                                                                         process="@this"
+                                                                         update=":commentsWrapper"
+                                                                         styleClass="btn-comment-action"/>
+                                                        <p:commandButton rendered="#{tarefaBean.podeExcluir(c)}"
+                                                                         icon="fa fa-trash"
+                                                                         title="Excluir comentário"
+                                                                         action="#{tarefaBean.removerComentario(c)}"
+                                                                         process="@this"
+                                                                         update=":commentsWrapper"
+                                                                         styleClass="btn-comment-action btn-comment-danger">
+                                                            <p:confirm header="Excluir comentário"
+                                                                       message="Deseja excluir este comentário?"/>
+                                                        </p:commandButton>
+                                                    </div>
+                                                </div>
+                                                <div class="comment-text description-text">
+                                                    <h:outputText value="#{c.textoSeguro}" escape="false"/>
+                                                </div>
+                                            </div>
                                         </div>
-                                    </div>
-                                </ui:repeat>
-                            </div>
+                                    </ui:repeat>
+                                </div>
+                            </h:form>
                         </h:panelGroup>
                     </div>
 

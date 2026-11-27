@@ -14,6 +14,10 @@ public class ListaComando {
 	public static final Comando MOVER_TAREFA = new Comando(13, "io.github.Leandro208.projetoESIG.persistence.TarefaCrudOperation");
 	public static final Comando REMOVER_TAREFA = new Comando(14, "io.github.Leandro208.projetoESIG.persistence.TarefaCrudOperation");
 
+	public static final Comando CADASTRAR_COMENTARIO = new Comando(15, "io.github.Leandro208.projetoESIG.persistence.ComentarioCrudOperation");
+	public static final Comando ALTERAR_COMENTARIO = new Comando(16, "io.github.Leandro208.projetoESIG.persistence.ComentarioCrudOperation");
+	public static final Comando REMOVER_COMENTARIO = new Comando(17, "io.github.Leandro208.projetoESIG.persistence.ComentarioCrudOperation");
+
 	public static final Comando CADASTRAR_USUARIO = new Comando(20, "io.github.Leandro208.projetoESIG.persistence.ResponsavelCrudOperation");
 	public static final Comando ALTERAR_FUNCAO_USUARIO = new Comando(20, "io.github.Leandro208.projetoESIG.persistence.ResponsavelCrudOperation");
 

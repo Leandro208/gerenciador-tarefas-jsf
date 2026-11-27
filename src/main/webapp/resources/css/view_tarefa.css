@@ -452,3 +452,61 @@ body .ui-button.btn-cancel-comment .ui-button-text {
     color: var(--text-main);
     overflow-wrap: break-word;
 }
+
+.comment-author-date {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.comment-actions {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    opacity: 0.65;
+    transition: opacity 0.15s ease;
+}
+
+.comment-item:hover .comment-actions {
+    opacity: 1;
+}
+
+body .ui-button.btn-comment-action {
+    width: 28px !important;
+    height: 28px !important;
+    padding: 0 !important;
+    background: transparent !important;
+    border: 1px solid transparent !important;
+    border-radius: 6px !important;
+    color: #6b7280 !important;
+    box-shadow: none !important;
+}
+
+body .ui-button.btn-comment-action .ui-icon {
+    font-size: 12px !important;
+    color: inherit !important;
+    margin: 0 !important;
+}
+
+body .ui-button.btn-comment-action:hover {
+    background: #f3f4f6 !important;
+    border-color: var(--border) !important;
+    color: var(--primary) !important;
+}
+
+body .ui-button.btn-comment-action.btn-comment-danger:hover {
+    background: #fef2f2 !important;
+    border-color: #fecaca !important;
+    color: #dc2626 !important;
+}
+
+.comment-text.description-text {
+    margin-top: 2px;
+}
+
+.comment-text.description-text p:last-child,
+.comment-text.description-text ul:last-child,
+.comment-text.description-text ol:last-child {
+    margin-bottom: 0 !important;
+}
