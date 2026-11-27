@@ -1,5 +1,7 @@
 package io.github.Leandro208.projetoESIG.persistence;
 
+import java.util.Locale;
+
 import javax.persistence.EntityManager;
 
 import io.github.Leandro208.projetoESIG.connection.ConnectionFactory;
@@ -9,8 +11,10 @@ import io.github.Leandro208.projetoESIG.dao.GenericDAOImpl;
 import io.github.Leandro208.projetoESIG.dao.UsuarioDAO;
 import io.github.Leandro208.projetoESIG.dominio.Responsavel;
 import io.github.Leandro208.projetoESIG.dominio.Usuario;
+import io.github.Leandro208.projetoESIG.dto.UsuarioDTO;
 import io.github.Leandro208.projetoESIG.exception.NegocioException;
 import io.github.Leandro208.projetoESIG.util.Criptografar;
+import io.github.Leandro208.projetoESIG.util.AccessControl;
 import io.github.Leandro208.projetoESIG.validacao.ListaMensagens;
 
 public class ResponsavelCrudOperation extends CadastroCrudOperation {
@@ -21,20 +25,43 @@ public class ResponsavelCrudOperation extends CadastroCrudOperation {
        if (operacao.getComando().equals(ListaComando.CADASTRAR_USUARIO)){
            cadastrar(operacao);
        } else if (operacao.getComando().equals(ListaComando.ALTERAR_FUNCAO_USUARIO)){
-           alterarFuncao(operacao);
+           alterarFuncao(operacao, AccessControl.requireAdmin());
        }
     }
 
-    private void alterarFuncao(Operacao operacao) {
-        GenericDAO dao = new GenericDAOImpl();
+    private void alterarFuncao(Operacao operacao, UsuarioDTO atual) {
+        Responsavel recebido = (Responsavel) operacao.getEntidade();
+        if (recebido == null || recebido.getUsuario() == null || recebido.getUsuario().getId() == null) {
+            throw new IllegalArgumentException("Usuário inválido para alteração de perfil.");
+        }
+        if (atual.getId().equals(recebido.getUsuario().getId())) {
+            throw new SecurityException("Não é permitido alterar o próprio perfil.");
+        }
+        GenericDAOImpl dao = new GenericDAOImpl(operacao);
+        try {
+            Usuario usuario = dao.findById(recebido.getUsuario().getId(), Usuario.class);
+            if (usuario == null) {
+                throw new IllegalArgumentException("Usuário não encontrado.");
+            }
+            usuario.setFuncao(recebido.getUsuario().getFuncao());
+            dao.update(usuario);
+        } catch (DAOException e) {
+            throw new IllegalStateException("Não foi possível alterar o perfil.", e);
+        } finally {
+            dao.close();
+        }
     }
 
     private void cadastrar(Operacao operacao) throws DAOException {
         Responsavel responsavel = (Responsavel) operacao.getEntidade();
         Usuario usuario = responsavel.getUsuario();
-        usuario.setSenha(Criptografar.encriptografar(usuario.getSenha()));
-
         EntityManager manager = ConnectionFactory.getEntityManager();
+        String emailInformado = usuario.getEmail();
+        String senhaInformada = usuario.getSenha();
+        String senhaHash = Criptografar.encriptografar(senhaInformada);
+        usuario.setEmail(emailInformado.trim().toLowerCase(Locale.ROOT));
+        usuario.setSenha(senhaHash);
+
         try {
             manager.getTransaction().begin();
             manager.persist(usuario);
@@ -44,6 +71,8 @@ public class ResponsavelCrudOperation extends CadastroCrudOperation {
             if (manager.getTransaction().isActive()) {
                 manager.getTransaction().rollback();
             }
+            usuario.setEmail(emailInformado);
+            usuario.setSenha(senhaInformada);
             throw new DAOException("Erro ao cadastrar usuário", e);
         } finally {
             manager.close();
@@ -57,7 +86,9 @@ public class ResponsavelCrudOperation extends CadastroCrudOperation {
             UsuarioDAO daoUsuario = new UsuarioDAO();
             try {
                 Usuario usuario = ((Responsavel) operacao.getEntidade()).getUsuario();
-                if(daoUsuario.existeUsuarioByEmail(usuario.getEmail())){
+                if (usuario.getEmail() == null || usuario.getEmail().trim().isEmpty()) {
+                    msg.addErro("E-mail é obrigatório.");
+                } else if(daoUsuario.existeUsuarioByEmail(usuario.getEmail())){
                     msg.addErro("Já existe um usuário cadastrado com esse email!");
                 }
             } finally {

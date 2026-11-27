@@ -1,7 +1,8 @@
 package io.github.Leandro208.projetoESIG.bean;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Collections;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import javax.faces.bean.ManagedBean;
@@ -19,6 +20,7 @@ import io.github.Leandro208.projetoESIG.persistence.OperacaoCadastro;
 import io.github.Leandro208.projetoESIG.services.EquipeService;
 import io.github.Leandro208.projetoESIG.services.ResponsavelService;
 import io.github.Leandro208.projetoESIG.util.UsuarioUtils;
+import io.github.Leandro208.projetoESIG.util.AccessControl;
 
 @ManagedBean
 public class ResponsavelBean extends AbstractBean{
@@ -26,14 +28,20 @@ public class ResponsavelBean extends AbstractBean{
 	private Responsavel responsavel;
 	private List<Responsavel> listaReponsaveis;
 	private ResponsavelService responsavelService;
+	private String confirmacaoSenha;
+	private boolean adminValidado;
 
 	public ResponsavelBean() {
 		responsavel = new Responsavel();
-		listaReponsaveis = new ArrayList<>();
+		listaReponsaveis = null;
 		responsavelService = new ResponsavelService();
 	}
 
 	public String salvar() {
+		if (!Objects.equals(responsavel.getUsuario().getSenha(), confirmacaoSenha)) {
+			addMensagemErro("A confirmação de senha não corresponde.");
+			return null;
+		}
 		Operacao operacao = new OperacaoCadastro();
 		operacao.setComando(ListaComando.CADASTRAR_USUARIO);
 		operacao.setEntidade(responsavel);
@@ -45,12 +53,14 @@ public class ResponsavelBean extends AbstractBean{
 		}
 		catch (Exception e) {
 			addMensagemErroPadrao();
+			return null;
 		}
 		limpar();
+		confirmacaoSenha = null;
 		return "login.jsf";
 	}
 
-	public void listarResponsaveis() throws DAOException {
+	private void listarResponsaveis() throws DAOException {
 		listaReponsaveis = responsavelService.buscarTodos();
 		Long idLogado = UsuarioUtils.getLogado().getIdResponsavel();
 		listaReponsaveis = listaReponsaveis.stream()
@@ -59,6 +69,7 @@ public class ResponsavelBean extends AbstractBean{
 	}
 	
 	public String alterarFuncao() throws DAOException {
+		AccessControl.requireAdmin();
 		 if(responsavel.getUsuario().getFuncao().equals(Funcao.USER)) {
 			 responsavel.getUsuario().setFuncao(Funcao.ADM);
 		 } else {
@@ -75,7 +86,9 @@ public class ResponsavelBean extends AbstractBean{
 		}
 		catch (Exception e) {
 			addMensagemErroPadrao();
+			return null;
 		}
+		listaReponsaveis = null;
 		 return "";
 	}
 	
@@ -92,13 +105,26 @@ public class ResponsavelBean extends AbstractBean{
 	}
 
 	public List<Responsavel> getListaReponsaveis() throws DAOException {
-		listarResponsaveis();
+		if (!adminValidado) {
+			try {
+				AccessControl.requireAdmin();
+			} catch (SecurityException e) {
+				adminValidado = true;
+				return Collections.emptyList();
+			}
+			adminValidado = true;
+		}
+		if (listaReponsaveis == null) listarResponsaveis();
 		return listaReponsaveis;
 	}
 
 	public void setListaReponsaveis(List<Responsavel> listaReponsaveis) {
 		this.listaReponsaveis = listaReponsaveis;
 	}
+
+	public String getConfirmacaoSenha() { return confirmacaoSenha; }
+
+	public void setConfirmacaoSenha(String confirmacaoSenha) { this.confirmacaoSenha = confirmacaoSenha; }
 
 	
 

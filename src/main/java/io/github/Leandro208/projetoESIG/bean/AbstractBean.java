@@ -1,5 +1,7 @@
 package io.github.Leandro208.projetoESIG.bean;
 
+import java.io.Serializable;
+
 import io.github.Leandro208.projetoESIG.dto.UsuarioDTO;
 import io.github.Leandro208.projetoESIG.persistence.CrudOperation;
 import io.github.Leandro208.projetoESIG.persistence.Operacao;
@@ -12,7 +14,8 @@ import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
 
-public abstract class AbstractBean {
+public abstract class AbstractBean implements Serializable {
+	private static final long serialVersionUID = 1L;
 
 	protected final String BOTAO_CADASTRAR = "Cadastrar";
 	

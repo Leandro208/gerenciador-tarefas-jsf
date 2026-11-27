@@ -27,6 +27,7 @@ public class Usuario implements BaseEntity, Serializable {
 
     @Column(unique = true)
     @Email(message="E-mail deve estar no formato correto.")
+    @NotBlank(message="E-mail é obrigatório.")
     private String email;
 
     @Size(min=6, message="Senha deve ter no minimo 6 caracteres.")

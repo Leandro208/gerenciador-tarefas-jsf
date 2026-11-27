@@ -26,6 +26,7 @@
 			<groupId>org.postgresql</groupId>
 			<artifactId>postgresql</artifactId>
 			<version>42.2.23.jre7</version>
+			<scope>provided</scope>
 		</dependency>
 
 		<!-- Hibernate -->

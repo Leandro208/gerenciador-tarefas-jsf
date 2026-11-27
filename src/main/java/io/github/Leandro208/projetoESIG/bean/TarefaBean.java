@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
@@ -28,6 +30,7 @@ import io.github.Leandro208.projetoESIG.services.TarefaService;
 import io.github.Leandro208.projetoESIG.util.MonitorTarefas;
 import io.github.Leandro208.projetoESIG.util.HtmlSanitizer;
 import io.github.Leandro208.projetoESIG.util.UsuarioUtils;
+import io.github.Leandro208.projetoESIG.util.AccessControl;
 import io.github.Leandro208.projetoESIG.persistence.OperacaoCadastro;
 import io.github.Leandro208.projetoESIG.persistence.ListaComando;
 import io.github.Leandro208.projetoESIG.persistence.Operacao;
@@ -35,6 +38,7 @@ import io.github.Leandro208.projetoESIG.persistence.Operacao;
 @ManagedBean
 @SessionScoped
 public class TarefaBean extends AbstractBean{
+	private static final Logger LOGGER = Logger.getLogger(TarefaBean.class.getName());
 
 	private Tarefa tarefa;
 	
@@ -49,12 +53,15 @@ public class TarefaBean extends AbstractBean{
 	private List<Comentario> comentarios;
 
 	private TarefaService tarefaService;
+	private EquipeService equipeService;
 
 	private ResponsavelService responsavelService;
 
 	private ComentarioService comentarioService;
 
 	private MonitorTarefas monitor;
+	private List<Equipe> equipesCache;
+	private List<Responsavel> responsaveisCache;
 	
 	private final String FORM_TAREFA = "adm/formTarefa.jsf";
 
@@ -71,6 +78,7 @@ public class TarefaBean extends AbstractBean{
 			equipe = UsuarioUtils.getLogado().getEquipe();
 		}
 		tarefaService = new TarefaService();
+		equipeService = new EquipeService();
 		responsavelService = new ResponsavelService();
 		comentarioService = new ComentarioService();
 		formConsulta = new FormConsultaTarefaDto();
@@ -85,6 +93,7 @@ public class TarefaBean extends AbstractBean{
 	}
 	
 	public String cadastrar() throws ParseException {
+		AccessControl.requireAdmin();
 		
 		Operacao operacao = new OperacaoCadastro();
 		if(getConfirmButton().equals(BOTAO_CADASTRAR)) {
@@ -112,6 +121,7 @@ public class TarefaBean extends AbstractBean{
 	}
 
 	public String editar() throws ParseException {
+		AccessControl.requireAdmin();
 		setConfirmButton(BOTAO_ALTERAR);
 		return navegar(FORM_TAREFA);
 	}
@@ -128,7 +138,7 @@ public class TarefaBean extends AbstractBean{
 		try {
 			realizarOperacao(operacao);
 		} catch (Exception e) {
-			e.printStackTrace();
+			LOGGER.log(Level.SEVERE, "Falha ao mover tarefa", e);
 			sucesso = false;
 		}
 		carregarTarefas();
@@ -160,6 +170,7 @@ public class TarefaBean extends AbstractBean{
 	}
 
 	public String remover() throws ParseException {
+		AccessControl.requireAdmin();
 		Operacao operacao = new OperacaoCadastro();
 		operacao.setComando(ListaComando.REMOVER);
 		operacao.setEntidade(tarefa);
@@ -177,6 +188,12 @@ public class TarefaBean extends AbstractBean{
 	}
 	
 	public String visualizarTarefa() {
+		Tarefa carregada = tarefa == null ? null : tarefaService.buscarPorIdPermitido(tarefa.getId(), getLogado());
+		if (carregada == null) {
+			addMensagemErro("Acesso não autorizado à tarefa.");
+			return navegar("/restricted/listaTarefa.jsf");
+		}
+		tarefa = carregada;
 		cancelarComentario();
 		carregarComentarios();
 		return "tarefaView.jsf?faces-redirect=true";
@@ -184,6 +201,13 @@ public class TarefaBean extends AbstractBean{
 	
 	//atribui  tarefa ao usuario logado
 	public void delegar() throws ParseException {
+		AccessControl.requireUser();
+		if (tarefa.getResponsavel() != null && tarefa.getResponsavel().getId() != null
+				&& !tarefa.getResponsavel().getId().equals(getLogado().getIdResponsavel())
+				&& !getLogado().isAdm()) {
+			addMensagemErro("Somente o responsável atual ou um administrador pode liberar esta tarefa.");
+			return;
+		}
 		if(tarefa.getResponsavel() == null) {
 			tarefa.setResponsavel(new Responsavel());
 			tarefa.getResponsavel().setId(getLogado().getIdResponsavel());
@@ -198,7 +222,7 @@ public class TarefaBean extends AbstractBean{
 		try {
 			realizarOperacao(operacao);
 		} catch (Exception e) {
-			e.printStackTrace();
+			LOGGER.log(Level.SEVERE, "Falha ao atribuir tarefa", e);
 		}
 		carregarTarefas();
 		dashboard();
@@ -292,7 +316,7 @@ public class TarefaBean extends AbstractBean{
 			carregarComentarios();
 			addMensagem(edicao ? "Comentário atualizado com sucesso!" : "Comentário publicado com sucesso!");
 		} catch (Exception e) {
-			e.printStackTrace();
+			LOGGER.log(Level.SEVERE, "Falha ao salvar comentário", e);
 			addMensagemErroPadrao();
 		}
 	}
@@ -314,7 +338,7 @@ public class TarefaBean extends AbstractBean{
 			carregarComentarios();
 			addMensagem("Comentário removido com sucesso!");
 		} catch (Exception e) {
-			e.printStackTrace();
+			LOGGER.log(Level.SEVERE, "Falha ao remover comentário", e);
 			addMensagemErroPadrao();
 		}
 	}
@@ -381,8 +405,8 @@ public class TarefaBean extends AbstractBean{
 
 	public List<SelectItem> getComboEquipes() throws DAOException {
 		List<SelectItem> itensComboBoxEquipe = new ArrayList<>();
-		List<Equipe> equipes = new EquipeService().buscarTodos();
-		for(Equipe equipe : equipes) {
+		if (equipesCache == null) equipesCache = equipeService.buscarTodos();
+		for(Equipe equipe : equipesCache) {
 			boolean isSelecionado = tarefa.getEquipe() != null && tarefa.getEquipe().getId() != null
 					&& tarefa.getEquipe().equals(equipe);
 			itensComboBoxEquipe.add(new SelectItem(equipe, equipe.getNome(), null, false, false, isSelecionado));
@@ -394,8 +418,8 @@ public class TarefaBean extends AbstractBean{
 	
 	public List<SelectItem> getComboResponsaveis() throws DAOException {
 		List<SelectItem> itensComboBoxResponsaveis = new ArrayList<>();
-		List<Responsavel> responsaveis = responsavelService.buscarTodos();
-		for (Responsavel r : responsaveis) {
+		if (responsaveisCache == null) responsaveisCache = responsavelService.buscarTodos();
+		for (Responsavel r : responsaveisCache) {
 			itensComboBoxResponsaveis.add(new SelectItem(r, r.getNome()));
 		}
 		return itensComboBoxResponsaveis;

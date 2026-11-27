@@ -29,7 +29,7 @@ public class Responsavel implements BaseEntity, Serializable {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 	
-	@Size(min=3, max=50, message="Nome deve ter entre 8 e 50 caracteres.")
+	@Size(min=3, max=50, message="Nome deve ter entre 3 e 50 caracteres.")
 	@NotBlank(message="Nome não pode estar vazio.")
 	private String nome;
 	

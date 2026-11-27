@@ -64,7 +64,8 @@
 			</div>
 		</main>
 
-		<p:dialog header="Equipes Registradas" widgetVar="dialogEquipes" modal="true" responsive="true" width="450">
+		<p:dialog header="Equipes Registradas" widgetVar="dialogEquipes" modal="true" responsive="true" width="450"
+				  rendered="#{loginBean.logado.adm}">
 			<p:dataTable var="equipe" value="#{equipeBean.listaEquipes}" size="small">
 				<p:column headerText="Equipe">
 					<p:commandLink value="#{equipe.nome}" action="#{tarefaBean.visualizarQuadro}"
@@ -76,7 +77,8 @@
 			</p:dataTable>
 		</p:dialog>
 
-		<p:dialog header="Gestão de Responsáveis" widgetVar="dialogUsuarios" modal="true" responsive="true" width="600">
+		<p:dialog header="Gestão de Responsáveis" widgetVar="dialogUsuarios" modal="true" responsive="true" width="600"
+				  rendered="#{loginBean.logado.adm}">
 			<p:dataTable var="r" value="#{responsavelBean.listaReponsaveis}" size="small" paginator="true" rows="5">
 				<p:column headerText="ID" width="50"><h:outputText value="#{r.id}" /></p:column>
 				<p:column headerText="Nome"><h:outputText value="#{r.nome}" /></p:column>

@@ -6,11 +6,13 @@ import io.github.Leandro208.projetoESIG.dao.GenericDAOImpl;
 import io.github.Leandro208.projetoESIG.dominio.BaseEntity;
 import io.github.Leandro208.projetoESIG.exception.NegocioException;
 import io.github.Leandro208.projetoESIG.validacao.ListaMensagens;
+import io.github.Leandro208.projetoESIG.util.AccessControl;
 
 public class CadastroCrudOperation implements CrudOperation {
 
 	@Override
 	public void operar(Operacao operacao) throws DAOException, NegocioException {
+		AccessControl.requireAdmin();
 		validate(operacao);
 		if(operacao.getComando().equals(ListaComando.CADASTRAR)) {
 			criar(operacao);
@@ -26,32 +28,32 @@ public class CadastroCrudOperation implements CrudOperation {
 
 	}
 
-	protected Object criar(Operacao operacao) {
+	protected Object criar(Operacao operacao) throws DAOException {
 		GenericDAO dao = new GenericDAOImpl(operacao);
 		try {
 			dao.create(operacao.getEntidade());
-		} catch (DAOException e) {
-			e.printStackTrace();
+		} finally {
+			dao.close();
 		}
 		return operacao.getEntidade();
 	}
 
-	protected Object alterar(Operacao operacao) {
+	protected Object alterar(Operacao operacao) throws DAOException {
 		GenericDAO dao = new GenericDAOImpl(operacao);
 		try {
 			dao.update(operacao.getEntidade());
-		} catch (DAOException e) {
-			e.printStackTrace();
+		} finally {
+			dao.close();
 		}
 		return operacao.getEntidade();
 	}
 	
-	protected Object remover(Operacao operacao) {
+	protected Object remover(Operacao operacao) throws DAOException {
 		GenericDAO dao = new GenericDAOImpl(operacao);
 		try {
 			dao.remove(operacao.getEntidade());
-		} catch (DAOException e) {
-			e.printStackTrace();
+		} finally {
+			dao.close();
 		}
 		return operacao.getEntidade();
 	}

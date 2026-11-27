@@ -3,6 +3,10 @@ package io.github.Leandro208.projetoESIG.persistence;
 import io.github.Leandro208.projetoESIG.dao.DAOException;
 import io.github.Leandro208.projetoESIG.dao.GenericDAOImpl;
 import io.github.Leandro208.projetoESIG.dominio.Comentario;
+import io.github.Leandro208.projetoESIG.dominio.Responsavel;
+import io.github.Leandro208.projetoESIG.dominio.Tarefa;
+import io.github.Leandro208.projetoESIG.dto.UsuarioDTO;
+import io.github.Leandro208.projetoESIG.util.AccessControl;
 
 /**
  * Operacoes de persistencia dos comentarios.
@@ -19,6 +23,7 @@ public class ComentarioCrudOperation implements CrudOperation {
 	public void operar(Operacao operacao) throws DAOException {
 		GenericDAOImpl dao = new GenericDAOImpl(operacao);
 		try {
+			validarPermissao(dao, operacao);
 			if (operacao.getComando().equals(ListaComando.CADASTRAR_COMENTARIO)) {
 				dao.create(operacao.getEntidade());
 			} else if (operacao.getComando().equals(ListaComando.ALTERAR_COMENTARIO)) {
@@ -28,6 +33,38 @@ public class ComentarioCrudOperation implements CrudOperation {
 			}
 		} finally {
 			dao.close();
+		}
+	}
+
+	private void validarPermissao(GenericDAOImpl dao, Operacao operacao) throws DAOException {
+		UsuarioDTO user = AccessControl.requireUser();
+		Comentario recebido = (Comentario) operacao.getEntidade();
+		if (operacao.getComando().equals(ListaComando.CADASTRAR_COMENTARIO)) {
+			if (recebido.getTarefa() == null || recebido.getTarefa().getId() == null) {
+				throw new SecurityException("Tarefa inválida para comentário.");
+			}
+			Tarefa tarefa = dao.findById(recebido.getTarefa().getId(), Tarefa.class);
+			if (tarefa == null || !AccessControl.podeAcessarEquipe(user,
+					tarefa.getEquipe() == null ? null : tarefa.getEquipe().getId())) {
+				throw new SecurityException("Acesso não autorizado ao comentário.");
+			}
+			if (user.getIdResponsavel() == null) {
+				throw new SecurityException("O usuário não possui um responsável associado.");
+			}
+			Responsavel autor = dao.findById(user.getIdResponsavel(), Responsavel.class);
+			if (autor == null) throw new SecurityException("O responsável não foi encontrado.");
+			recebido.setAutor(autor);
+			recebido.setTarefa(tarefa);
+			return;
+		}
+		Comentario atual = recebido == null || recebido.getId() == null ? null
+				: dao.findById(recebido.getId(), Comentario.class);
+		if (atual == null || atual.getTarefa() == null || !AccessControl.podeAcessarEquipe(user,
+				atual.getTarefa().getEquipe() == null ? null : atual.getTarefa().getEquipe().getId())
+				|| !(user.isAdm() || (atual.getAutor() != null
+				&& user.getIdResponsavel() != null
+				&& user.getIdResponsavel().equals(atual.getAutor().getId())))) {
+			throw new SecurityException("Acesso não autorizado ao comentário.");
 		}
 	}
 

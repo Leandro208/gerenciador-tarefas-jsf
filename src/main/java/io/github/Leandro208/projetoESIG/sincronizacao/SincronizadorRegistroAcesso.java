@@ -1,8 +1,6 @@
 package io.github.Leandro208.projetoESIG.sincronizacao;
 
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
 
 import io.github.Leandro208.projetoESIG.connection.ConnectionFactory;
 import io.github.Leandro208.projetoESIG.dominio.RegistroAcesso;
@@ -13,15 +11,10 @@ import io.github.Leandro208.projetoESIG.dominio.RegistroAcesso;
  */
 public class SincronizadorRegistroAcesso {
 
-    private static EntityManagerFactory factory = Persistence.createEntityManagerFactory("tarefas");
-
     private EntityManager em;
 
     public SincronizadorRegistroAcesso() {
-        if (factory == null) {
-            factory = Persistence.createEntityManagerFactory("tarefas");
-        }
-        this.em = factory.createEntityManager();
+        this.em = ConnectionFactory.getEntityManager();
     }
 
     /**
@@ -31,9 +24,16 @@ public class SincronizadorRegistroAcesso {
      * @param r O entity RegistroAcesso a ser salvo
      */
     public void registrarAcesso(RegistroAcesso r) {
-        em.getTransaction().begin();
-        em.persist(r);
-        em.getTransaction().commit();
+        try {
+            em.getTransaction().begin();
+            em.persist(r);
+            em.getTransaction().commit();
+        } catch (RuntimeException e) {
+            if (em.getTransaction().isActive()) em.getTransaction().rollback();
+            throw e;
+        } finally {
+            if (em.isOpen()) em.close();
+        }
     }
 
     /**

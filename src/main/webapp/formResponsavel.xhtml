@@ -25,20 +25,27 @@
 			<h:form id="formResponsavel">
 				<p:messages id="messages" closable="true"><p:autoUpdate /></p:messages>
 
-				<h:outputLabel value="Nome Completo" styleClass="field-label" />
-				<p:inputText value="#{responsavelBean.responsavel.nome}"
+				<h:outputLabel for="nome" value="Nome Completo" styleClass="field-label" />
+				<p:inputText id="nome" value="#{responsavelBean.responsavel.nome}"
 							 required="true"
+							 requiredMessage="O nome é obrigatório."
 							 placeholder="Como quer ser chamado?"
 							 style="width: 100%"/>
 
-				<h:outputLabel value="E-mail" styleClass="field-label" />
-				<p:inputText value="#{responsavelBean.responsavel.usuario.email}"
+				<h:outputLabel for="email" value="E-mail" styleClass="field-label" />
+				<p:inputText id="email" value="#{responsavelBean.responsavel.usuario.email}"
 							 required="true"
+							 requiredMessage="O e-mail é obrigatório."
+							 validatorMessage="Informe um e-mail válido."
+							 type="email"
 							 placeholder="exemplo@email.com"
 							 style="width: 100%"/>
 
-				<h:outputLabel value="Data de Nascimento" styleClass="field-label" />
+				<h:outputLabel for="dataNascimento" value="Data de Nascimento" styleClass="field-label" />
 				<p:calendar value="#{responsavelBean.responsavel.dataNascimento}"
+							id="dataNascimento"
+							required="true"
+							requiredMessage="A data de nascimento é obrigatória."
 							pattern="dd/MM/yyyy"
 							mask="true"
 							placeholder="DD/MM/AAAA"
@@ -62,11 +69,11 @@
 
 					<h:panelGroup>
 						<h:outputLabel for="pwd2" value="Confirmar Senha" styleClass="field-label" />
-						<p:password id="pwd2" value="#{responsavelBean.responsavel.usuario.senha}"
+						<p:password id="pwd2" value="#{responsavelBean.confirmacaoSenha}"
 									label="Confirmar Senha"
 									required="true"
 									requiredMessage="A confirmação é obrigatória"
-									placeholder="••••••••" />
+								placeholder="••••••••" />
 					</h:panelGroup>
 				</div>
 

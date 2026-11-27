@@ -28,10 +28,18 @@ public class ResponsavelService implements BaseService<Responsavel>, Serializabl
 	}
 
 	public UsuarioDTO verificarCredenciais(String email, String senha) throws DAOException {
+		if (email == null || email.trim().isEmpty() || senha == null) return new UsuarioDTO();
 		UsuarioDAO dao = new UsuarioDAO();
 		try{
-			UsuarioDTO usuario = dao.findByEmailSenha(email, Criptografar.encriptografar(senha));
-			return usuario != null ? usuario : new UsuarioDTO();
+			UsuarioDTO usuario = dao.findByEmail(email);
+			if (usuario == null || !Criptografar.verificar(senha, usuario.getHashSenha())) {
+				return new UsuarioDTO();
+			}
+			if (Criptografar.precisaAtualizar(usuario.getHashSenha())) {
+				dao.atualizarSenha(usuario.getId(), Criptografar.encriptografar(senha));
+			}
+			usuario.setHashSenha(null);
+			return usuario;
 		} finally {
 			dao.close();
 		}

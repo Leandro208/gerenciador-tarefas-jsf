@@ -1,6 +1,9 @@
 package io.github.Leandro208.projetoESIG.util;
 
-public class MonitorTarefas {
+import java.io.Serializable;
+
+public class MonitorTarefas implements Serializable {
+	private static final long serialVersionUID = 1L;
 
 	private int andamento;
 	private int concluidas;

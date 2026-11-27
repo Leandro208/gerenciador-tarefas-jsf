@@ -1,8 +1,9 @@
 package io.github.Leandro208.projetoESIG.config;
 
 import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-import javax.servlet.annotation.WebListener;
 import javax.servlet.http.HttpSessionEvent;
 import javax.servlet.http.HttpSessionListener;
 
@@ -12,8 +13,8 @@ import io.github.Leandro208.projetoESIG.dao.GenericDAOImpl;
 import io.github.Leandro208.projetoESIG.dominio.RegistroAcesso;
 import io.github.Leandro208.projetoESIG.dto.UsuarioDTO;
 
-@WebListener
 public class SessionListener implements HttpSessionListener{
+	  private static final Logger LOGGER = Logger.getLogger(SessionListener.class.getName());
 	  @Override
 	    public void sessionCreated(HttpSessionEvent se) {
 	        
@@ -31,7 +32,7 @@ public class SessionListener implements HttpSessionListener{
 	    	        try {
 						daoEntrada.update(entrada);
 					} catch (DAOException e) {
-						e.printStackTrace();
+						LOGGER.log(Level.SEVERE, "Falha ao registrar encerramento da sessão", e);
 					} finally {
 						daoEntrada.close();
 					}

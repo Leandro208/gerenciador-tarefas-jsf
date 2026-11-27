@@ -1,11 +1,14 @@
 package io.github.Leandro208.projetoESIG.dto;
 
+import java.io.Serializable;
+
 import io.github.Leandro208.projetoESIG.dominio.Equipe;
 import io.github.Leandro208.projetoESIG.dominio.Responsavel;
 import io.github.Leandro208.projetoESIG.dominio.Tarefa;
 import io.github.Leandro208.projetoESIG.enums.StatusEnum;
 
-public class FormConsultaTarefaDto {
+public class FormConsultaTarefaDto implements Serializable {
+private static final long serialVersionUID = 1L;
 private Long numero;
 	
 	private String titulo;

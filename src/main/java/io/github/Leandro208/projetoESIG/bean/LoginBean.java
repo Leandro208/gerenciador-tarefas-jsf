@@ -35,13 +35,12 @@ public class LoginBean extends AbstractBean implements Serializable {
 	}
 
 	public String logar() throws DAOException {
-		//buscando Responsavel no dao
 		UsuarioDTO usuarioDTO = service.verificarCredenciais(email, senha);
+		limpar();
 		
 		if (usuarioDTO.getId() != null && usuarioDTO.getId() != 0) {
-			// se for diferente de null ele da o acesso
-			HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext()
-					.getSession(false);
+			HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
+			getCurrentRequest().changeSessionId();
 			session.setMaxInactiveInterval(360);
 			
 			SincronizadorRegistroAcesso sincronizador = SincronizadorRegistroAcesso.novoInstancia();
@@ -59,7 +58,6 @@ public class LoginBean extends AbstractBean implements Serializable {
 
 			return "/restricted/index?faces-redirect=true";
 		}
-		//se o usuario digitar os componentes errado exibe msg e carrega a pag
 		Message.erro("Usuario não encontrado! Email ou senha errado!");
 		
 		return null;

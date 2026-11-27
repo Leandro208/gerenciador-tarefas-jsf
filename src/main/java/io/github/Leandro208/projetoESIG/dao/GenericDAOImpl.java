@@ -132,7 +132,6 @@ public class GenericDAOImpl implements GenericDAO {
 			T entidade = (T) getSession().find(clazz, id);
 			return entidade;
 		} catch (Exception e) {
-			e.printStackTrace();
 			throw new DAOException(e);
 		}
 	}
@@ -167,6 +166,9 @@ public class GenericDAOImpl implements GenericDAO {
 	        entityManager.getTransaction().commit();
 
 	    }  catch (Exception e) {
+	        if (getSession().getTransaction().isActive()) {
+	            getSession().getTransaction().rollback();
+	        }
 	        throw new DAOException("Erro inesperado ao atualizar campo", e);
 	    }
 	}

@@ -33,6 +33,7 @@ public class FlywayInitListener implements ServletContextListener {
 
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, "Erro ao executar Flyway", e);
+            throw new IllegalStateException("A aplicação não pode iniciar sem aplicar as migrações do banco.", e);
         }
     }
 }

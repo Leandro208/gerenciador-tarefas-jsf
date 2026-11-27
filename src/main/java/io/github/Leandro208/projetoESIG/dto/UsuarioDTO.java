@@ -1,10 +1,13 @@
 package io.github.Leandro208.projetoESIG.dto;
 
+import java.io.Serializable;
+
 import io.github.Leandro208.projetoESIG.dominio.Equipe;
 import io.github.Leandro208.projetoESIG.dominio.RegistroAcesso;
 import io.github.Leandro208.projetoESIG.enums.Funcao;
 
-public class UsuarioDTO {
+public class UsuarioDTO implements Serializable {
+    private static final long serialVersionUID = 1L;
 
     private Long id;
     private String nome;
@@ -13,6 +16,8 @@ public class UsuarioDTO {
     private Long idResponsavel;
     private RegistroAcesso registroAcesso;
     private Funcao funcao;
+    /** Authentication-only value; never retain it in the HTTP session. */
+    private String hashSenha;
 
     public boolean isAdm() {
         return funcao == Funcao.ADM;
@@ -73,4 +78,8 @@ public class UsuarioDTO {
     public void setId(Long id) {
         this.id = id;
     }
+
+    public String getHashSenha() { return hashSenha; }
+
+    public void setHashSenha(String hashSenha) { this.hashSenha = hashSenha; }
 }

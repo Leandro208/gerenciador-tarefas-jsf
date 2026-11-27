@@ -13,6 +13,7 @@ import io.github.Leandro208.projetoESIG.persistence.ListaComando;
 import io.github.Leandro208.projetoESIG.persistence.Operacao;
 import io.github.Leandro208.projetoESIG.persistence.OperacaoCadastro;
 import io.github.Leandro208.projetoESIG.services.EquipeService;
+import io.github.Leandro208.projetoESIG.util.AccessControl;
 
 @ManagedBean
 @SessionScoped
@@ -28,6 +29,7 @@ public class EquipeBean extends AbstractBean {
 	}
 	
 	public String cadastrar() throws DAOException {
+		AccessControl.requireAdmin();
 		Operacao operacao = new OperacaoCadastro();
 		operacao.setComando(ListaComando.CADASTRAR);
 		operacao.setEntidade(equipe);
@@ -38,8 +40,10 @@ public class EquipeBean extends AbstractBean {
 			return null;
 		} catch (Exception e) {
 			addMensagemErroPadrao();
+			return null;
 		}
 		limpar();
+		listaEquipes = null;
 		addMensagem("Equipe cadastrada com sucesso!");
 		return "";
 	}
@@ -57,7 +61,7 @@ public class EquipeBean extends AbstractBean {
 	}
 
 	public List<Equipe> getListaEquipes() {
-		try {
+		if (listaEquipes == null) try {
 			listaEquipes = service.buscarTodos();
 		} catch (DAOException e) {
 			listaEquipes = new ArrayList<>();
