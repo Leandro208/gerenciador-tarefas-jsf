@@ -13,7 +13,6 @@ import io.github.Leandro208.projetoESIG.dao.DAOException;
 import io.github.Leandro208.projetoESIG.dao.GenericDAO;
 import io.github.Leandro208.projetoESIG.dao.GenericDAOImpl;
 import io.github.Leandro208.projetoESIG.dao.TarefaDAO;
-import io.github.Leandro208.projetoESIG.dominio.Responsavel;
 import io.github.Leandro208.projetoESIG.dto.FormConsultaTarefaDto;
 import io.github.Leandro208.projetoESIG.dominio.Tarefa;
 import io.github.Leandro208.projetoESIG.enums.StatusEnum;
@@ -66,17 +65,20 @@ public class TarefaService implements BaseService<Tarefa>, Serializable {
 
 	public MonitorTarefas monitoramento() {
 		UsuarioDTO usuario = AccessControl.requireUser();
-		FormConsultaTarefaDto dto = new FormConsultaTarefaDto();
-		dto.setResponsavel(new Responsavel());
-		dto.getResponsavel().setId(usuario.getIdResponsavel());
-		if (usuario.getEquipe() == null) {
+		if (usuario.getEquipe() == null || usuario.getIdResponsavel() == null) {
 			return new MonitorTarefas();
 		}
-		dto.setEquipe(usuario.getEquipe());
+		TarefaDAO dao = new TarefaDAO();
+		try {
+			Object[] resumo = dao.resumoIndicadores(usuario.getIdResponsavel(), usuario.getEquipe().getId());
+			return new MonitorTarefas(contagem(resumo, 3), contagem(resumo, 0),
+					contagem(resumo, 1), contagem(resumo, 2));
+		} finally {
+			dao.close();
+		}
+	}
 
-		Map<Integer, List<Tarefa>> tarefas = buscarTodos(dto);
-		int encerrados = tarefas.get(StatusEnum.CONCLUIDO.getCodigo()).size();
-		int andamento = tarefas.get(StatusEnum.EM_ANDAMENTO.getCodigo()).size();
-		return new MonitorTarefas(andamento, encerrados);
+	private int contagem(Object[] resumo, int indice) {
+		return ((Number) resumo[indice]).intValue();
 	}
 }

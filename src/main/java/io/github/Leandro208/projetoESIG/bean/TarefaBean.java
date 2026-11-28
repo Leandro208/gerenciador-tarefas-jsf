@@ -71,7 +71,7 @@ public class TarefaBean extends AbstractBean{
 
 	private boolean modoEdicao = false;
 	
-	public TarefaBean() throws ParseException {
+	public TarefaBean() {
 		tarefa = new Tarefa();
 		equipe = new Equipe();
 		if(UsuarioUtils.usuarioTemEquipe()) {
@@ -83,7 +83,7 @@ public class TarefaBean extends AbstractBean{
 		comentarioService = new ComentarioService();
 		formConsulta = new FormConsultaTarefaDto();
 		listaTarefas = new HashMap<>();
-		monitor = tarefaService.monitoramento();
+		monitor = new MonitorTarefas();
 		comentario = new Comentario();
 		comentarios = new ArrayList<>();
 	}
@@ -445,7 +445,12 @@ public class TarefaBean extends AbstractBean{
 		return itensComboBoxResponsaveis;
 	}
 
-	public void dashboard() throws ParseException {
+	public void prepararPainel() {
+		limpar();
+		dashboard();
+	}
+
+	public void dashboard() {
 		monitor = tarefaService.monitoramento();
 	}
 

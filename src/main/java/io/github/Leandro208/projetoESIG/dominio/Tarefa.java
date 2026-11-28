@@ -86,7 +86,7 @@ public class Tarefa implements BaseEntity, Serializable {
 		this.descricao = descricao;
 		this.responsavel = responsavel;
 		this.prioridade = prioridade;
-		this.status = status;
+		setStatus(status);
 		this.deadline = data;
 	}
 	
@@ -181,6 +181,12 @@ public class Tarefa implements BaseEntity, Serializable {
 	}
 
 	public void setStatus(StatusEnum status) {
+		if (status == StatusEnum.CONCLUIDO
+				&& (this.status != StatusEnum.CONCLUIDO || dataFinalizacao == null)) {
+			dataFinalizacao = new Date();
+		} else if (this.status == StatusEnum.CONCLUIDO && status != StatusEnum.CONCLUIDO) {
+			dataFinalizacao = null;
+		}
 		this.status = status;
 	}
 

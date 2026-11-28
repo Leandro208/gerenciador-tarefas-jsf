@@ -16,27 +16,65 @@
 				<p>Acompanhe o progresso da sua equipe em tempo real.</p>
 			</div>
 
-			<h:panelGroup id="monitor" layout="block" styleClass="dashboard-grid">
-				<div class="stat-card">
-					<div class="icon-circle bg-andamento">
-						<i class="pi pi-sync"></i>
+			<section class="dashboard-section" aria-labelledby="metrics-heading">
+				<div class="dashboard-section-heading">
+					<div>
+						<span class="section-eyebrow">Resumo do painel</span>
+						<h2 id="metrics-heading">Suas tarefas em números</h2>
 					</div>
-					<div class="stat-info">
-						<span>Em Andamento</span>
-						<h:outputText value="#{tarefaBean.monitor.andamento}" styleClass="stat-value" />
-					</div>
+					<p>Acompanhe prazos e entregas em um só lugar.</p>
 				</div>
 
-				<div class="stat-card">
-					<div class="icon-circle bg-concluido">
-						<i class="pi pi-check-circle"></i>
+				<h:panelGroup id="monitor" layout="block" styleClass="dashboard-grid">
+					<div class="stat-card stat-card-andamento">
+						<div class="stat-card-top">
+							<span class="icon-circle bg-andamento" aria-hidden="true"><i class="pi pi-sync"></i></span>
+							<span class="stat-period">Em curso</span>
+						</div>
+						<div class="stat-info">
+							<h:outputText value="#{tarefaBean.monitor.andamento}" styleClass="stat-value" />
+							<span>Em andamento</span>
+						</div>
+						<p class="stat-caption">Tarefas em execução</p>
 					</div>
-					<div class="stat-info">
-						<span>Concluídas</span>
-						<h:outputText value="#{tarefaBean.monitor.concluidas}" styleClass="stat-value" />
+
+					<div class="stat-card stat-card-atrasada">
+						<div class="stat-card-top">
+							<span class="icon-circle bg-atrasada" aria-hidden="true"><i class="pi pi-exclamation-triangle"></i></span>
+							<span class="stat-period">Atenção</span>
+						</div>
+						<div class="stat-info">
+							<h:outputText value="#{tarefaBean.monitor.atrasadas}" styleClass="stat-value" />
+							<span>Atrasadas</span>
+						</div>
+						<p class="stat-caption">Prazo já ultrapassado</p>
 					</div>
-				</div>
-			</h:panelGroup>
+
+					<div class="stat-card stat-card-prazo">
+						<div class="stat-card-top">
+							<span class="icon-circle bg-prazo" aria-hidden="true"><i class="pi pi-clock"></i></span>
+							<span class="stat-period">Próximos 7 dias</span>
+						</div>
+						<div class="stat-info">
+							<h:outputText value="#{tarefaBean.monitor.proximas}" styleClass="stat-value" />
+							<span>Próximas do prazo</span>
+						</div>
+						<p class="stat-caption">Vencem hoje ou nos próximos dias</p>
+					</div>
+
+					<div class="stat-card stat-card-concluida">
+						<div class="stat-card-top">
+							<span class="icon-circle bg-concluido" aria-hidden="true"><i class="pi pi-check-circle"></i></span>
+							<span class="stat-period">Este mês</span>
+						</div>
+						<div class="stat-info">
+							<h:outputText value="#{tarefaBean.monitor.concluidasNoPeriodo}" styleClass="stat-value" />
+							<span>Concluídas</span>
+						</div>
+						<p class="stat-caption">Entregas finalizadas no mês</p>
+					</div>
+				</h:panelGroup>
+			</section>
 
 
 
@@ -105,7 +143,7 @@
 			</p:dataTable>
 		</p:dialog>
 
-		<f:event type="preRenderView" listener="#{tarefaBean.limpar}" />
+		<f:event type="preRenderView" listener="#{tarefaBean.prepararPainel}" />
 	</ui:define>
 
 </ui:composition>

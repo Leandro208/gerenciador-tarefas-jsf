@@ -12,6 +12,25 @@ import io.github.Leandro208.projetoESIG.util.ValidatorUtils;
 
 public class TarefaDAO extends GenericDAOImpl{
 
+	public Object[] resumoIndicadores(Long idResponsavel, Long idEquipe) {
+		String sql = "SELECT "
+				+ "COUNT(*) FILTER (WHERE t.status <> 'CONCLUIDO' AND t.deadline < CURRENT_DATE) AS atrasadas, "
+				+ "COUNT(*) FILTER (WHERE t.status <> 'CONCLUIDO' AND t.deadline >= CURRENT_DATE "
+				+ "AND t.deadline <= CURRENT_DATE + 7) AS proximas, "
+				+ "COUNT(*) FILTER (WHERE t.status = 'CONCLUIDO' "
+				+ "AND t.data_finalizacao >= date_trunc('month', CURRENT_DATE) "
+				+ "AND t.data_finalizacao < CURRENT_DATE + INTERVAL '1 day') AS concluidas_no_periodo, "
+				+ "COUNT(*) FILTER (WHERE t.status = 'EM_ANDAMENTO') AS andamento "
+				+ "FROM gestao.tarefa t WHERE t.id_responsavel = :idResponsavel "
+				+ "AND t.id_equipe = :idEquipe";
+
+		Object[] resultado = (Object[]) getSession().createNativeQuery(sql)
+				.setParameter("idResponsavel", idResponsavel)
+				.setParameter("idEquipe", idEquipe)
+				.getSingleResult();
+		return resultado;
+	}
+
 	public List<Tarefa> filter(FormConsultaTarefaDto form) {
 	    StringBuilder sql = new StringBuilder("SELECT * FROM gestao.tarefa t WHERE 1=1");
 	    

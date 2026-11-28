@@ -5,7 +5,6 @@ import io.github.Leandro208.projetoESIG.dao.GenericDAO;
 import io.github.Leandro208.projetoESIG.dao.GenericDAOImpl;
 import io.github.Leandro208.projetoESIG.dominio.Tarefa;
 import io.github.Leandro208.projetoESIG.dominio.Responsavel;
-import io.github.Leandro208.projetoESIG.dominio.Responsavel;
 import io.github.Leandro208.projetoESIG.dto.UsuarioDTO;
 import io.github.Leandro208.projetoESIG.util.AccessControl;
 
@@ -28,10 +27,15 @@ public class TarefaCrudOperation extends CadastroCrudOperation {
 	}
 
 	private void moverTarefa(Operacao operacao) throws DAOException {
-		GenericDAO dao = new GenericDAOImpl(operacao);
+		GenericDAOImpl dao = new GenericDAOImpl(operacao);
 		try {
-			Tarefa tarefa = (Tarefa) operacao.getEntidade();
-			dao.updateField(tarefa.getId(), Tarefa.class,"status", tarefa.getStatus());
+			Tarefa solicitada = (Tarefa) operacao.getEntidade();
+			Tarefa tarefa = dao.findById(solicitada.getId(), Tarefa.class);
+			if (tarefa == null) {
+				throw new DAOException("Tarefa não encontrada.");
+			}
+			tarefa.setStatus(solicitada.getStatus());
+			dao.update(tarefa);
 		} finally {
 			dao.close();
 		}
