@@ -20,28 +20,57 @@
 
 					<div class="search-grid">
 						<div class="search-item">
-							<p:outputLabel value="Número" styleClass="field-label-min" />
-							<p:inputText value="#{tarefaBean.formConsulta.numero}" placeholder="ID" />
+							<p:outputLabel for="numero" value="Número" styleClass="field-label-min" />
+							<p:inputText id="numero" value="#{tarefaBean.formConsulta.numero}" placeholder="ID" />
 						</div>
 						<div class="search-item flex-2">
-							<p:outputLabel value="Título" styleClass="field-label-min" />
-							<p:inputText value="#{tarefaBean.formConsulta.titulo}" placeholder="O que busca?" />
+							<p:outputLabel for="texto" value="Título ou descrição" styleClass="field-label-min" />
+							<p:inputText id="texto" value="#{tarefaBean.formConsulta.titulo}" placeholder="O que busca?" />
 						</div>
 						<div class="search-item">
-							<p:outputLabel value="Responsável" styleClass="field-label-min" />
-							<p:selectOneMenu value="#{tarefaBean.formConsulta.responsavel}" styleClass="custom-select-min">
+							<p:outputLabel for="responsavel" value="Responsável" styleClass="field-label-min" />
+							<p:selectOneMenu id="responsavel" value="#{tarefaBean.formConsulta.responsavel}" styleClass="custom-select-min">
 								<f:selectItem itemLabel="Todos" itemValue="#{null}" />
 								<f:converter converterId="responsavelConverter" />
 								<f:selectItems value="#{tarefaBean.comboResponsaveis}" />
 							</p:selectOneMenu>
+						</div>
+						<div class="search-item">
+							<p:outputLabel for="status" value="Status" styleClass="field-label-min" />
+							<p:selectOneMenu id="status" value="#{tarefaBean.formConsulta.situacao}" styleClass="custom-select-min">
+								<f:selectItem itemLabel="Todos" itemValue="#{null}" />
+								<f:selectItems value="#{tarefaBean.niveisStatus}" />
+							</p:selectOneMenu>
+						</div>
+						<div class="search-item">
+							<p:outputLabel for="prioridade" value="Prioridade" styleClass="field-label-min" />
+							<p:selectOneMenu id="prioridade" value="#{tarefaBean.formConsulta.prioridade}" styleClass="custom-select-min">
+								<f:selectItem itemLabel="Todas" itemValue="#{null}" />
+								<f:selectItems value="#{tarefaBean.prioridadesConsulta}" />
+							</p:selectOneMenu>
+						</div>
+						<div class="search-item">
+							<p:outputLabel for="prazoDe" value="Prazo de" styleClass="field-label-min" />
+							<p:calendar id="prazoDe" value="#{tarefaBean.formConsulta.prazoDe}" pattern="dd/MM/yyyy" mask="true" />
+						</div>
+						<div class="search-item">
+							<p:outputLabel for="prazoAte" value="Prazo até" styleClass="field-label-min" />
+							<p:calendar id="prazoAte" value="#{tarefaBean.formConsulta.prazoAte}" pattern="dd/MM/yyyy" mask="true" />
 						</div>
 						<div class="search-button-area">
 							<p:commandButton action="#{tarefaBean.listar}"
 											 icon="fa fa-search"
 											 update="messages :kanbanBoard"
 											 process="@form"
-												 title="Buscar tarefas"
-											 styleClass="btn-circle" />
+										 value="Buscar"
+										 title="Buscar tarefas"
+										 styleClass="btn-outline" />
+							<p:commandButton action="#{tarefaBean.limparFiltros}"
+										 icon="fa fa-times"
+										 value="Limpar"
+										 update="@form :kanbanBoard"
+										 process="@this"
+										 styleClass="btn-outline" />
 						</div>
 					</div>
 

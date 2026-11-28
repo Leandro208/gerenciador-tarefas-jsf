@@ -116,8 +116,20 @@ public class TarefaBean extends AbstractBean{
 	}
 
 	public String listar() {
+		if (formConsulta.getPrazoDe() != null && formConsulta.getPrazoAte() != null
+				&& formConsulta.getPrazoDe().after(formConsulta.getPrazoAte())) {
+			addMensagemErro("A data inicial do prazo deve ser anterior ou igual à data final.");
+			return null;
+		}
 		carregarTarefas();
 		return "";
+	}
+
+	public void limparFiltros() {
+		Equipe equipeConsulta = formConsulta == null ? equipe : formConsulta.getEquipe();
+		formConsulta = new FormConsultaTarefaDto();
+		formConsulta.setEquipe(equipeConsulta);
+		carregarTarefas();
 	}
 
 	public String editar() throws ParseException {
@@ -400,6 +412,14 @@ public class TarefaBean extends AbstractBean{
 			niveisStatus.add(new SelectItem(s, s.name()));
 		}
 		return niveisStatus;
+	}
+
+	public List<SelectItem> getPrioridadesConsulta() {
+		List<SelectItem> itens = new ArrayList<>();
+		for (PrioridadeEnum prioridade : PrioridadeEnum.values()) {
+			itens.add(new SelectItem(prioridade, prioridade.name()));
+		}
+		return itens;
 	}
 	
 

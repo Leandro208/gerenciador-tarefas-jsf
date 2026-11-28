@@ -39,6 +39,21 @@ public class TarefaDAO extends GenericDAOImpl{
 	        parameters.put("situacao", form.getSituacao().toString());
 	    }
 
+	    if (form.getPrioridade() != null) {
+	        sql.append(" AND t.prioridade = :prioridade");
+	        parameters.put("prioridade", form.getPrioridade().toString());
+	    }
+
+	    if (form.getPrazoDe() != null) {
+	        sql.append(" AND t.deadline >= :prazoDe");
+	        parameters.put("prazoDe", form.getPrazoDe());
+	    }
+
+	    if (form.getPrazoAte() != null) {
+	        sql.append(" AND t.deadline <= :prazoAte");
+	        parameters.put("prazoAte", form.getPrazoAte());
+	    }
+
 	    if (!ValidatorUtils.isEmpty(form.getEquipe())) {
 	        sql.append(" AND t.id_equipe = :idEquipe");
 	        parameters.put("idEquipe", form.getEquipe().getId());

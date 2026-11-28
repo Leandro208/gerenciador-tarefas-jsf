@@ -1,11 +1,13 @@
 package io.github.Leandro208.projetoESIG.dto;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import io.github.Leandro208.projetoESIG.dominio.Equipe;
 import io.github.Leandro208.projetoESIG.dominio.Responsavel;
 import io.github.Leandro208.projetoESIG.dominio.Tarefa;
 import io.github.Leandro208.projetoESIG.enums.StatusEnum;
+import io.github.Leandro208.projetoESIG.enums.PrioridadeEnum;
 
 public class FormConsultaTarefaDto implements Serializable {
 private static final long serialVersionUID = 1L;
@@ -16,6 +18,12 @@ private Long numero;
 	private Responsavel responsavel;
 	
 	private StatusEnum situacao;
+
+	private PrioridadeEnum prioridade;
+
+	private Date prazoDe;
+
+	private Date prazoAte;
 	
 	private Equipe equipe;
 	
@@ -59,6 +67,18 @@ private Long numero;
 	public void setSituacao(StatusEnum situacao) {
 		this.situacao = situacao;
 	}
+
+	public PrioridadeEnum getPrioridade() { return prioridade; }
+
+	public void setPrioridade(PrioridadeEnum prioridade) { this.prioridade = prioridade; }
+
+	public Date getPrazoDe() { return prazoDe; }
+
+	public void setPrazoDe(Date prazoDe) { this.prazoDe = prazoDe; }
+
+	public Date getPrazoAte() { return prazoAte; }
+
+	public void setPrazoAte(Date prazoAte) { this.prazoAte = prazoAte; }
 
 	public Equipe getEquipe() {
 		return equipe;
