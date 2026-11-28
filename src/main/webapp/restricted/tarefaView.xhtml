@@ -106,7 +106,7 @@
                                             </h:outputLink>
                                             <span>#{anexo.tamanhoLegivel}</span>
                                             <h:outputText value="#{anexo.dataUpload}">
-                                                <f:convertDateTime pattern="dd/MM/yyyy HH:mm" />
+                                                <f:convertDateTime pattern="dd/MM/yyyy HH:mm" timeZone="America/Fortaleza" />
                                             </h:outputText>
                                         </div>
                                         <h:form id="formRemoverAnexo" rendered="#{loginBean.logado.adm or anexo.autorUsuarioId eq loginBean.logado.id}">
@@ -170,7 +170,7 @@
                                 <span class="text-date">
                                     <i class="fa fa-calendar-o"></i>
                                     <h:outputText value="#{tarefaBean.tarefa.deadline}">
-                                        <f:convertDateTime pattern="dd/MM/yyyy"/>
+                                        <f:convertDateTime pattern="dd/MM/yyyy" timeZone="America/Fortaleza" />
                                     </h:outputText>
                                 </span>
                             </div>
@@ -190,7 +190,7 @@
                                          styleClass="history-table" emptyMessage="Nenhuma alteração registrada.">
                                 <p:column headerText="Quando">
                                     <h:outputText value="#{evento.dataAlteracao}">
-                                        <f:convertDateTime pattern="dd/MM/yyyy HH:mm"/>
+                                        <f:convertDateTime pattern="dd/MM/yyyy HH:mm" timeZone="America/Fortaleza" />
                                     </h:outputText>
                                 </p:column>
                                 <p:column headerText="Quem">

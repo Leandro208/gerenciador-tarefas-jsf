@@ -253,6 +253,7 @@ public class TarefaBean extends AbstractBean{
 			tarefa = tarefaService.buscarPorIdPermitido(id, usuario);
 			idTarefaAnexo = id;
 			carregarAnexos(id);
+			carregarHistoricoTarefa();
 			addMensagem("Anexo enviado com sucesso.");
 			return redirecionarParaTarefa();
 		} catch (IllegalArgumentException | SecurityException e) {
@@ -278,6 +279,7 @@ public class TarefaBean extends AbstractBean{
 			tarefaAnexoService.excluir(idAnexo, usuario);
 			tarefa = tarefaService.buscarPorIdPermitido(id, usuario);
 			carregarAnexos(id);
+			carregarHistoricoTarefa();
 			addMensagem("Anexo removido.");
 			return redirecionarParaTarefa();
 		} catch (SecurityException | IllegalArgumentException e) {

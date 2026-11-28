@@ -65,7 +65,7 @@
                                     <span class="comment-author">#{c.autorNome}</span>
                                     <span class="comment-date">
                                         <h:outputText value="#{c.dataCadastro}">
-                                            <f:convertDateTime pattern="dd/MM/yyyy 'às' HH:mm" />
+                                            <f:convertDateTime pattern="dd/MM/yyyy 'às' HH:mm" timeZone="America/Fortaleza" />
                                         </h:outputText>
                                     </span>
                                 </div>

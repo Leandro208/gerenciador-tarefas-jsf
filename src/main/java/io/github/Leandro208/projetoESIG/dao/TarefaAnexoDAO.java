@@ -10,6 +10,7 @@ import javax.persistence.LockModeType;
 
 import io.github.Leandro208.projetoESIG.dominio.Tarefa;
 import io.github.Leandro208.projetoESIG.dominio.TarefaAnexo;
+import io.github.Leandro208.projetoESIG.dominio.HistoricoTarefa;
 import io.github.Leandro208.projetoESIG.dominio.Usuario;
 import io.github.Leandro208.projetoESIG.dto.TarefaAnexoArquivoDTO;
 import io.github.Leandro208.projetoESIG.dto.TarefaAnexoDTO;
@@ -61,6 +62,7 @@ public class TarefaAnexoDAO extends GenericDAOImpl {
 			anexo.setDataUpload(new Date());
 			anexo.setConteudo(conteudo);
 			em.persist(anexo);
+			em.persist(criarEvento(em, tarefa, usuario, "Anexo enviado", null, nome));
 			tx.commit();
 		} catch (Exception e) {
 			if (tx.isActive()) tx.rollback();
@@ -90,7 +92,7 @@ public class TarefaAnexoDAO extends GenericDAOImpl {
 		try {
 			tx.begin();
 			List<?> linhas = em.createQuery(
-					"SELECT t.id, e.id, u.id FROM TarefaAnexo a JOIN a.tarefa t "
+					"SELECT t.id, e.id, u.id, a.nomeArquivo FROM TarefaAnexo a JOIN a.tarefa t "
 					+ "LEFT JOIN t.equipe e LEFT JOIN a.autor u WHERE a.id = :idAnexo")
 					.setParameter("idAnexo", idAnexo).getResultList();
 			if (linhas.isEmpty()) throw new DAOException("O anexo não foi encontrado.");
@@ -98,6 +100,7 @@ public class TarefaAnexoDAO extends GenericDAOImpl {
 			Long idTarefa = (Long) valores[0];
 			Long idEquipe = (Long) valores[1];
 			Long idAutor = (Long) valores[2];
+			String nomeArquivo = (String) valores[3];
 			Tarefa tarefa = em.find(Tarefa.class, idTarefa, LockModeType.PESSIMISTIC_WRITE);
 			if (tarefa == null || !AccessControl.podeAcessarEquipe(usuario, idEquipe)) {
 				throw new SecurityException("Acesso não autorizado à tarefa.");
@@ -105,6 +108,7 @@ public class TarefaAnexoDAO extends GenericDAOImpl {
 			if (!usuario.isAdm() && !usuario.getId().equals(idAutor)) {
 				throw new SecurityException("Somente quem enviou o anexo ou um administrador pode excluí-lo.");
 			}
+			em.persist(criarEvento(em, tarefa, usuario, "Anexo removido", nomeArquivo, null));
 			em.createQuery("DELETE FROM TarefaAnexo a WHERE a.id = :idAnexo")
 					.setParameter("idAnexo", idAnexo).executeUpdate();
 			tx.commit();
@@ -114,5 +118,17 @@ public class TarefaAnexoDAO extends GenericDAOImpl {
 			if (e instanceof SecurityException) throw (SecurityException) e;
 			throw new DAOException("Não foi possível excluir o anexo.", e);
 		}
+	}
+
+	private HistoricoTarefa criarEvento(EntityManager em, Tarefa tarefa, UsuarioDTO usuario,
+			String campo, String valorAnterior, String valorNovo) {
+		HistoricoTarefa evento = new HistoricoTarefa();
+		evento.setTarefa(tarefa);
+		evento.setUsuario(em.getReference(Usuario.class, usuario.getId()));
+		evento.setCampo(campo);
+		evento.setValorAnterior(valorAnterior);
+		evento.setValorNovo(valorNovo);
+		evento.setDataAlteracao(new Date());
+		return evento;
 	}
 }
