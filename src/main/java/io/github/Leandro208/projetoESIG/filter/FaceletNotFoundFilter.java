@@ -13,6 +13,8 @@ import javax.servlet.http.HttpServletResponse;
 
 public class FaceletNotFoundFilter implements Filter {
 
+	private static final String JSF_RESOURCE_PATH = "/javax.faces.resource/";
+
 	@Override
 	public void init(FilterConfig filterConfig) throws ServletException {
 	}
@@ -24,7 +26,8 @@ public class FaceletNotFoundFilter implements Filter {
 		HttpServletResponse httpResponse = (HttpServletResponse) response;
 		String servletPath = httpRequest.getServletPath();
 
-		if (servletPath != null && servletPath.endsWith(".jsf")) {
+		if (servletPath != null && servletPath.endsWith(".jsf")
+				&& !servletPath.startsWith(JSF_RESOURCE_PATH)) {
 			String faceletPath = servletPath.substring(0, servletPath.length() - 4) + ".xhtml";
 			if (httpRequest.getServletContext().getResource(faceletPath) == null) {
 				httpResponse.sendError(HttpServletResponse.SC_NOT_FOUND);
