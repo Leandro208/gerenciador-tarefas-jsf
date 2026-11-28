@@ -1,0 +1,76 @@
+.error-page {
+    display: grid;
+    min-height: 100vh;
+    place-items: center;
+    padding: 24px;
+}
+
+.error-card {
+    width: min(100%, 480px);
+    padding: clamp(30px, 6vw, 54px);
+    border: 1px solid var(--border);
+    border-radius: 22px;
+    background: rgba(255, 255, 255, .94);
+    box-shadow: var(--card-shadow);
+    text-align: center;
+}
+
+.error-mark {
+    display: grid;
+    width: 58px;
+    height: 58px;
+    margin: 0 auto 24px;
+    place-items: center;
+    border-radius: 18px;
+    background: var(--danger-light);
+    color: var(--danger);
+    font-size: 30px;
+    font-weight: 700;
+}
+
+.error-eyebrow {
+    margin: 0 0 10px;
+    color: var(--text-muted);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+}
+
+.error-card h1 {
+    margin: 0;
+    color: var(--text-main);
+    font-size: clamp(26px, 5vw, 34px);
+    letter-spacing: -.04em;
+    line-height: 1.2;
+}
+
+.error-message {
+    margin: 14px 0 28px;
+    color: var(--text-sub);
+}
+
+.error-action {
+    display: inline-flex;
+    min-height: 46px;
+    align-items: center;
+    justify-content: center;
+    padding: 0 22px;
+    border-radius: 11px;
+    background: var(--primary);
+    color: #fff;
+    font-weight: 600;
+    text-decoration: none;
+    transition: background .18s ease, transform .18s ease;
+}
+
+.error-action:hover {
+    transform: translateY(-1px);
+    background: var(--primary-hover);
+    color: #fff;
+}
+
+.error-action:focus-visible {
+    outline: 3px solid rgba(108, 76, 227, .3);
+    outline-offset: 3px;
+}

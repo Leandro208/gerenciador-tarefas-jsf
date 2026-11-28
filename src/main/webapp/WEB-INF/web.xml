@@ -5,9 +5,29 @@
 	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
 	id="WebApp_ID" version="3.0">
 	<display-name>Gerenciador de Tarefas</display-name>
-	<welcome-file-list>
-		<welcome-file>login.jsf</welcome-file>
-	</welcome-file-list>
+	<context-param>
+		<param-name>primefaces.FONT_AWESOME</param-name>
+		<param-value>true</param-value>
+	</context-param>
+	<filter>
+		<filter-name>LoginFilter</filter-name>
+		<filter-class>io.github.Leandro208.projetoESIG.filter.LoginFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>LoginFilter</filter-name>
+		<url-pattern>/restricted/*</url-pattern>
+	</filter-mapping>
+	<filter>
+		<filter-name>FaceletNotFoundFilter</filter-name>
+		<filter-class>io.github.Leandro208.projetoESIG.filter.FaceletNotFoundFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>FaceletNotFoundFilter</filter-name>
+		<url-pattern>*.jsf</url-pattern>
+	</filter-mapping>
+	<listener>
+		<listener-class>io.github.Leandro208.projetoESIG.config.SessionListener</listener-class>
+	</listener>
 	<servlet>
 		<servlet-name>Faces Servlet</servlet-name>
 		<servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
@@ -30,20 +50,27 @@
 		<servlet-name>AvatarServlet</servlet-name>
 		<url-pattern>/avatar</url-pattern>
 	</servlet-mapping>
-	<context-param>
-		<param-name>primefaces.FONT_AWESOME</param-name>
-		<param-value>true</param-value>
-	</context-param>
-	<filter>
-		<filter-name>LoginFilter</filter-name>
-		<filter-class>io.github.Leandro208.projetoESIG.filter.LoginFilter</filter-class>
-	</filter>
-	<filter-mapping>
-		<filter-name>LoginFilter</filter-name>
-		<url-pattern>/restricted/*</url-pattern>
-	</filter-mapping>
-	<listener>
-		<web:display-name>SessionListener</web:display-name>
-        <listener-class>io.github.Leandro208.projetoESIG.config.SessionListener</listener-class>
-    </listener>
+	<servlet>
+		<servlet-name>ErrorPageServlet</servlet-name>
+		<servlet-class>io.github.Leandro208.projetoESIG.servlet.ErrorPageServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>ErrorPageServlet</servlet-name>
+		<url-pattern>/erro</url-pattern>
+	</servlet-mapping>
+	<welcome-file-list>
+		<welcome-file>login.jsf</welcome-file>
+	</welcome-file-list>
+	<error-page>
+		<error-code>404</error-code>
+		<location>/erro</location>
+	</error-page>
+	<error-page>
+		<error-code>500</error-code>
+		<location>/erro</location>
+	</error-page>
+	<error-page>
+		<exception-type>java.lang.Throwable</exception-type>
+		<location>/erro</location>
+	</error-page>
 </web-app>
