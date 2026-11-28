@@ -55,6 +55,7 @@ public class TarefaService implements BaseService<Tarefa>, Serializable {
 			Tarefa tarefa = dao.findById(idTarefa, Tarefa.class);
 			if (tarefa == null || !AccessControl.podeAcessarEquipe(usuario,
 					tarefa.getEquipe() == null ? null : tarefa.getEquipe().getId())) return null;
+			tarefa.setSolicitanteNome(dao.buscarNomeSolicitante(idTarefa));
 			return tarefa;
 		} catch (DAOException e) {
 			throw new IllegalStateException("Não foi possível validar o acesso à tarefa.", e);

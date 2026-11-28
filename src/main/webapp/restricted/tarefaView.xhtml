@@ -70,6 +70,22 @@
                             </div>
 
                             <div class="info-row">
+                                <label>Solicitante</label>
+                                <span class="responsible-identity">
+                                    <h:panelGroup rendered="#{tarefaBean.tarefa.registroAcesso != null and tarefaBean.tarefa.registroAcesso.usuario != null and tarefaBean.tarefa.registroAcesso.usuario.id != null}">
+                                        <img class="profile-avatar task-avatar"
+                                             src="#{request.contextPath}/avatar?id=#{tarefaBean.tarefa.registroAcesso.usuario.id}"
+                                             onerror="this.onerror=null;this.src='#{request.contextPath}/resources/img/profile-placeholder.svg';"
+                                             alt="" />
+                                    </h:panelGroup>
+                                    <h:outputText value="#{tarefaBean.tarefa.solicitanteNome}"
+                                                  rendered="#{not empty tarefaBean.tarefa.solicitanteNome}" />
+                                    <h:outputText value="Não informado"
+                                                  rendered="#{empty tarefaBean.tarefa.solicitanteNome}" />
+                                </span>
+                            </div>
+
+                            <div class="info-row">
                                 <label>Prioridade</label>
                                 <span class="badge-priority">#{tarefaBean.tarefa.prioridade}</span>
                             </div>

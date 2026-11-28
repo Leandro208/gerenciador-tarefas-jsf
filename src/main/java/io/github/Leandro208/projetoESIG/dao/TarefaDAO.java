@@ -12,6 +12,19 @@ import io.github.Leandro208.projetoESIG.util.ValidatorUtils;
 
 public class TarefaDAO extends GenericDAOImpl{
 
+	public String buscarNomeSolicitante(Long idTarefa) {
+		@SuppressWarnings("unchecked")
+		List<String> nomes = getSession().createNativeQuery(
+				"SELECT r.nome FROM gestao.tarefa t "
+				+ "JOIN seguranca.registro_acesso ra ON ra.id = t.id_registro_acesso "
+				+ "JOIN pessoa.responsavel r ON r.id_usuario = ra.id_usuario "
+				+ "WHERE t.id = :idTarefa ORDER BY r.id")
+				.setParameter("idTarefa", idTarefa)
+				.setMaxResults(1)
+				.getResultList();
+		return nomes.isEmpty() ? null : nomes.get(0);
+	}
+
 	public Object[] resumoIndicadores(Long idResponsavel, Long idEquipe) {
 		String sql = "SELECT "
 				+ "COUNT(*) FILTER (WHERE t.status <> 'CONCLUIDO' AND t.deadline < CURRENT_DATE) AS atrasadas, "

@@ -17,6 +17,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
@@ -74,6 +75,9 @@ public class Tarefa implements BaseEntity, Serializable {
 	@ManyToOne
 	@JoinColumn(name="id_registro_acesso")
 	private RegistroAcesso registroAcesso;
+
+	@Transient
+	private String solicitanteNome;
 	
 	public Tarefa() {
 		status = StatusEnum.BACKLOG;
@@ -225,6 +229,14 @@ public class Tarefa implements BaseEntity, Serializable {
 
 	public void setRegistroAcesso(RegistroAcesso registroAcesso) {
 		this.registroAcesso = registroAcesso;
+	}
+
+	public String getSolicitanteNome() {
+		return solicitanteNome;
+	}
+
+	public void setSolicitanteNome(String solicitanteNome) {
+		this.solicitanteNome = solicitanteNome;
 	}
 
 	@Override
