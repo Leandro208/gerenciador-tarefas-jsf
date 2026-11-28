@@ -120,6 +120,12 @@ public class Comentario implements BaseEntity, Serializable {
 		return "Usuário";
 	}
 
+	public Long getAutorUsuarioId() {
+		if (autor != null && autor.getUsuario() != null) return autor.getUsuario().getId();
+		if (registroAcesso != null && registroAcesso.getUsuario() != null) return registroAcesso.getUsuario().getId();
+		return null;
+	}
+
 	@Override
 	public int hashCode() {
 		return Objects.hash(id);

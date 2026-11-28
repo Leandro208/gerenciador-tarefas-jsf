@@ -1,0 +1,98 @@
+<ui:composition template="/WEB-INF/templates/navbar_template.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:pt="http://xmlns.jcp.org/jsf/passthrough">
+    <ui:define name="titulo">Meu Perfil | Gerenciador de Tarefas</ui:define>
+    <ui:define name="conteudo">
+        <h:outputStylesheet library="css" name="perfil.css" />
+        <main class="main-content profile-page">
+            <div class="page-header">
+                <h1>Meu Perfil</h1>
+                <p>Atualize seus dados pessoais e sua foto de perfil.</p>
+            </div>
+
+            <section class="profile-card">
+                <div class="profile-photo-section">
+                    <div class="profile-photo-preview">
+                        <img src="#{request.contextPath}/avatar?id=#{loginBean.logado.id}"
+                             onerror="this.onerror=null;this.src='#{request.contextPath}/resources/img/profile-placeholder.svg';"
+                             alt="Foto de perfil atual" />
+                    </div>
+                    <div>
+                        <h2>Sua foto</h2>
+                        <p>JPEG ou PNG, até 2 MB.</p>
+                    </div>
+                </div>
+
+                <h:form id="formPerfil" enctype="multipart/form-data" pt:autocomplete="off">
+                    <p:messages id="messages" closable="true" />
+                    <div class="profile-fields">
+                        <div class="profile-field">
+                            <h:outputLabel for="nome" value="Nome completo" />
+                            <p:inputText id="nome" value="#{perfilBean.nome}" required="true"
+                                         requiredMessage="Informe seu nome."
+                                         validatorMessage="O nome deve ter entre 3 e 50 caracteres.">
+                                <f:validateLength minimum="3" maximum="50" />
+                            </p:inputText>
+                        </div>
+                        <div class="profile-field">
+                            <h:outputLabel for="email" value="E-mail" />
+                            <p:inputText id="email" value="#{perfilBean.email}" required="true" type="email"
+                                         requiredMessage="Informe seu e-mail."
+                                         validatorMessage="Informe um e-mail válido.">
+                                <f:validateRegex pattern="^[^\s@]+@[^\s@]+\.[^\s@]+$" />
+                            </p:inputText>
+                        </div>
+                        <div class="profile-field">
+                            <h:outputLabel for="nascimento" value="Data de nascimento" />
+                            <p:calendar id="nascimento" value="#{perfilBean.dataNascimento}" required="true"
+                                        requiredMessage="Informe sua data de nascimento."
+                                        pattern="dd/MM/yyyy" mask="true" />
+                        </div>
+                    </div>
+
+                    <div class="profile-divider"></div>
+                    <h2 class="profile-section-title">Foto de perfil</h2>
+                    <div class="profile-upload">
+                        <h:inputFile id="foto" value="#{perfilBean.foto}" accept="image/jpeg,image/png" />
+                        <span>Escolha uma imagem JPEG ou PNG de até 2 MB.</span>
+                    </div>
+
+                    <div class="profile-divider"></div>
+                    <h2 class="profile-section-title">Alterar senha</h2>
+                    <p class="profile-hint">Deixe os campos vazios para manter sua senha atual.</p>
+                    <div class="profile-fields password-fields">
+                        <div class="profile-field">
+                            <h:outputLabel for="senhaAtual" value="Senha atual" />
+                        <p:password id="senhaAtual" value="#{perfilBean.senhaAtual}" feedback="false"
+                                    redisplay="false" pt:autocomplete="new-password" />
+                        </div>
+                        <div class="profile-field">
+                            <h:outputLabel for="senhaNova" value="Nova senha" />
+                        <p:password id="senhaNova" value="#{perfilBean.senhaNova}" feedback="false"
+                                    redisplay="false" pt:autocomplete="new-password" />
+                        </div>
+                        <div class="profile-field">
+                            <h:outputLabel for="confirmacaoSenha" value="Confirmar nova senha" />
+                        <p:password id="confirmacaoSenha" value="#{perfilBean.confirmacaoSenha}" feedback="false"
+                                    redisplay="false" pt:autocomplete="new-password" />
+                        </div>
+                    </div>
+
+                    <div class="profile-actions">
+                        <h:commandButton value="Salvar alterações" action="#{perfilBean.salvar}"
+                                         styleClass="profile-save-button" />
+                    </div>
+                </h:form>
+
+                <h:form id="formRemoverFoto" styleClass="remove-photo-form">
+                    <h:commandButton value="Remover foto" action="#{perfilBean.removerFoto}"
+                                     immediate="true" styleClass="profile-remove-button" />
+                </h:form>
+            </section>
+        </main>
+    </ui:define>
+</ui:composition>

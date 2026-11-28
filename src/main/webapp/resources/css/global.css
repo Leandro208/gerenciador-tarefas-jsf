@@ -74,6 +74,27 @@ a:hover { color: #4930b7; }
 .brand-wordmark { font-weight: 700; letter-spacing: -.035em; font-size: 15px; }
 .user-profile { gap: 14px; }
 .user-identity { gap: 10px; }
+.user-profile-link { color: inherit; text-decoration: none; }
+.profile-avatar {
+    display: block;
+    flex: 0 0 auto;
+    width: 36px;
+    height: 36px;
+    overflow: hidden;
+    border-radius: 50%;
+    object-fit: cover;
+    background: var(--surface-raised);
+}
+.profile-avatar img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    border-radius: inherit;
+    object-fit: cover;
+}
+.user-avatar { width: 34px; height: 34px; }
+.task-avatar { display: inline-block; width: 20px; height: 20px; margin-right: 5px; vertical-align: middle; }
+.comment-avatar .profile-avatar { width: 36px; height: 36px; }
 .user-name { font-weight: 600; color: var(--text-main); }
 .role-badge {
     display: inline-flex;

@@ -105,7 +105,9 @@
                                     <ui:repeat value="#{tarefaBean.comentarios}" var="c">
                                         <div class="comment-item">
                                             <div class="comment-avatar">
-                                                <i class="fa fa-user"></i>
+                                                <img class="profile-avatar" src="#{request.contextPath}/avatar?id=#{c.autorUsuarioId}"
+                                                     onerror="this.onerror=null;this.src='#{request.contextPath}/resources/img/profile-placeholder.svg';"
+                                                     alt="Foto de #{c.autorNome}" />
                                             </div>
                                             <div class="comment-body">
                                                 <div class="comment-meta">
@@ -152,7 +154,11 @@
                         <div class="detail-card">
                             <div class="info-row">
                                 <label>Responsável</label>
-                                <span>
+                                <span class="responsible-identity">
+                                    <h:panelGroup rendered="#{tarefaBean.tarefa.responsavel != null and tarefaBean.tarefa.responsavel.usuario != null and tarefaBean.tarefa.responsavel.usuario.id != null}">
+                                        <img class="profile-avatar task-avatar" src="#{request.contextPath}/avatar?id=#{tarefaBean.tarefa.responsavel.usuario.id}"
+                                             onerror="this.onerror=null;this.src='#{request.contextPath}/resources/img/profile-placeholder.svg';" alt="" />
+                                    </h:panelGroup>
                                     #{tarefaBean.tarefa.responsavel == null ? 'Não atribuída' : tarefaBean.tarefa.responsavel.nome}
                                     <p:commandLink action="#{tarefaBean.delegar}" update=":bodyContent"
                                                    styleClass="action-link" value="#{tarefaBean.campoAtribuir}"/>

@@ -12,10 +12,23 @@
 		<servlet-name>Faces Servlet</servlet-name>
 		<servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
 		<load-on-startup>1</load-on-startup>
+		<multipart-config>
+			<max-file-size>2097152</max-file-size>
+			<max-request-size>2306867</max-request-size>
+			<file-size-threshold>0</file-size-threshold>
+		</multipart-config>
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>Faces Servlet</servlet-name>
 		<url-pattern>*.jsf</url-pattern>
+	</servlet-mapping>
+	<servlet>
+		<servlet-name>AvatarServlet</servlet-name>
+		<servlet-class>io.github.Leandro208.projetoESIG.servlet.AvatarServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>AvatarServlet</servlet-name>
+		<url-pattern>/avatar</url-pattern>
 	</servlet-mapping>
 	<context-param>
 		<param-name>primefaces.FONT_AWESOME</param-name>

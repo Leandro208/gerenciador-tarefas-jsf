@@ -17,12 +17,16 @@
             <h:graphicImage library="img" name="icon.png" width="38" height="38" alt="" />
             <span class="brand-wordmark">Gerenciador de Tarefas</span>
         </h:link>
-        <div class="user-profile">
-            <div class="user-identity">
+        <h:link outcome="/restricted/perfil" styleClass="user-profile user-profile-link" title="Meu Perfil">
+            <span class="profile-avatar user-avatar">
+                <img src="#{request.contextPath}/avatar?id=#{loginBean.logado.id}"
+                     onerror="this.onerror=null;this.src='#{request.contextPath}/resources/img/profile-placeholder.svg';" alt="" />
+            </span>
+            <span class="user-identity">
                 <h:outputText value="#{loginBean.logado.nome}" styleClass="user-name" />
                 <span class="role-badge">#{loginBean.logado.funcao}</span>
-            </div>
-        </div>
+            </span>
+        </h:link>
         <h:form styleClass="logout-form">
             <p:commandButton action="#{loginBean.logout}" icon="fa fa-sign-out" styleClass="btn-logout" title="Sair" />
         </h:form>

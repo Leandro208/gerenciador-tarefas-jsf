@@ -70,7 +70,8 @@
 								<div class="task-meta">
 									<span class="priority-badge priority-#{t.prioridade.toString().toLowerCase()}">#{t.prioridade}</span>
 									<span class="task-responsavel">
-										<i class="fa fa-user"></i> #{t.responsavel == null ? 'Sem Responsável' : t.responsavel.nome}
+										<h:panelGroup rendered="#{t.responsavel != null and t.responsavel.usuario != null and t.responsavel.usuario.id != null}"><img class="profile-avatar task-avatar" src="#{request.contextPath}/avatar?id=#{t.responsavel.usuario.id}" onerror="this.onerror=null;this.src='#{request.contextPath}/resources/img/profile-placeholder.svg';" alt="" /></h:panelGroup>
+										#{t.responsavel == null ? 'Sem Responsável' : t.responsavel.nome}
 									</span>
 								</div>
 								<f:setPropertyActionListener
@@ -91,7 +92,8 @@
 								<div class="task-meta">
 									<span class="priority-badge priority-#{t.prioridade.toString().toLowerCase()}">#{t.prioridade}</span>
 									<span class="task-responsavel">
-										<i class="fa fa-user"></i> #{t.responsavel == null ? 'Sem Responsável' : t.responsavel.nome}
+										<h:panelGroup rendered="#{t.responsavel != null and t.responsavel.usuario != null and t.responsavel.usuario.id != null}"><img class="profile-avatar task-avatar" src="#{request.contextPath}/avatar?id=#{t.responsavel.usuario.id}" onerror="this.onerror=null;this.src='#{request.contextPath}/resources/img/profile-placeholder.svg';" alt="" /></h:panelGroup>
+										#{t.responsavel == null ? 'Sem Responsável' : t.responsavel.nome}
 									</span>
 								</div>
 								<f:setPropertyActionListener
@@ -112,7 +114,8 @@
 								<div class="task-meta">
 									<span class="priority-badge priority-#{t.prioridade.toString().toLowerCase()}">#{t.prioridade}</span>
 									<span class="task-responsavel">
-										<i class="fa fa-user"></i> #{t.responsavel == null ? 'Sem Responsável' : t.responsavel.nome}
+										<h:panelGroup rendered="#{t.responsavel != null and t.responsavel.usuario != null and t.responsavel.usuario.id != null}"><img class="profile-avatar task-avatar" src="#{request.contextPath}/avatar?id=#{t.responsavel.usuario.id}" onerror="this.onerror=null;this.src='#{request.contextPath}/resources/img/profile-placeholder.svg';" alt="" /></h:panelGroup>
+										#{t.responsavel == null ? 'Sem Responsável' : t.responsavel.nome}
 									</span>
 								</div>
 								<f:setPropertyActionListener
