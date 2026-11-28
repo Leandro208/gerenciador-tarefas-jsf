@@ -7,6 +7,7 @@
 
 	<ui:define name="conteudo">
 		<h:outputStylesheet library="css" name="form.css" />
+		<h:outputStylesheet library="css" name="quadro_kanban.css" />
 		<h:outputScript library="js" name="kanban-dnd.js" target="head" />
 
 		<main class="main-content">
@@ -86,73 +87,23 @@
 				<h2 class="equipe-title">#{tarefaBean.formConsulta.equipe.nome}</h2>
 			</div>
 
-							<h:panelGroup id="kanbanBoard" layout="block">
-								<div class="kanban-wrapper" role="region" aria-label="Tarefas organizadas por status" tabindex="0">
-									<div class="kanban-col" data-status="3" role="group" aria-label="Backlog">
-										<div class="col-header">
-							<span class="dot backlog-dot"></span> Backlog
-						</div>
-						<ui:repeat value="#{tarefaBean.getObjectsForKey(3)}" var="t">
-							<p:commandLink action="#{tarefaBean.visualizarTarefa}" styleClass="task-card-modern">
-								<div class="task-id-tag" data-tarefa-id="#{t.id}" data-tarefa-status="#{t.status.codigo}">##{t.id}</div>
-								<div class="task-content">#{t.titulo}</div>
-								<div class="task-meta">
-									<span class="priority-badge priority-#{t.prioridade.toString().toLowerCase()}">#{t.prioridade}</span>
-									<span class="task-responsavel">
-										<h:panelGroup rendered="#{t.responsavel != null and t.responsavel.usuario != null and t.responsavel.usuario.id != null}"><img class="profile-avatar task-avatar" src="#{request.contextPath}/avatar?id=#{t.responsavel.usuario.id}" onerror="this.onerror=null;this.src='#{request.contextPath}/resources/img/profile-placeholder.svg';" alt="" /></h:panelGroup>
-										#{t.responsavel == null ? 'Sem Responsável' : t.responsavel.nome}
-									</span>
-								</div>
-								<f:setPropertyActionListener
-										target="#{tarefaBean.tarefa}"
-										value="#{t}" />
-							</p:commandLink>
-						</ui:repeat>
-					</div>
-
-					<div class="kanban-col" data-status="1" role="group" aria-label="Em Andamento">
-						<div class="col-header">
-							<span class="dot andamento-dot"></span> Em Andamento
-						</div>
-						<ui:repeat value="#{tarefaBean.getObjectsForKey(1)}" var="t">
-							<p:commandLink action="#{tarefaBean.visualizarTarefa}" styleClass="task-card-modern">
-								<div class="task-id-tag" data-tarefa-id="#{t.id}" data-tarefa-status="#{t.status.codigo}">##{t.id}</div>
-								<div class="task-content">#{t.titulo}</div>
-								<div class="task-meta">
-									<span class="priority-badge priority-#{t.prioridade.toString().toLowerCase()}">#{t.prioridade}</span>
-									<span class="task-responsavel">
-										<h:panelGroup rendered="#{t.responsavel != null and t.responsavel.usuario != null and t.responsavel.usuario.id != null}"><img class="profile-avatar task-avatar" src="#{request.contextPath}/avatar?id=#{t.responsavel.usuario.id}" onerror="this.onerror=null;this.src='#{request.contextPath}/resources/img/profile-placeholder.svg';" alt="" /></h:panelGroup>
-										#{t.responsavel == null ? 'Sem Responsável' : t.responsavel.nome}
-									</span>
-								</div>
-								<f:setPropertyActionListener
-										target="#{tarefaBean.tarefa}"
-										value="#{t}" />
-							</p:commandLink>
-						</ui:repeat>
-					</div>
-
-					<div class="kanban-col" data-status="2" role="group" aria-label="Concluído">
-						<div class="col-header">
-							<span class="dot concluido-dot"></span> Concluído
-						</div>
-						<ui:repeat value="#{tarefaBean.getObjectsForKey(2)}" var="t">
-							<p:commandLink action="#{tarefaBean.visualizarTarefa}" styleClass="task-card-modern">
-								<div class="task-id-tag" data-tarefa-id="#{t.id}" data-tarefa-status="#{t.status.codigo}">##{t.id}</div>
-								<div class="task-content">#{t.titulo}</div>
-								<div class="task-meta">
-									<span class="priority-badge priority-#{t.prioridade.toString().toLowerCase()}">#{t.prioridade}</span>
-									<span class="task-responsavel">
-										<h:panelGroup rendered="#{t.responsavel != null and t.responsavel.usuario != null and t.responsavel.usuario.id != null}"><img class="profile-avatar task-avatar" src="#{request.contextPath}/avatar?id=#{t.responsavel.usuario.id}" onerror="this.onerror=null;this.src='#{request.contextPath}/resources/img/profile-placeholder.svg';" alt="" /></h:panelGroup>
-										#{t.responsavel == null ? 'Sem Responsável' : t.responsavel.nome}
-									</span>
-								</div>
-								<f:setPropertyActionListener
-										target="#{tarefaBean.tarefa}"
-										value="#{t}" />
-							</p:commandLink>
-						</ui:repeat>
-					</div>
+			<h:panelGroup id="kanbanBoard" layout="block">
+				<div class="kanban-wrapper" role="region" aria-label="Tarefas organizadas por status" tabindex="0">
+					<ui:include src="/WEB-INF/fragments/coluna_kanban.xhtml">
+						<ui:param name="columnStatus" value="#{3}" />
+						<ui:param name="columnLabel" value="Backlog" />
+						<ui:param name="columnStyle" value="backlog" />
+					</ui:include>
+					<ui:include src="/WEB-INF/fragments/coluna_kanban.xhtml">
+						<ui:param name="columnStatus" value="#{1}" />
+						<ui:param name="columnLabel" value="Em Andamento" />
+						<ui:param name="columnStyle" value="andamento" />
+					</ui:include>
+					<ui:include src="/WEB-INF/fragments/coluna_kanban.xhtml">
+						<ui:param name="columnStatus" value="#{2}" />
+						<ui:param name="columnLabel" value="Concluído" />
+						<ui:param name="columnStyle" value="concluido" />
+					</ui:include>
 				</div>
 			</h:panelGroup>
 		</main>

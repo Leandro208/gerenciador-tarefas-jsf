@@ -1,3 +1,4 @@
+/* Registration page layout */
 body.autocadastro-bg { display: flex; min-height: 100vh; align-items: center; justify-content: center; padding: 34px 16px; }
 .autocadastro-container { width: min(100%, 570px); margin: auto; }
 .logo-header { margin: 0 0 20px; text-align: center; }
@@ -6,6 +7,7 @@ body.autocadastro-bg { display: flex; min-height: 100vh; align-items: center; ju
 .logo-header p { margin: 6px 0 0; color: var(--text-sub); font-size: 14px; }
 .autocadastro-container .form-card { width: 100%; margin: 0; padding: clamp(21px, 4vw, 34px); }
 .register-submit { display: flex !important; width: 100% !important; justify-content: center; margin-top: 22px !important; }
+/* Password fields and registration actions */
 .password-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 15px; margin-top: 2px; align-items: start; }
 .password-grid > * { min-width: 0; }
 body .ui-password-panel { position: absolute !important; z-index: 9999; min-width: 180px; border: 1px solid var(--border-strong) !important; border-radius: 12px !important; background: var(--surface-raised) !important; box-shadow: var(--card-shadow) !important; }

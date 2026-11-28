@@ -1,10 +1,4 @@
-.form-card, .search-bar-card, .actions-panel, .team-list-card, .detail-card, .stat-card {
-    border: 1px solid var(--border);
-    border-radius: var(--card-radius);
-    background: linear-gradient(145deg, rgba(255, 255, 255, .98), rgba(249, 248, 255, .98));
-    box-shadow: var(--card-shadow);
-}
-
+/* Form panels and labels */
 .form-card {
     width: min(100%, 560px);
     margin: 12px auto 20px;
@@ -32,6 +26,7 @@
     text-transform: uppercase;
 }
 
+/* Inputs and select menus */
 body .ui-inputfield, body input.ui-inputfield, body textarea.ui-inputfield {
     width: 100% !important;
     min-height: 46px;
@@ -74,6 +69,7 @@ body .ui-calendar, body .ui-calendar input { width: 100%; }
 body .ui-calendar .ui-inputfield { padding-right: 42px !important; }
 body .ui-calendar .ui-datepicker-trigger { border: 0 !important; background: transparent !important; color: var(--text-sub) !important; }
 
+/* Shared action buttons */
 body .ui-button.btn-primary, body .ui-linkbutton.btn-primary {
     min-height: 46px;
     margin-top: 18px !important;
@@ -100,99 +96,19 @@ body .ui-button.btn-danger:hover { background: rgba(251, 113, 133, .22) !importa
 .back-link { display: inline-flex; align-items: center; gap: 9px; margin: 8px auto 0; color: var(--text-sub); font-size: 13px; font-weight: 600; text-decoration: none; transition: color .18s ease; }
 .back-link:hover { color: var(--accent); }
 
-.search-bar-card { margin-bottom: 30px; padding: 19px; }
-.search-grid { display: grid; grid-template-columns: minmax(90px, .6fr) minmax(180px, 1.5fr) minmax(170px, 1fr) auto; align-items: end; gap: 14px; }
-.search-item { min-width: 0; }
-.flex-2 { flex: initial; }
-.search-button-area { display: flex; }
-body .ui-button.btn-circle { display: inline-flex !important; align-items: center; justify-content: center; width: 46px !important; height: 46px !important; padding: 0 !important; border: 1px solid #7855e8 !important; border-radius: 13px !important; background: var(--primary-hover) !important; color: white !important; box-shadow: 0 7px 18px rgba(108, 76, 227, .2) !important; }
-body .ui-button.btn-circle:hover { transform: translateY(-1px); background: #7855e8 !important; }
-
-.equipe-header { margin: 4px 0 18px; padding: 0 0 0 14px; border-left: 3px solid var(--accent); }
-.equipe-label { display: block; margin-bottom: 3px; color: var(--text-muted); font-size: 10px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; }
-.equipe-title { margin: 0; color: var(--text-main); font-size: 23px; font-weight: 700; letter-spacing: -.03em; }
-
-.kanban-wrapper { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); align-items: start; gap: 18px; margin-top: 14px; }
-.kanban-col { min-width: 0; min-height: 420px; padding: 15px; border: 1px solid var(--border); border-radius: 16px; background: linear-gradient(160deg, #f0edff, #f7f8fc 75%); transition: border-color .16s ease, background .16s ease; }
-.kanban-col.is-drop-target { border-color: var(--primary); background: rgba(108, 76, 227, .12); outline: 2px dashed rgba(108, 76, 227, .65); outline-offset: -5px; }
-.col-header { display: flex; align-items: center; gap: 10px; margin: 1px 0 15px; padding: 0 2px 12px; border-bottom: 1px solid var(--border); color: #465067; font-size: 12px; font-weight: 700; letter-spacing: .07em; text-transform: uppercase; }
-.dot { display: inline-block; width: 9px; height: 9px; flex: 0 0 auto; border-radius: 50%; box-shadow: 0 0 12px currentColor; }
-.backlog-dot { background: #8794a8; color: #8794a8; }
-.andamento-dot { background: var(--primary); color: var(--primary); }
-.concluido-dot { background: var(--success); color: var(--success); }
-.task-card-modern {
-    display: block !important;
-    margin: 0 0 11px !important;
-    padding: 15px !important;
-    border: 1px solid var(--border) !important;
-    border-radius: 13px !important;
-    background: linear-gradient(145deg, #fff, #fcfbff) !important;
-    box-shadow: 0 7px 18px rgba(41, 34, 78, .08) !important;
-    color: var(--text-main) !important;
-    text-decoration: none !important;
-    transition: transform .16s ease, border-color .16s ease, box-shadow .16s ease !important;
-    cursor: grab;
-    -webkit-user-drag: element;
-}
-.task-card-modern:hover { transform: translateY(-2px); border-color: rgba(108, 76, 227, .55) !important; box-shadow: 0 12px 24px rgba(41, 34, 78, .14) !important; }
-.task-card-modern:active { cursor: grabbing; }
-.task-card-modern.is-dragging { opacity: .45; transform: none !important; }
-.task-id-tag { margin-bottom: 6px; color: var(--accent); font-size: 10px; font-weight: 700; letter-spacing: .08em; }
-.task-content { margin-bottom: 12px; color: var(--text-main); font-size: 14px; font-weight: 600; line-height: 1.45; overflow-wrap: anywhere; }
-.task-meta { display: flex; align-items: center; gap: 8px; min-width: 0; }
-.priority-badge { flex: 0 0 auto; padding: 3px 8px; border: 1px solid transparent; border-radius: 999px; font-size: 9px; font-weight: 800; letter-spacing: .06em; line-height: 1.5; text-transform: uppercase; }
-.priority-badge.priority-alta { border-color: rgba(200, 62, 89, .24); background: var(--danger-light); color: #a52d46; }
-.priority-badge.priority-media { border-color: rgba(169, 104, 0, .24); background: var(--warning-light); color: #8b5600; }
-.priority-badge.priority-baixa { border-color: rgba(19, 132, 95, .24); background: var(--success-light); color: #08704f; }
-.task-responsavel { min-width: 0; margin-left: auto; overflow: hidden; color: var(--text-muted); font-size: 10px; text-overflow: ellipsis; white-space: nowrap; }
-.task-responsavel i { margin-right: 4px; color: #8293a9; }
-
+/* PrimeFaces helper controls and form grids */
 body .ui-selectonemenu.custom-select-min { width: 100% !important; }
 body .ui-selectonemenu.custom-select { width: 100% !important; }
 .ui-password { width: 100% !important; }
 body .ui-password-panel { z-index: 9999; min-width: 190px; border: 1px solid var(--border-strong) !important; border-radius: 12px !important; background: var(--surface-raised) !important; box-shadow: var(--card-shadow) !important; color: var(--text-main) !important; }
 body .ui-password-panel .ui-password-info, body .ui-password-panel .ui-password-status { color: var(--text-main) !important; }
 
-body .ui-editor { overflow: hidden !important; border: 1px solid var(--border-strong) !important; border-radius: 12px !important; background: #fff !important; }
-body .ui-editor .ql-toolbar { border: 0 !important; border-bottom: 1px solid var(--border) !important; background: var(--surface-raised) !important; }
-body .ui-editor .ql-toolbar button .ql-stroke { stroke: #66748a !important; }
-body .ui-editor .ql-toolbar button .ql-fill { fill: #66748a !important; }
-body .ui-editor .ql-toolbar button:hover .ql-stroke, body .ui-editor .ql-toolbar button.ql-active .ql-stroke { stroke: var(--primary) !important; }
-body .ui-editor .ql-container { border: 0 !important; color: var(--text-main) !important; font-family: inherit !important; font-size: 14px !important; }
-body .ui-editor .ql-editor { min-height: 250px !important; line-height: 1.7 !important; }
-body .ui-editor .ql-editor.ql-blank::before { color: var(--text-muted) !important; font-style: normal !important; }
 .editor-actions, .form-actions { display: flex; justify-content: flex-end; gap: 10px; margin: 12px 0; }
 .form-grid-two { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
 .form-grid-two > * { min-width: 0; }
-.preview-content { padding: 15px; line-height: 1.7; }
-
-.description-text { max-width: 100%; overflow-wrap: anywhere; color: var(--text-main); font-size: 14px; line-height: 1.75; }
-.description-text * { max-width: 100% !important; border-color: var(--border) !important; background-color: transparent !important; box-shadow: none !important; color: inherit !important; font-family: inherit !important; }
-.description-text h1, .description-text h2, .description-text h3, .description-text h4 { margin: 18px 0 8px !important; color: var(--text-main) !important; }
-.description-text p { margin: 0 0 10px !important; }
-.description-text ul, .description-text ol { padding-left: 22px !important; }
-.description-text blockquote { margin: 12px 0 !important; padding: 10px 15px !important; border-left: 3px solid var(--primary) !important; border-radius: 0 10px 10px 0 !important; background: rgba(108, 76, 227, .08) !important; color: #475569 !important; }
-.description-text pre { max-width: 100% !important; overflow-x: auto !important; padding: 15px !important; border: 1px solid var(--border) !important; border-radius: 10px !important; background: #080d18 !important; color: #dce7f5 !important; font-size: 13px !important; }
-.description-text code { padding: 2px 6px !important; border-radius: 5px !important; background: rgba(108, 76, 227, .12) !important; color: #5136bf !important; font-family: Consolas, Monaco, monospace !important; }
-.description-text pre code { padding: 0 !important; background: transparent !important; color: inherit !important; }
-.description-text a { color: var(--accent) !important; }
-.description-text img { height: auto !important; border-radius: 10px !important; }
-.description-text table { width: 100% !important; border-collapse: collapse !important; }
-.description-text th, .description-text td { padding: 8px 11px !important; border: 1px solid var(--border) !important; text-align: left !important; }
-.description-text th { background: var(--surface-raised) !important; }
-
-@media (max-width: 900px) {
-    .kanban-wrapper { grid-template-columns: repeat(3, minmax(290px, 1fr)); overflow-x: auto; padding: 0 2px 14px; scroll-snap-type: x proximity; scrollbar-color: var(--border-strong) transparent; }
-    .kanban-col { scroll-snap-align: start; }
-    .search-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-    .search-button-area { align-items: end; }
-}
 @media (max-width: 560px) {
     .form-card { padding: 21px 17px; }
     .form-card h2 { font-size: 22px; }
-    .search-bar-card { padding: 14px; }
-    .search-grid { grid-template-columns: minmax(0, 1fr); gap: 12px; }
-    .search-button-area, .search-button-area .ui-button { width: 100% !important; }
     .form-grid-two { grid-template-columns: minmax(0, 1fr); gap: 0; }
     .editor-actions, .form-actions { flex-wrap: wrap; }
     .editor-actions > *, .form-actions > * { flex: 1 1 auto; }

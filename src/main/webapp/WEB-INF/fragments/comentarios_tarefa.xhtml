@@ -1,0 +1,101 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:fn="http://java.sun.com/jsp/jstl/functions">
+    <h:panelGroup id="commentsWrapper" layout="block" styleClass="detail-card comments-section">
+        <h:form id="formComentario">
+            <p:messages id="msgComentario" closable="true" />
+
+            <div class="comments-header">
+                <div class="comments-title-group">
+                    <label class="field-label-min comments-label">Comentários</label>
+                    <span class="comments-count">#{fn:length(tarefaBean.comentarios)}</span>
+                </div>
+                <p:commandButton value="Novo Comentário"
+                                 icon="fa fa-plus"
+                                 action="#{tarefaBean.abrirFormComentario}"
+                                 process="@this"
+                                 update=":commentsWrapper"
+                                 rendered="#{tarefaBean.podeComentar and !tarefaBean.exibindoFormComentario}"
+                                 styleClass="btn-new-comment" />
+            </div>
+
+            <h:panelGroup layout="block" styleClass="new-comment-box"
+                          rendered="#{tarefaBean.exibindoFormComentario}">
+                <p:editor id="txtComentario"
+                          widgetVar="editorComentario"
+                          value="#{tarefaBean.comentario.texto}"
+                          controls="bold italic underline strikethrough | style | removeformat | bullets numbering | undo redo | link unlink | pastetext"
+                          height="150" />
+                <div class="new-comment-actions">
+                    <p:commandButton value="Cancelar"
+                                     action="#{tarefaBean.cancelarComentario}"
+                                     process="@this"
+                                     update=":commentsWrapper"
+                                     styleClass="btn-cancel-comment" />
+                    <p:commandButton value="#{tarefaBean.modoEdicao ? 'Salvar' : 'Publicar'}"
+                                     icon="fa fa-paper-plane"
+                                     action="#{tarefaBean.comentar}"
+                                     process="@form"
+                                     update=":commentsWrapper"
+                                     styleClass="btn-submit-comment" />
+                </div>
+            </h:panelGroup>
+        </h:form>
+
+        <h:form id="formAcoesComentario">
+            <div class="comments-list">
+                <h:panelGroup rendered="#{empty tarefaBean.comentarios}">
+                    <p class="empty-comments">Nenhum comentário registrado até o momento.</p>
+                </h:panelGroup>
+
+                <ui:repeat value="#{tarefaBean.comentarios}" var="c">
+                    <div class="comment-item">
+                        <div class="comment-avatar">
+                            <img class="profile-avatar"
+                                 src="#{request.contextPath}/avatar?id=#{c.autorUsuarioId}"
+                                 onerror="this.onerror=null;this.src='#{request.contextPath}/resources/img/profile-placeholder.svg';"
+                                 alt="Foto de #{c.autorNome}" />
+                        </div>
+                        <div class="comment-body">
+                            <div class="comment-meta">
+                                <div class="comment-author-date">
+                                    <span class="comment-author">#{c.autorNome}</span>
+                                    <span class="comment-date">
+                                        <h:outputText value="#{c.dataCadastro}">
+                                            <f:convertDateTime pattern="dd/MM/yyyy 'às' HH:mm" />
+                                        </h:outputText>
+                                    </span>
+                                </div>
+                                <div class="comment-actions">
+                                    <p:commandButton rendered="#{tarefaBean.podeEditar(c)}"
+                                                     icon="fa fa-pencil"
+                                                     title="Editar comentário"
+                                                     action="#{tarefaBean.editarComentario(c)}"
+                                                     process="@this"
+                                                     update=":commentsWrapper"
+                                                     styleClass="btn-comment-action" />
+                                    <p:commandButton rendered="#{tarefaBean.podeExcluir(c)}"
+                                                     icon="fa fa-trash"
+                                                     title="Excluir comentário"
+                                                     action="#{tarefaBean.removerComentario(c)}"
+                                                     process="@this"
+                                                     update=":commentsWrapper"
+                                                     styleClass="btn-comment-action btn-comment-danger">
+                                        <p:confirm header="Excluir comentário"
+                                                   message="Deseja excluir este comentário?" />
+                                    </p:commandButton>
+                                </div>
+                            </div>
+                            <div class="comment-text description-text">
+                                <h:outputText value="#{c.textoSeguro}" escape="false" />
+                            </div>
+                        </div>
+                    </div>
+                </ui:repeat>
+            </div>
+        </h:form>
+    </h:panelGroup>
+</ui:composition>

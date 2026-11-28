@@ -1,0 +1,11 @@
+/* Fundos e contornos compartilhados */
+.form-card,
+.search-bar-card,
+.actions-panel,
+.team-list-card,
+.detail-card {
+    border: 1px solid var(--border);
+    border-radius: var(--card-radius);
+    background: linear-gradient(145deg, rgba(255, 255, 255, .98), rgba(249, 248, 255, .98));
+    box-shadow: var(--card-shadow);
+}

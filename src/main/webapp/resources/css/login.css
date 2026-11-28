@@ -1,3 +1,4 @@
+/* Two-column sign-in layout and brand panel */
 body.auth-page { display: flex; min-height: 100vh; align-items: stretch; }
 .login-layout { display: grid; width: min(100%, 1440px); min-height: 100vh; grid-template-columns: minmax(0, 1.15fr) minmax(410px, .85fr); margin: 0 auto; padding: clamp(20px, 4vw, 54px); gap: clamp(20px, 4vw, 58px); }
 .brand-side { position: relative; display: flex; min-height: 650px; flex-direction: column; justify-content: center; overflow: hidden; padding: clamp(30px, 6vw, 76px); border: 1px solid rgba(108, 76, 227, .17); border-radius: 30px; background: radial-gradient(ellipse at 82% 16%, rgba(255, 199, 87, .42), transparent 25rem), radial-gradient(ellipse at 10% 92%, rgba(79, 209, 197, .36), transparent 28rem), linear-gradient(140deg, #7048e8, #5232c5 52%, #167d91); }
@@ -11,6 +12,7 @@ body.auth-page { display: flex; min-height: 100vh; align-items: stretch; }
 .brand-desc { position: relative; z-index: 1; max-width: 470px; margin: 22px 0 0; color: #f1edff; font-size: 16px; line-height: 1.7; }
 .brand-highlights { position: relative; z-index: 1; display: flex; flex-wrap: wrap; gap: 10px; margin-top: 42px; }
 .brand-highlights span { padding: 8px 12px; border: 1px solid rgba(255, 255, 255, .24); border-radius: 999px; background: rgba(255, 255, 255, .11); color: #fff; font-size: 12px; }
+/* Login form and actions */
 .form-side { display: flex; width: 100%; max-width: 500px; flex-direction: column; justify-content: center; align-self: center; margin: 0 auto; padding: clamp(25px, 4vw, 45px); border: 1px solid var(--border); border-radius: 25px; background: rgba(255, 255, 255, .94); box-shadow: var(--card-shadow); }
 .auth-mobile-brand { display: none; align-items: center; gap: 10px; margin-bottom: 25px; color: var(--text-main); font-size: 13px; font-weight: 700; }
 .auth-mobile-brand img { width: 36px; height: 36px; object-fit: contain; }
@@ -33,6 +35,7 @@ body .ui-linkbutton.btn-register:hover { border-color: var(--accent) !important;
 .divider hr { position: absolute; top: 50%; left: 0; width: 100%; margin: 0; border: 0; border-top: 1px solid var(--border); }
 .footer-text { margin: 20px 0 0; color: var(--text-muted); font-size: 11px; line-height: 1.6; text-align: center; }
 
+/* Responsive login layout */
 @media (max-width: 900px) {
     .login-layout { grid-template-columns: minmax(0, 1fr) minmax(360px, .9fr); gap: 18px; padding: 18px; }
     .brand-side { min-height: 570px; padding: 32px; }

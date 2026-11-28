@@ -1,0 +1,32 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+    <div class="kanban-col" data-status="#{columnStatus}" role="group" aria-label="#{columnLabel}">
+        <div class="col-header">
+            <span class="dot #{columnStyle}-dot"></span>
+            <h:outputText value="#{columnLabel}" />
+        </div>
+
+        <ui:repeat value="#{tarefaBean.getObjectsForKey(columnStatus)}" var="t">
+            <p:commandLink action="#{tarefaBean.visualizarTarefa}" styleClass="task-card-modern">
+                <div class="task-id-tag" data-tarefa-id="#{t.id}" data-tarefa-status="#{t.status.codigo}">##{t.id}</div>
+                <div class="task-content">#{t.titulo}</div>
+                <div class="task-meta">
+                    <span class="priority-badge priority-#{t.prioridade.toString().toLowerCase()}">#{t.prioridade}</span>
+                    <span class="task-responsavel">
+                        <h:panelGroup rendered="#{t.responsavel != null and t.responsavel.usuario != null and t.responsavel.usuario.id != null}">
+                            <img class="profile-avatar task-avatar"
+                                 src="#{request.contextPath}/avatar?id=#{t.responsavel.usuario.id}"
+                                 onerror="this.onerror=null;this.src='#{request.contextPath}/resources/img/profile-placeholder.svg';"
+                                 alt="" />
+                        </h:panelGroup>
+                        #{t.responsavel == null ? 'Sem Responsável' : t.responsavel.nome}
+                    </span>
+                </div>
+                <f:setPropertyActionListener target="#{tarefaBean.tarefa}" value="#{t}" />
+            </p:commandLink>
+        </ui:repeat>
+    </div>
+</ui:composition>

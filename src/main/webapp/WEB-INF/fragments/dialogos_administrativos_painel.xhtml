@@ -1,0 +1,39 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+    <p:dialog header="Equipes Registradas" widgetVar="dialogEquipes" modal="true" responsive="true" width="450"
+              rendered="#{loginBean.logado.adm}">
+        <p:dataTable var="equipe" value="#{equipeBean.listaEquipes}" size="small">
+            <p:column headerText="Equipe">
+                <p:commandLink value="#{equipe.nome}" action="#{tarefaBean.visualizarQuadro}"
+                               styleClass="team-link">
+                    <f:setPropertyActionListener target="#{tarefaBean.equipe}" value="#{equipe}" />
+                </p:commandLink>
+            </p:column>
+        </p:dataTable>
+    </p:dialog>
+
+    <p:dialog header="Gestão de Responsáveis" widgetVar="dialogUsuarios" modal="true" responsive="true" width="600"
+              rendered="#{loginBean.logado.adm}">
+        <p:dataTable var="r" value="#{responsavelBean.listaReponsaveis}" size="small" paginator="true" rows="5">
+            <p:column headerText="ID" width="50"><h:outputText value="#{r.id}" /></p:column>
+            <p:column headerText="Nome"><h:outputText value="#{r.nome}" /></p:column>
+            <p:column headerText="Opções" width="100">
+                <h:form>
+                    <p:commandButton ajax="false" action="#{responsavelBean.alterarFuncao}"
+                                     disabled="#{r.usuario.adm}" icon="fa fa-shield"
+                                     styleClass="rounded-button" title="Tornar Admin">
+                        <f:setPropertyActionListener target="#{responsavelBean.responsavel}" value="#{r}" />
+                    </p:commandButton>
+                    <p:commandButton ajax="false" action="#{responsavelBean.alterarFuncao}"
+                                     disabled="#{!r.usuario.adm}" icon="fa fa-user"
+                                     styleClass="rounded-button" title="Tornar Usuário">
+                        <f:setPropertyActionListener target="#{responsavelBean.responsavel}" value="#{r}" />
+                    </p:commandButton>
+                </h:form>
+            </p:column>
+        </p:dataTable>
+    </p:dialog>
+</ui:composition>

@@ -1,3 +1,4 @@
+/* Design tokens */
 :root {
     color-scheme: light;
     --bg: #f5f4fa;
@@ -25,6 +26,7 @@
     --focus-ring: 0 0 0 3px rgba(108, 76, 227, .2);
 }
 
+/* Base and reset */
 *, *::before, *::after { box-sizing: border-box; }
 
 html { min-height: 100%; background: var(--bg); }
@@ -52,6 +54,7 @@ a:hover { color: #4930b7; }
 
 :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
 
+/* Authenticated application shell */
 .navbar {
     position: sticky;
     z-index: 100;
@@ -125,6 +128,7 @@ body .btn-logout.ui-button:hover { background: rgba(251, 113, 133, .24) !importa
 body .btn-logout.ui-button .ui-button-icon-left { left: 50% !important; margin-left: -.5em !important; color: var(--danger) !important; }
 body .btn-logout.ui-button .ui-button-text { display: none !important; }
 
+/* Page layout and headings */
 .container-principal {
     display: block;
     min-height: calc(100vh - 76px);
@@ -142,6 +146,7 @@ body .btn-logout.ui-button .ui-button-text { display: none !important; }
 }
 .page-header p { margin: 9px 0 0; color: var(--text-sub); }
 
+/* Shared PrimeFaces controls */
 body .ui-messages { margin: 0 0 18px !important; border: 0 !important; }
 body .ui-messages-info, body .ui-messages-warn, body .ui-messages-error, body .ui-messages-fatal {
     padding: 13px 16px !important;
@@ -209,6 +214,7 @@ body .ui-datatable .ui-paginator { padding: 12px !important; border: 0 !importan
 body .ui-datatable .ui-paginator .ui-paginator-page { border-radius: 8px !important; color: var(--text-sub) !important; }
 body .ui-datatable .ui-paginator .ui-state-active { border-color: var(--primary) !important; background: var(--primary-light) !important; color: #5136bf !important; }
 
+/* Responsive application shell */
 @media (max-width: 640px) {
     .navbar { min-height: 66px; padding: 10px 16px; }
     .brand-wordmark { display: none; }

@@ -1,0 +1,16 @@
+/* Lista de equipes */
+.team-list-card { padding: 22px; }
+body .ui-datalist { overflow: hidden; border: 1px solid var(--border) !important; border-radius: 14px !important; background: var(--surface) !important; }
+body .ui-datalist .ui-datalist-header { padding: 14px 17px !important; border: 0 !important; border-bottom: 1px solid var(--border) !important; background: var(--surface-raised) !important; color: var(--text-sub) !important; font-size: 11px !important; font-weight: 700 !important; letter-spacing: .08em; text-align: left !important; text-transform: uppercase; }
+body .ui-datalist .ui-datalist-content { border: 0 !important; background: transparent !important; }
+body .ui-datalist .ui-datalist-data { margin: 0 !important; padding: 6px 16px !important; list-style: none !important; }
+body .ui-datalist .ui-datalist-item { padding: 0 !important; border-bottom: 1px solid var(--border) !important; background: transparent !important; }
+body .ui-datalist .ui-datalist-item:last-child { border-bottom: 0 !important; }
+.team-link { display: flex; align-items: center; justify-content: space-between; gap: 14px; width: 100%; padding: 15px 2px; color: var(--text-main); font-weight: 600; text-decoration: none; }
+.team-link::after { content: "→"; color: var(--accent); font-size: 19px; transition: transform .15s ease; }
+.team-link:hover { color: #5136bf; }
+.team-link:hover::after { transform: translateX(3px); }
+
+@media (max-width: 600px) {
+    .team-list-card { padding: 14px; }
+}
