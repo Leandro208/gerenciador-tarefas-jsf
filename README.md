@@ -65,7 +65,7 @@ A aplicação procura o DataSource pelo nome `java:/comp/env/jdbc/tarefasDS`. O 
 
 Abra esse arquivo e ajuste `url`, `username` e `password` conforme seu PostgreSQL. O driver `org.postgresql.Driver` também precisa estar disponível no Tomcat, conforme a seção anterior.
 
-O Tomcat pode usar um descritor externo em `CATALINA_BASE/conf/Catalina/localhost/projetoESIG.xml` em preferência ao `META-INF/context.xml` da aplicação. Se esse arquivo existir e não tiver o elemento `<Resource name="jdbc/tarefasDS" ...>`, remova-o da configuração local ou inclua nele o mesmo recurso. No IntelliJ, o caminho exato de `CATALINA_BASE` aparece no console ao iniciar o servidor. [Documentação do contexto no Tomcat 8.5](https://tomcat.apache.org/tomcat-8.5-doc/config/context.html).
+O Tomcat pode usar um descritor externo em `CATALINA_BASE/conf/Catalina/localhost/gerenciador-tarefas.xml` em preferência ao `META-INF/context.xml` da aplicação. Se esse arquivo existir e não tiver o elemento `<Resource name="jdbc/tarefasDS" ...>`, remova-o da configuração local ou inclua nele o mesmo recurso. No IntelliJ, o caminho exato de `CATALINA_BASE` aparece no console ao iniciar o servidor. [Documentação do contexto no Tomcat 8.5](https://tomcat.apache.org/tomcat-8.5-doc/config/context.html).
 
 ## 6. Compilar e empacotar
 
@@ -78,7 +78,7 @@ mvn clean package
 O WAR gerado estará em:
 
 ```text
-target/projetoESIG-0.0.1-SNAPSHOT.war
+target/gerenciador-tarefas.war
 ```
 
 ## 7. Executar pela IDE
@@ -88,7 +88,7 @@ target/projetoESIG-0.0.1-SNAPSHOT.war
 1. Adicione um servidor local Tomcat 8.5 em *Run/Debug Configurations*.
 2. Selecione um JDK 8 para o servidor.
 3. Na aba *Deployment*, adicione o artefato `projetoESIG:war exploded` ou o WAR empacotado.
-4. Defina o contexto da aplicação como `/projetoESIG`.
+4. Defina o contexto da aplicação como `/gerenciador-tarefas`.
 5. Ajuste as credenciais em `src/main/webapp/META-INF/context.xml` e confira se não há um descritor externo do Tomcat sobrepondo essa configuração.
 6. Inicie o servidor e confira o console do Tomcat.
 
@@ -96,14 +96,14 @@ target/projetoESIG-0.0.1-SNAPSHOT.war
 
 1. Adicione um servidor Apache Tomcat 8.5 na visão *Servers* e selecione um JDK 8.
 2. Adicione o projeto ao servidor.
-3. Confirme o contexto `/projetoESIG` nas propriedades de publicação do servidor.
+3. Confirme o contexto `/gerenciador-tarefas` nas propriedades de publicação do servidor.
 4. Ajuste as credenciais em `src/main/webapp/META-INF/context.xml` e confira se não há um descritor externo sobrepondo essa configuração.
 5. Inicie o Tomcat e confira a saída do servidor.
 
 ## 8. Executar em Tomcat manualmente
 
 1. Confirme que o JAR do PostgreSQL está em `CATALINA_HOME/lib` e que `jdbc/tarefasDS` está configurado em `META-INF/context.xml` ou no descritor externo do contexto.
-2. Copie `target/projetoESIG-0.0.1-SNAPSHOT.war` para `CATALINA_BASE/webapps/` com o nome `projetoESIG.war`.
+2. Copie `target/gerenciador-tarefas.war` para `CATALINA_BASE/webapps/`.
 3. Inicie o Tomcat:
 
    Linux/macOS:
@@ -118,7 +118,7 @@ target/projetoESIG-0.0.1-SNAPSHOT.war
    "%CATALINA_HOME%\bin\startup.bat"
    ```
 
-4. Acesse [http://localhost:8080/projetoESIG/login.jsf](http://localhost:8080/projetoESIG/login.jsf).
+4. Acesse [http://localhost:8080/gerenciador-tarefas/login.jsf](http://localhost:8080/gerenciador-tarefas/login.jsf).
 
 Outras IDEs podem seguir esse mesmo fluxo: importar como Maven, executar `mvn clean package` e publicar o WAR em Tomcat 8.5.
 
@@ -136,15 +136,15 @@ Use o mesmo e-mail informado no cadastro. Confirme que uma linha foi atualizada 
 
 ## 10. Confirmar a inicialização
 
-No log do Tomcat, confirme que o Flyway iniciou e terminou sem erro, com a mensagem `FLYWAY FINALIZADO`, e que o contexto `/projetoESIG` foi publicado. Depois, entre com a conta cadastrada, crie uma equipe e comece a cadastrar tarefas.
+No log do Tomcat, confirme que o Flyway iniciou e terminou sem erro, com a mensagem `FLYWAY FINALIZADO`, e que o contexto `/gerenciador-tarefas` foi publicado. Depois, entre com a conta cadastrada, crie uma equipe e comece a cadastrar tarefas.
 
 Novas senhas são armazenadas com PBKDF2-HMAC-SHA-256 e salt aleatório. Senhas antigas no formato SHA-256 são atualizadas depois do primeiro login válido.
 
 ## Solução de problemas
 
-- **`NameNotFoundException` para `jdbc/tarefasDS`:** confira se `META-INF/context.xml` contém `<Resource name="jdbc/tarefasDS" ...>`. Se existir `CATALINA_BASE/conf/Catalina/localhost/projetoESIG.xml`, lembre que ele pode substituir o descritor da aplicação: remova-o ou inclua nele o mesmo `Resource`.
+- **`NameNotFoundException` para `jdbc/tarefasDS`:** confira se `META-INF/context.xml` contém `<Resource name="jdbc/tarefasDS" ...>`. Se existir `CATALINA_BASE/conf/Catalina/localhost/gerenciador-tarefas.xml`, lembre que ele pode substituir o descritor da aplicação: remova-o ou inclua nele o mesmo `Resource`.
 - **`ClassNotFoundException: org.postgresql.Driver`:** confira se `postgresql-42.2.23.jre7.jar` está na pasta `lib` do Tomcat e reinicie o servidor.
 - **Conexão recusada:** confirme que o PostgreSQL está ativo, que o banco existe e que host e porta na URL JDBC estão corretos.
 - **Falha de autenticação no banco:** confira usuário e senha somente no descritor local do Tomcat.
 - **Falha do Flyway ao criar schemas ou tabelas:** conceda ao usuário PostgreSQL permissão para criar esses objetos no banco `tarefas`.
-- **Tomcat não inicia ou o IDE publica em outra URL:** confirme o JDK configurado, o contexto `/projetoESIG` e a porta HTTP configurada no servidor.
+- **Tomcat não inicia ou o IDE publica em outra URL:** confirme o JDK configurado, o contexto `/gerenciador-tarefas` e a porta HTTP configurada no servidor.

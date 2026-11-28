@@ -9,7 +9,6 @@
 	<artifactId>projetoESIG</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>war</packaging>
-
 	<name>projetoESIG</name>
 	<!-- FIXME change it to the project's website -->
 	<url>http://www.example.com</url>
@@ -103,6 +102,7 @@
 	</dependencies>
 
 	 <build>
+		<finalName>gerenciador-tarefas</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
