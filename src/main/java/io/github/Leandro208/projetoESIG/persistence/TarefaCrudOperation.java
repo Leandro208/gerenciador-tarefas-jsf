@@ -8,12 +8,15 @@ import java.util.Objects;
 
 import io.github.Leandro208.projetoESIG.dao.DAOException;
 import io.github.Leandro208.projetoESIG.dao.GenericDAOImpl;
+import io.github.Leandro208.projetoESIG.dominio.BaseEntity;
+import io.github.Leandro208.projetoESIG.dominio.Equipe;
 import io.github.Leandro208.projetoESIG.dominio.HistoricoTarefa;
 import io.github.Leandro208.projetoESIG.dominio.Responsavel;
 import io.github.Leandro208.projetoESIG.dominio.Tarefa;
 import io.github.Leandro208.projetoESIG.dominio.Usuario;
 import io.github.Leandro208.projetoESIG.dto.UsuarioDTO;
 import io.github.Leandro208.projetoESIG.util.AccessControl;
+import io.github.Leandro208.projetoESIG.util.UsuarioUtils;
 
 public class TarefaCrudOperation extends CadastroCrudOperation {
 
@@ -104,7 +107,7 @@ public class TarefaCrudOperation extends CadastroCrudOperation {
 	private void adicionarEvento(List<HistoricoTarefa> eventos, Tarefa tarefa, String campo,
 			Object comparacaoAntiga, Object comparacaoNova, String valorAntigo, String valorNovo) {
 		if (Objects.equals(comparacaoAntiga, comparacaoNova)) return;
-		io.github.Leandro208.projetoESIG.dto.UsuarioDTO usuario = io.github.Leandro208.projetoESIG.util.UsuarioUtils.getLogado();
+		UsuarioDTO usuario = UsuarioUtils.getLogado();
 		HistoricoTarefa evento = new HistoricoTarefa();
 		evento.setTarefa(tarefa);
 		evento.setCampo(campo);
@@ -116,14 +119,13 @@ public class TarefaCrudOperation extends CadastroCrudOperation {
 	}
 
 	private Long id(Object entidade) {
-		return entidade instanceof io.github.Leandro208.projetoESIG.dominio.BaseEntity
-				? ((io.github.Leandro208.projetoESIG.dominio.BaseEntity) entidade).getId() : null;
+		return entidade instanceof BaseEntity ? ((BaseEntity) entidade).getId() : null;
 	}
 
 	private String nome(Object valor) {
 		if (valor == null) return "Não informado";
 		if (valor instanceof Responsavel) return ((Responsavel) valor).getNome();
-		if (valor instanceof io.github.Leandro208.projetoESIG.dominio.Equipe) return ((io.github.Leandro208.projetoESIG.dominio.Equipe) valor).getNome();
+		if (valor instanceof Equipe) return ((Equipe) valor).getNome();
 		return valor.toString();
 	}
 

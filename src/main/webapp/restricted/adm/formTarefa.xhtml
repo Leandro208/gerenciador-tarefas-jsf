@@ -33,6 +33,24 @@
 								<button class="ql-strike"></button>
 							</span>
 							<span class="ql-formats">
+								<select class="ql-color"></select>
+								<select class="ql-background"></select>
+							</span>
+							<span class="ql-formats">
+								<select class="ql-font">
+									<option selected="selected"></option>
+									<option value="serif"></option>
+									<option value="monospace"></option>
+								</select>
+								<select class="ql-size">
+									<option value="small"></option>
+									<option selected="selected"></option>
+									<option value="large"></option>
+									<option value="huge"></option>
+								</select>
+								<select class="ql-align"></select>
+							</span>
+							<span class="ql-formats">
 								<select class="ql-header">
 									<option value="1"></option>
 									<option value="2"></option>
@@ -98,7 +116,7 @@
 						  modal="true" responsive="true" width="600" height="400">
 					<h:panelGroup id="previewContent" layout="block">
 						<div class="preview-content description-text">
-							<h:outputText value="#{tarefaBean.tarefa.descricao}" escape="false" />
+							<h:outputText value="#{tarefaBean.tarefa.descricaoSegura}" escape="false" />
 						</div>
 					</h:panelGroup>
 					<f:facet name="footer">

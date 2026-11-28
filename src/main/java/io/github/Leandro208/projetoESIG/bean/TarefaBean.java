@@ -30,6 +30,7 @@ import io.github.Leandro208.projetoESIG.services.EquipeService;
 import io.github.Leandro208.projetoESIG.services.ResponsavelService;
 import io.github.Leandro208.projetoESIG.services.TarefaService;
 import io.github.Leandro208.projetoESIG.util.MonitorTarefas;
+import io.github.Leandro208.projetoESIG.util.DescricaoTarefaSanitizer;
 import io.github.Leandro208.projetoESIG.util.HtmlSanitizer;
 import io.github.Leandro208.projetoESIG.util.UsuarioUtils;
 import io.github.Leandro208.projetoESIG.util.AccessControl;
@@ -99,6 +100,7 @@ public class TarefaBean extends AbstractBean{
 	
 	public String cadastrar() throws ParseException {
 		AccessControl.requireAdmin();
+		tarefa.setDescricao(DescricaoTarefaSanitizer.sanitizar(tarefa.getDescricao()));
 		
 		Operacao operacao = new OperacaoCadastro();
 		if(getConfirmButton().equals(BOTAO_CADASTRAR)) {

@@ -11,15 +11,15 @@ body .ui-editor .ql-editor.ql-blank::before { color: var(--text-muted) !importan
 
 /* Descrições formatadas de tarefas e comentários */
 .description-text { max-width: 100%; overflow-wrap: anywhere; color: var(--text-main); font-size: 14px; line-height: 1.75; }
-.description-text * { max-width: 100% !important; border-color: var(--border) !important; background-color: transparent !important; box-shadow: none !important; color: inherit !important; font-family: inherit !important; }
-.description-text h1, .description-text h2, .description-text h3, .description-text h4 { margin: 18px 0 8px !important; color: var(--text-main) !important; }
-.description-text p { margin: 0 0 10px !important; }
-.description-text ul, .description-text ol { padding-left: 22px !important; }
-.description-text blockquote { margin: 12px 0 !important; padding: 10px 15px !important; border-left: 3px solid var(--primary) !important; border-radius: 0 10px 10px 0 !important; background: rgba(108, 76, 227, .08) !important; color: #475569 !important; }
-.description-text pre { max-width: 100% !important; overflow-x: auto !important; padding: 15px !important; border: 1px solid var(--border) !important; border-radius: 10px !important; background: #080d18 !important; color: #dce7f5 !important; font-size: 13px !important; }
-.description-text code { padding: 2px 6px !important; border-radius: 5px !important; background: rgba(108, 76, 227, .12) !important; color: #5136bf !important; font-family: Consolas, Monaco, monospace !important; }
-.description-text pre code { padding: 0 !important; background: transparent !important; color: inherit !important; }
-.description-text a { color: var(--accent) !important; }
+.description-text * { max-width: 100% !important; box-shadow: none; }
+.description-text h1, .description-text h2, .description-text h3, .description-text h4 { margin: 18px 0 8px; }
+.description-text p { margin: 0 0 10px; }
+.description-text ul, .description-text ol { padding-left: 22px; }
+.description-text blockquote { margin: 12px 0; padding: 10px 15px; border-left: 3px solid var(--primary); border-radius: 0 10px 10px 0; background: rgba(108, 76, 227, .08); color: #475569; }
+.description-text pre { max-width: 100% !important; overflow-x: auto; padding: 15px; border: 1px solid var(--border); border-radius: 10px; background: #080d18; color: #dce7f5; font-size: 13px; }
+.description-text code { padding: 2px 6px; border-radius: 5px; background: rgba(108, 76, 227, .12); color: #5136bf; font-family: Consolas, Monaco, monospace; }
+.description-text pre code { padding: 0; background: transparent; color: inherit; }
+.description-text a { text-decoration: underline; }
 .description-text img { height: auto !important; border-radius: 10px !important; }
 .description-text table { width: 100% !important; border-collapse: collapse !important; }
 .description-text th, .description-text td { padding: 8px 11px !important; border: 1px solid var(--border) !important; text-align: left !important; }

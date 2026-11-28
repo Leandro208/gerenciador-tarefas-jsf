@@ -25,6 +25,7 @@ import org.hibernate.validator.constraints.NotBlank;
 
 import io.github.Leandro208.projetoESIG.enums.PrioridadeEnum;
 import io.github.Leandro208.projetoESIG.enums.StatusEnum;
+import io.github.Leandro208.projetoESIG.util.DescricaoTarefaSanitizer;
 
 
 @Entity
@@ -145,6 +146,10 @@ public class Tarefa implements BaseEntity, Serializable {
 
 	public String getDescricao() {
 		return descricao;
+	}
+
+	public String getDescricaoSegura() {
+		return DescricaoTarefaSanitizer.sanitizar(descricao);
 	}
 
 	public void setDescricao(String descricao) {
