@@ -1,5 +1,8 @@
 package io.github.Leandro208.projetoESIG.bean;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -12,12 +15,14 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
+import javax.servlet.http.Part;
 
 
 import io.github.Leandro208.projetoESIG.dao.DAOException;
 import io.github.Leandro208.projetoESIG.dominio.Comentario;
 import io.github.Leandro208.projetoESIG.dominio.HistoricoTarefa;
 import io.github.Leandro208.projetoESIG.dto.FormConsultaTarefaDto;
+import io.github.Leandro208.projetoESIG.dto.TarefaAnexoDTO;
 import io.github.Leandro208.projetoESIG.dto.UsuarioDTO;
 import io.github.Leandro208.projetoESIG.dominio.Equipe;
 import io.github.Leandro208.projetoESIG.dominio.Responsavel;
@@ -29,6 +34,7 @@ import io.github.Leandro208.projetoESIG.services.HistoricoTarefaService;
 import io.github.Leandro208.projetoESIG.services.EquipeService;
 import io.github.Leandro208.projetoESIG.services.ResponsavelService;
 import io.github.Leandro208.projetoESIG.services.TarefaService;
+import io.github.Leandro208.projetoESIG.services.TarefaAnexoService;
 import io.github.Leandro208.projetoESIG.util.MonitorTarefas;
 import io.github.Leandro208.projetoESIG.util.DescricaoTarefaSanitizer;
 import io.github.Leandro208.projetoESIG.util.HtmlSanitizer;
@@ -55,6 +61,9 @@ public class TarefaBean extends AbstractBean{
 
 	private List<Comentario> comentarios;
 	private List<HistoricoTarefa> historicoTarefa;
+	private List<TarefaAnexoDTO> anexosTarefa;
+	private transient Part arquivoAnexo;
+	private Long idTarefaAnexo;
 
 	private TarefaService tarefaService;
 	private EquipeService equipeService;
@@ -63,6 +72,7 @@ public class TarefaBean extends AbstractBean{
 
 	private ComentarioService comentarioService;
 	private HistoricoTarefaService historicoTarefaService;
+	private TarefaAnexoService tarefaAnexoService;
 
 	private MonitorTarefas monitor;
 	private List<Equipe> equipesCache;
@@ -87,11 +97,13 @@ public class TarefaBean extends AbstractBean{
 		responsavelService = new ResponsavelService();
 		comentarioService = new ComentarioService();
 		historicoTarefaService = new HistoricoTarefaService();
+		tarefaAnexoService = new TarefaAnexoService();
 		formConsulta = new FormConsultaTarefaDto();
 		listaTarefas = new HashMap<>();
 		monitor = new MonitorTarefas();
 		comentario = new Comentario();
 		comentarios = new ArrayList<>();
+		anexosTarefa = new ArrayList<>();
 	}
 	
 	public String entrarCadastro() {
@@ -218,7 +230,99 @@ public class TarefaBean extends AbstractBean{
 		cancelarComentario();
 		carregarComentarios();
 		carregarHistoricoTarefa();
+		idTarefaAnexo = tarefa.getId();
+		carregarAnexos(idTarefaAnexo);
 		return "tarefaView.jsf?faces-redirect=true";
+	}
+
+	public String enviarAnexo() {
+		Long id = idTarefaAnexo != null ? idTarefaAnexo : (tarefa == null ? null : tarefa.getId());
+		try {
+			UsuarioDTO usuario = AccessControl.requireUser();
+			if (tarefaService.buscarPorIdPermitido(id, usuario) == null) {
+				throw new SecurityException("Acesso não autorizado à tarefa.");
+			}
+			if (arquivoAnexo == null || arquivoAnexo.getSize() == 0) {
+				throw new IllegalArgumentException("Selecione um arquivo para enviar.");
+			}
+			if (arquivoAnexo.getSize() > TarefaAnexoService.TAMANHO_MAXIMO) {
+				throw new IllegalArgumentException("O arquivo deve ter no máximo 10 MB.");
+			}
+			byte[] conteudo = lerArquivoLimitado(arquivoAnexo.getInputStream());
+			tarefaAnexoService.adicionar(id, usuario, arquivoAnexo.getSubmittedFileName(), conteudo);
+			tarefa = tarefaService.buscarPorIdPermitido(id, usuario);
+			idTarefaAnexo = id;
+			carregarAnexos(id);
+			addMensagem("Anexo enviado com sucesso.");
+			return redirecionarParaTarefa();
+		} catch (IllegalArgumentException | SecurityException e) {
+			addMensagemErro(e.getMessage());
+		} catch (IOException e) {
+			LOGGER.log(Level.WARNING, "Falha ao ler arquivo anexado à tarefa", e);
+			addMensagemErro("Não foi possível ler o arquivo enviado.");
+		} catch (DAOException e) {
+			addMensagemErro(e.getMessage());
+		} catch (Exception e) {
+			LOGGER.log(Level.SEVERE, "Falha ao enviar anexo da tarefa", e);
+			addMensagemErroPadrao();
+		} finally {
+			arquivoAnexo = null;
+		}
+		return null;
+	}
+
+	public String removerAnexo(Long idAnexo) {
+		Long id = idTarefaAnexo != null ? idTarefaAnexo : (tarefa == null ? null : tarefa.getId());
+		try {
+			UsuarioDTO usuario = AccessControl.requireUser();
+			tarefaAnexoService.excluir(idAnexo, usuario);
+			tarefa = tarefaService.buscarPorIdPermitido(id, usuario);
+			carregarAnexos(id);
+			addMensagem("Anexo removido.");
+			return redirecionarParaTarefa();
+		} catch (SecurityException | IllegalArgumentException e) {
+			addMensagemErro(e.getMessage());
+		} catch (DAOException e) {
+			addMensagemErro(e.getMessage());
+		} catch (Exception e) {
+			LOGGER.log(Level.SEVERE, "Falha ao excluir anexo da tarefa", e);
+			addMensagemErroPadrao();
+		}
+		return null;
+	}
+
+	private String redirecionarParaTarefa() {
+		FacesContext.getCurrentInstance().getExternalContext().getFlash().setKeepMessages(true);
+		return "/restricted/tarefaView.jsf?faces-redirect=true";
+	}
+
+	private void carregarAnexos(Long idTarefa) {
+		if (idTarefa == null) {
+			anexosTarefa = new ArrayList<>();
+			return;
+		}
+		try {
+			anexosTarefa = tarefaAnexoService.listar(idTarefa, getLogado());
+		} catch (SecurityException e) {
+			anexosTarefa = new ArrayList<>();
+			addMensagemErro("Acesso não autorizado aos anexos desta tarefa.");
+		}
+	}
+
+	private byte[] lerArquivoLimitado(InputStream input) throws IOException {
+		try (InputStream stream = input; ByteArrayOutputStream output = new ByteArrayOutputStream()) {
+			byte[] buffer = new byte[8192];
+			int total = 0;
+			int leitura;
+			while ((leitura = stream.read(buffer)) != -1) {
+				total += leitura;
+				if (total > TarefaAnexoService.TAMANHO_MAXIMO) {
+					throw new IllegalArgumentException("O arquivo deve ter no máximo 10 MB.");
+				}
+				output.write(buffer, 0, leitura);
+			}
+			return output.toByteArray();
+		}
 	}
 	
 	//atribui  tarefa ao usuario logado
@@ -556,4 +660,12 @@ public class TarefaBean extends AbstractBean{
 	public List<HistoricoTarefa> getHistoricoTarefa() {
 		return historicoTarefa == null ? new ArrayList<HistoricoTarefa>() : historicoTarefa;
 	}
+
+	public List<TarefaAnexoDTO> getAnexosTarefa() {
+		return anexosTarefa == null ? new ArrayList<TarefaAnexoDTO>() : anexosTarefa;
+	}
+	public Part getArquivoAnexo() { return arquivoAnexo; }
+	public void setArquivoAnexo(Part arquivoAnexo) { this.arquivoAnexo = arquivoAnexo; }
+	public Long getIdTarefaAnexo() { return idTarefaAnexo; }
+	public void setIdTarefaAnexo(Long idTarefaAnexo) { this.idTarefaAnexo = idTarefaAnexo; }
 }

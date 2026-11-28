@@ -13,7 +13,11 @@ public final class AccessControl {
 	}
 
 	public static UsuarioDTO requireUser() {
-		UsuarioDTO user = UsuarioUtils.getLogado();
+		return requireUser(UsuarioUtils.getLogado());
+	}
+
+	/** Refreshes authorization context for the authenticated session user outside JSF requests too. */
+	public static UsuarioDTO requireUser(UsuarioDTO user) {
 		if (user == null || user.getId() == null) {
 			throw new SecurityException("Autenticação necessária.");
 		}

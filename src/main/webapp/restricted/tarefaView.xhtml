@@ -3,13 +3,15 @@
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:ui="http://java.sun.com/jsf/facelets"
-                xmlns:p="http://primefaces.org/ui">
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:pt="http://xmlns.jcp.org/jsf/passthrough">
 
     <ui:define name="conteudo">
         <h:outputStylesheet library="css" name="form.css"/>
         <h:outputStylesheet library="css" name="conteudo_rico.css"/>
         <h:outputStylesheet library="css" name="view_tarefa.css"/>
         <h:outputStylesheet library="css" name="comentarios.css"/>
+        <h:outputStylesheet library="css" name="anexos.css"/>
 
         <main class="main-content">
             <h:panelGroup id="bodyContent" layout="block" styleClass="view-container">
@@ -50,6 +52,74 @@
                                 <h:outputText value="#{tarefaBean.tarefa.descricaoSegura}" escape="false"/>
                             </div>
                         </div>
+
+                        <section class="detail-card attachment-card" aria-labelledby="attachments-title">
+                            <div class="attachment-heading">
+                                <div>
+                                    <h2 id="attachments-title">Anexos</h2>
+                                    <p>Até 10 arquivos, com no máximo 10 MB cada.</p>
+                                </div>
+                                <span class="attachment-count">#{tarefaBean.anexosTarefa.size()} / 10</span>
+                            </div>
+
+                            <h:form id="formAnexo" enctype="multipart/form-data" styleClass="attachment-upload">
+                                <h:inputHidden id="idTarefaAnexo" value="#{tarefaBean.idTarefaAnexo}" />
+                                <p:messages id="mensagensAnexo" closable="true" showDetail="false" />
+                                <div class="attachment-upload-controls">
+                                    <h:inputFile id="arquivoAnexo" value="#{tarefaBean.arquivoAnexo}"
+                                                 disabled="#{tarefaBean.anexosTarefa.size() ge 10}"
+                                                 pt:accept=".pdf,.jpg,.jpeg,.png,.docx,.xlsx"
+                                                 pt:aria-label="Escolher arquivo para anexar" />
+                                    <h:commandButton action="#{tarefaBean.enviarAnexo}" value="Enviar anexo"
+                                                     disabled="#{tarefaBean.anexosTarefa.size() ge 10}"
+                                                     styleClass="btn-primary" />
+                                </div>
+                                <span class="attachment-help">PDF, JPG, PNG, DOCX ou XLSX.</span>
+                            </h:form>
+
+                            <h:panelGroup rendered="#{empty tarefaBean.anexosTarefa}" layout="block"
+                                          styleClass="attachment-empty">
+                                Nenhum anexo nesta tarefa.
+                            </h:panelGroup>
+
+                            <div class="attachment-list">
+                                <ui:repeat value="#{tarefaBean.anexosTarefa}" var="anexo">
+                                    <article class="attachment-item">
+                                        <div class="attachment-preview">
+                                            <h:panelGroup rendered="#{anexo.imagem}" layout="block">
+                                                <a href="#{request.contextPath}/restricted/anexo?id=#{anexo.id}&amp;inline=true"
+                                                   target="_blank" rel="noopener" title="Abrir #{anexo.nomeArquivo}">
+                                                    <img src="#{request.contextPath}/restricted/anexo?id=#{anexo.id}&amp;inline=true"
+                                                         alt="Prévia de #{anexo.nomeArquivo}"
+                                                         onerror="this.onerror=null;this.src='#{request.contextPath}/resources/img/profile-placeholder.svg';" />
+                                                </a>
+                                            </h:panelGroup>
+                                            <h:panelGroup rendered="#{not anexo.imagem}" layout="block"
+                                                          styleClass="attachment-file-icon" pt:aria-hidden="true">
+                                                <i class="fa fa-file-o"></i>
+                                            </h:panelGroup>
+                                        </div>
+                                        <div class="attachment-information">
+                                            <h:outputLink value="#{request.contextPath}/restricted/anexo?id=#{anexo.id}"
+                                                          styleClass="attachment-name">
+                                                <h:outputText value="#{anexo.nomeArquivo}" />
+                                            </h:outputLink>
+                                            <span>#{anexo.tamanhoLegivel}</span>
+                                            <h:outputText value="#{anexo.dataUpload}">
+                                                <f:convertDateTime pattern="dd/MM/yyyy HH:mm" />
+                                            </h:outputText>
+                                        </div>
+                                        <h:form id="formRemoverAnexo" rendered="#{loginBean.logado.adm or anexo.autorUsuarioId eq loginBean.logado.id}">
+                                            <h:inputHidden value="#{tarefaBean.idTarefaAnexo}" />
+                                            <h:commandButton action="#{tarefaBean.removerAnexo(anexo.id)}"
+                                                             value="Remover" title="Remover anexo"
+                                                             styleClass="attachment-remove"
+                                                             onclick="return confirm('Remover este anexo?');" />
+                                        </h:form>
+                                    </article>
+                                </ui:repeat>
+                            </div>
+                        </section>
 
                         <ui:include src="/WEB-INF/fragments/comentarios_tarefa.xhtml" />
                     </div>

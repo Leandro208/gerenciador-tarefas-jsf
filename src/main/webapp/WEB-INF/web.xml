@@ -33,8 +33,8 @@
 		<servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
 		<load-on-startup>1</load-on-startup>
 		<multipart-config>
-			<max-file-size>2097152</max-file-size>
-			<max-request-size>2306867</max-request-size>
+			<max-file-size>12582912</max-file-size>
+			<max-request-size>13631488</max-request-size>
 			<file-size-threshold>0</file-size-threshold>
 		</multipart-config>
 	</servlet>
@@ -49,6 +49,14 @@
 	<servlet-mapping>
 		<servlet-name>AvatarServlet</servlet-name>
 		<url-pattern>/avatar</url-pattern>
+	</servlet-mapping>
+	<servlet>
+		<servlet-name>TarefaAnexoServlet</servlet-name>
+		<servlet-class>io.github.Leandro208.projetoESIG.servlet.TarefaAnexoServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>TarefaAnexoServlet</servlet-name>
+		<url-pattern>/restricted/anexo</url-pattern>
 	</servlet-mapping>
 	<servlet>
 		<servlet-name>ErrorPageServlet</servlet-name>
