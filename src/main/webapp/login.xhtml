@@ -41,14 +41,16 @@
             <p:messages id="messages" closable="true" />
 
             <h:outputLabel for="email" value="Endereço de e-mail" styleClass="field-label" />
-            <p:inputText id="email" value="#{loginBean.email}" required="true"
+            <p:inputText id="email" value="#{loginBean.email}" required="true" label="E-mail"
+                         requiredMessage="Informe seu e-mail."
                          placeholder="nome@empresa.com" />
 
             <div class="field-header-row">
                 <h:outputLabel for="password" value="Senha" styleClass="field-label" />
                 <p:commandLink value="Esqueceu?" styleClass="forgot-link" />
             </div>
-            <p:password id="password" value="#{loginBean.senha}" required="true"
+            <p:password id="password" value="#{loginBean.senha}" required="true" label="Senha"
+                        requiredMessage="Informe sua senha."
                         placeholder="••••••••" toggleMask="true" />
 
             <p:commandButton value="Continuar" action="#{loginBean.logar}" ajax="false"

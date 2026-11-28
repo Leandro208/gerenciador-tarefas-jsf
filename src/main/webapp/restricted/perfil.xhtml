@@ -32,7 +32,7 @@
                     <div class="profile-fields">
                         <div class="profile-field">
                             <h:outputLabel for="nome" value="Nome completo" />
-                            <p:inputText id="nome" value="#{perfilBean.nome}" required="true"
+                            <p:inputText id="nome" value="#{perfilBean.nome}" required="true" label="Nome completo"
                                          requiredMessage="Informe seu nome."
                                          validatorMessage="O nome deve ter entre 3 e 50 caracteres.">
                                 <f:validateLength minimum="3" maximum="50" />
@@ -40,7 +40,7 @@
                         </div>
                         <div class="profile-field">
                             <h:outputLabel for="email" value="E-mail" />
-                            <p:inputText id="email" value="#{perfilBean.email}" required="true" type="email"
+                            <p:inputText id="email" value="#{perfilBean.email}" required="true" label="E-mail" type="email"
                                          requiredMessage="Informe seu e-mail."
                                          validatorMessage="Informe um e-mail válido.">
                                 <f:validateRegex pattern="^[^\s@]+@[^\s@]+\.[^\s@]+$" />
@@ -48,7 +48,7 @@
                         </div>
                         <div class="profile-field">
                             <h:outputLabel for="nascimento" value="Data de nascimento" />
-                            <p:calendar id="nascimento" value="#{perfilBean.dataNascimento}" required="true"
+                            <p:calendar id="nascimento" value="#{perfilBean.dataNascimento}" required="true" label="Data de nascimento"
                                         requiredMessage="Informe sua data de nascimento."
                                         pattern="dd/MM/yyyy" mask="true" />
                         </div>

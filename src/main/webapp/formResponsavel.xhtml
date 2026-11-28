@@ -28,12 +28,14 @@
 
 				<h:outputLabel for="nome" value="Nome Completo" styleClass="field-label" />
 				<p:inputText id="nome" value="#{responsavelBean.responsavel.nome}"
+							 label="Nome completo"
 							 required="true"
 							 requiredMessage="O nome é obrigatório."
 							 placeholder="Como quer ser chamado?" />
 
 				<h:outputLabel for="email" value="E-mail" styleClass="field-label" />
 				<p:inputText id="email" value="#{responsavelBean.responsavel.usuario.email}"
+							 label="E-mail"
 							 required="true"
 							 requiredMessage="O e-mail é obrigatório."
 							 validatorMessage="Informe um e-mail válido."
@@ -43,6 +45,7 @@
 				<h:outputLabel for="dataNascimento" value="Data de Nascimento" styleClass="field-label" />
 				<p:calendar value="#{responsavelBean.responsavel.dataNascimento}"
 							id="dataNascimento"
+							label="Data de nascimento"
 							required="true"
 							requiredMessage="A data de nascimento é obrigatória."
 							pattern="dd/MM/yyyy"
@@ -56,6 +59,7 @@
 						<p:password id="pwd1" value="#{responsavelBean.responsavel.usuario.senha}"
 									match="pwd2"
 									label="Senha"
+									validatorMessage="A senha deve ter pelo menos 6 caracteres, incluindo letras e números."
 									required="true"
 									requiredMessage="A senha é obrigatória"
 									placeholder="••••••••"

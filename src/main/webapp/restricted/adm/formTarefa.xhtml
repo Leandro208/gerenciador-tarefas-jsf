@@ -19,10 +19,13 @@
 
 					<h:outputLabel for="tituloTarefa" value="Título da Tarefa" styleClass="field-label" />
 					<p:inputText id="tituloTarefa" value="#{tarefaBean.tarefa.titulo}" required="true"
+								 label="Título da tarefa"
+								 requiredMessage="Informe o título da tarefa."
 								 placeholder="Ex: Revisar relatório mensal" />
 
 					<h:outputLabel for="descEditor" value="Descrição detalhada" styleClass="field-label" />
 					<p:editor id="descEditor" widgetVar="descEditor"
+							  label="Descrição detalhada"
 							  value="#{tarefaBean.tarefa.descricao}" height="300"
 							  placeholder="Descreva o que precisa ser feito...">
 						<f:facet name="toolbar">
@@ -101,7 +104,9 @@
 					</div>
 
 					<h:outputLabel for="prazo" value="Prazo Final (deadline)" styleClass="field-label" />
-					<p:calendar id="prazo" value="#{tarefaBean.tarefa.deadline}" pattern="dd/MM/yyyy"
+					<p:calendar id="prazo" value="#{tarefaBean.tarefa.deadline}" required="true"
+								label="Prazo final" requiredMessage="Informe o prazo final."
+								pattern="dd/MM/yyyy"
 								mask="true" placeholder="00/00/0000" />
 
 					<p:commandButton action="#{tarefaBean.cadastrar}"

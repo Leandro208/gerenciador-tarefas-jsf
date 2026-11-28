@@ -19,6 +19,8 @@
 
                     <h:outputLabel for="nomeEquipe" value="Nome da Equipe" styleClass="field-label" />
                     <p:inputText id="nomeEquipe" value="#{equipeBean.equipe.nome}" required="true"
+                                 label="Nome da equipe"
+                                 requiredMessage="Informe o nome da equipe."
                                  placeholder="Ex: Desenvolvimento" />
 
                     <p:commandButton value="Salvar"
