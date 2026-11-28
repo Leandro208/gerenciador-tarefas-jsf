@@ -95,6 +95,7 @@ public class TarefaBean extends AbstractBean{
 	}
 	
 	public String entrarCadastro() {
+		setConfirmButton(BOTAO_CADASTRAR);
 		return navegar(FORM_TAREFA);
 	}
 	
