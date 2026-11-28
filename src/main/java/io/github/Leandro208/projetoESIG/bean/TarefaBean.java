@@ -16,6 +16,7 @@ import javax.faces.model.SelectItem;
 
 import io.github.Leandro208.projetoESIG.dao.DAOException;
 import io.github.Leandro208.projetoESIG.dominio.Comentario;
+import io.github.Leandro208.projetoESIG.dominio.HistoricoTarefa;
 import io.github.Leandro208.projetoESIG.dto.FormConsultaTarefaDto;
 import io.github.Leandro208.projetoESIG.dto.UsuarioDTO;
 import io.github.Leandro208.projetoESIG.dominio.Equipe;
@@ -24,6 +25,7 @@ import io.github.Leandro208.projetoESIG.dominio.Tarefa;
 import io.github.Leandro208.projetoESIG.enums.PrioridadeEnum;
 import io.github.Leandro208.projetoESIG.enums.StatusEnum;
 import io.github.Leandro208.projetoESIG.services.ComentarioService;
+import io.github.Leandro208.projetoESIG.services.HistoricoTarefaService;
 import io.github.Leandro208.projetoESIG.services.EquipeService;
 import io.github.Leandro208.projetoESIG.services.ResponsavelService;
 import io.github.Leandro208.projetoESIG.services.TarefaService;
@@ -51,6 +53,7 @@ public class TarefaBean extends AbstractBean{
 	private Map<Integer, List<Tarefa>> listaTarefas;
 
 	private List<Comentario> comentarios;
+	private List<HistoricoTarefa> historicoTarefa;
 
 	private TarefaService tarefaService;
 	private EquipeService equipeService;
@@ -58,6 +61,7 @@ public class TarefaBean extends AbstractBean{
 	private ResponsavelService responsavelService;
 
 	private ComentarioService comentarioService;
+	private HistoricoTarefaService historicoTarefaService;
 
 	private MonitorTarefas monitor;
 	private List<Equipe> equipesCache;
@@ -81,6 +85,7 @@ public class TarefaBean extends AbstractBean{
 		equipeService = new EquipeService();
 		responsavelService = new ResponsavelService();
 		comentarioService = new ComentarioService();
+		historicoTarefaService = new HistoricoTarefaService();
 		formConsulta = new FormConsultaTarefaDto();
 		listaTarefas = new HashMap<>();
 		monitor = new MonitorTarefas();
@@ -140,6 +145,7 @@ public class TarefaBean extends AbstractBean{
 
 	public void moverTarefa() throws ParseException  {
 		executarMoverTarefa(this.tarefa);
+		carregarHistoricoTarefa();
 	}
 
 	private boolean executarMoverTarefa(Tarefa tarefa) throws ParseException {
@@ -208,6 +214,7 @@ public class TarefaBean extends AbstractBean{
 		tarefa = carregada;
 		cancelarComentario();
 		carregarComentarios();
+		carregarHistoricoTarefa();
 		return "tarefaView.jsf?faces-redirect=true";
 	}
 	
@@ -233,6 +240,7 @@ public class TarefaBean extends AbstractBean{
 		operacao.setEntidade(tarefa);
 		try {
 			realizarOperacao(operacao);
+			carregarHistoricoTarefa();
 		} catch (Exception e) {
 			LOGGER.log(Level.SEVERE, "Falha ao atribuir tarefa", e);
 		}
@@ -389,6 +397,14 @@ public class TarefaBean extends AbstractBean{
 		comentarios = comentarioService.buscarPorTarefa(tarefa.getId());
 	}
 
+	public void carregarHistoricoTarefa() {
+		if (tarefa == null || tarefa.getId() == null) {
+			historicoTarefa = new ArrayList<>();
+			return;
+		}
+		historicoTarefa = historicoTarefaService.buscarPorTarefa(tarefa.getId());
+	}
+
 	public List<Tarefa> getObjectsForKey(int key) {
         return listaTarefas.get(key);
     }
@@ -532,5 +548,9 @@ public class TarefaBean extends AbstractBean{
 
 	public List<Comentario> getComentarios() {
 		return comentarios;
+	}
+
+	public List<HistoricoTarefa> getHistoricoTarefa() {
+		return historicoTarefa == null ? new ArrayList<HistoricoTarefa>() : historicoTarefa;
 	}
 }

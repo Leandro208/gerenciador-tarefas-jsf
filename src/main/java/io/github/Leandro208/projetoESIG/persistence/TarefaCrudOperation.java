@@ -1,10 +1,17 @@
 package io.github.Leandro208.projetoESIG.persistence;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Objects;
+
 import io.github.Leandro208.projetoESIG.dao.DAOException;
-import io.github.Leandro208.projetoESIG.dao.GenericDAO;
 import io.github.Leandro208.projetoESIG.dao.GenericDAOImpl;
-import io.github.Leandro208.projetoESIG.dominio.Tarefa;
+import io.github.Leandro208.projetoESIG.dominio.HistoricoTarefa;
 import io.github.Leandro208.projetoESIG.dominio.Responsavel;
+import io.github.Leandro208.projetoESIG.dominio.Tarefa;
+import io.github.Leandro208.projetoESIG.dominio.Usuario;
 import io.github.Leandro208.projetoESIG.dto.UsuarioDTO;
 import io.github.Leandro208.projetoESIG.util.AccessControl;
 
@@ -34,26 +41,94 @@ public class TarefaCrudOperation extends CadastroCrudOperation {
 			if (tarefa == null) {
 				throw new DAOException("Tarefa não encontrada.");
 			}
+			List<HistoricoTarefa> eventos = new ArrayList<>();
+			adicionarEvento(eventos, tarefa, "Status", tarefa.getStatus(), solicitada.getStatus(),
+					nome(tarefa.getStatus()), nome(solicitada.getStatus()));
 			tarefa.setStatus(solicitada.getStatus());
-			dao.update(tarefa);
+			dao.updateTarefaComHistorico(tarefa, eventos);
 		} finally {
 			dao.close();
 		}
 	}
 
 	private void atribuirTarefa(Operacao operacao) throws DAOException {
-		GenericDAO dao = new GenericDAOImpl(operacao);
+		GenericDAOImpl dao = new GenericDAOImpl(operacao);
 		try {
-			Tarefa tarefa = (Tarefa) operacao.getEntidade();
-			Responsavel responsavel = tarefa.getResponsavel() == null ? null
-					: dao.findById(tarefa.getResponsavel().getId(), Responsavel.class);
-			if (tarefa.getResponsavel() != null && responsavel == null) {
+			Tarefa solicitada = (Tarefa) operacao.getEntidade();
+			Tarefa tarefa = dao.findById(solicitada.getId(), Tarefa.class);
+			if (tarefa == null) throw new DAOException("Tarefa não encontrada.");
+			Responsavel responsavel = solicitada.getResponsavel() == null ? null
+					: dao.findById(solicitada.getResponsavel().getId(), Responsavel.class);
+			if (solicitada.getResponsavel() != null && responsavel == null) {
 				throw new DAOException("Responsável não encontrado.");
 			}
-			dao.updateField(tarefa.getId(), Tarefa.class,"responsavel", responsavel);
+			List<HistoricoTarefa> eventos = new ArrayList<>();
+			adicionarEvento(eventos, tarefa, "Responsável", id(tarefa.getResponsavel()), id(responsavel),
+					nome(tarefa.getResponsavel()), nome(responsavel));
+			tarefa.setResponsavel(responsavel);
+			dao.updateTarefaComHistorico(tarefa, eventos);
 		} finally {
 			dao.close();
 		}
+	}
+
+	@Override
+	protected Object alterar(Operacao operacao) throws DAOException {
+		GenericDAOImpl dao = new GenericDAOImpl(operacao);
+		try {
+			Tarefa recebida = (Tarefa) operacao.getEntidade();
+			Tarefa atual = dao.findById(recebida.getId(), Tarefa.class);
+			if (atual == null) throw new DAOException("Tarefa não encontrada.");
+			List<HistoricoTarefa> eventos = new ArrayList<>();
+			adicionarEvento(eventos, atual, "Título", atual.getTitulo(), recebida.getTitulo(), atual.getTitulo(), recebida.getTitulo());
+			adicionarEvento(eventos, atual, "Descrição", atual.getDescricao(), recebida.getDescricao(), atual.getDescricao(), recebida.getDescricao());
+			adicionarEvento(eventos, atual, "Responsável", id(atual.getResponsavel()), id(recebida.getResponsavel()), nome(atual.getResponsavel()), nome(recebida.getResponsavel()));
+			adicionarEvento(eventos, atual, "Prioridade", atual.getPrioridade(), recebida.getPrioridade(), nome(atual.getPrioridade()), nome(recebida.getPrioridade()));
+			adicionarEvento(eventos, atual, "Status", atual.getStatus(), recebida.getStatus(), nome(atual.getStatus()), nome(recebida.getStatus()));
+			adicionarEvento(eventos, atual, "Prazo", data(atual.getDeadline()), data(recebida.getDeadline()), data(atual.getDeadline()), data(recebida.getDeadline()));
+			adicionarEvento(eventos, atual, "Equipe", id(atual.getEquipe()), id(recebida.getEquipe()), nome(atual.getEquipe()), nome(recebida.getEquipe()));
+			atual.setTitulo(recebida.getTitulo());
+			atual.setDescricao(recebida.getDescricao());
+			atual.setResponsavel(recebida.getResponsavel());
+			atual.setPrioridade(recebida.getPrioridade());
+			atual.setStatus(recebida.getStatus());
+			atual.setDeadline(recebida.getDeadline());
+			atual.setEquipe(recebida.getEquipe());
+			dao.updateTarefaComHistorico(atual, eventos);
+			return atual;
+		} finally {
+			dao.close();
+		}
+	}
+
+	private void adicionarEvento(List<HistoricoTarefa> eventos, Tarefa tarefa, String campo,
+			Object comparacaoAntiga, Object comparacaoNova, String valorAntigo, String valorNovo) {
+		if (Objects.equals(comparacaoAntiga, comparacaoNova)) return;
+		io.github.Leandro208.projetoESIG.dto.UsuarioDTO usuario = io.github.Leandro208.projetoESIG.util.UsuarioUtils.getLogado();
+		HistoricoTarefa evento = new HistoricoTarefa();
+		evento.setTarefa(tarefa);
+		evento.setCampo(campo);
+		evento.setValorAnterior(valorAntigo);
+		evento.setValorNovo(valorNovo);
+		evento.setUsuario(usuario == null || usuario.getId() == null ? null : new Usuario(usuario.getId()));
+		evento.setDataAlteracao(new Date());
+		eventos.add(evento);
+	}
+
+	private Long id(Object entidade) {
+		return entidade instanceof io.github.Leandro208.projetoESIG.dominio.BaseEntity
+				? ((io.github.Leandro208.projetoESIG.dominio.BaseEntity) entidade).getId() : null;
+	}
+
+	private String nome(Object valor) {
+		if (valor == null) return "Não informado";
+		if (valor instanceof Responsavel) return ((Responsavel) valor).getNome();
+		if (valor instanceof io.github.Leandro208.projetoESIG.dominio.Equipe) return ((io.github.Leandro208.projetoESIG.dominio.Equipe) valor).getNome();
+		return valor.toString();
+	}
+
+	private String data(Date valor) {
+		return valor == null ? "Não informado" : new SimpleDateFormat("dd/MM/yyyy").format(valor);
 	}
 
 	@Override

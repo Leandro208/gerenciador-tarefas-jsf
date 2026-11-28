@@ -3,13 +3,16 @@ package io.github.Leandro208.projetoESIG.dao;
 import java.lang.reflect.Field;
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.EntityManager;
 
 import io.github.Leandro208.projetoESIG.connection.ConnectionFactory;
 import io.github.Leandro208.projetoESIG.dominio.BaseEntity;
+import io.github.Leandro208.projetoESIG.dominio.HistoricoTarefa;
 import io.github.Leandro208.projetoESIG.dominio.LogDB;
 import io.github.Leandro208.projetoESIG.dominio.RegistroAcesso;
+import io.github.Leandro208.projetoESIG.dominio.Tarefa;
 import io.github.Leandro208.projetoESIG.dominio.Usuario;
 import io.github.Leandro208.projetoESIG.dto.UsuarioDTO;
 import io.github.Leandro208.projetoESIG.persistence.Operacao;
@@ -114,6 +117,27 @@ public class GenericDAOImpl implements GenericDAO {
 	@Override
 	public void update(BaseEntity entidade) throws DAOException {
 		changeOperation(entidade, ATUALIZAR);
+	}
+
+	/** Persists a task update and its audit events in one database transaction. */
+	public void updateTarefaComHistorico(Tarefa tarefa, List<HistoricoTarefa> eventos) throws DAOException {
+		EntityManager session = getSession();
+		try {
+			session.getTransaction().begin();
+			Tarefa atualizada = session.merge(tarefa);
+			logOperationBanco(atualizada, ATUALIZAR);
+			for (HistoricoTarefa evento : eventos) {
+				evento.setTarefa(atualizada);
+				if (evento.getUsuario() != null && evento.getUsuario().getId() != null) {
+					evento.setUsuario(session.getReference(Usuario.class, evento.getUsuario().getId()));
+				}
+				session.persist(evento);
+			}
+			session.getTransaction().commit();
+		} catch (Exception e) {
+			if (session.getTransaction().isActive()) session.getTransaction().rollback();
+			throw new DAOException(e);
+		}
 	}
 
 	

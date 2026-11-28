@@ -19,6 +19,13 @@
 .action-link:hover { color: #066b76; text-decoration: underline; }
 .badge-priority { display: inline-flex; width: fit-content; padding: 4px 10px; border: 1px solid rgba(169, 104, 0, .25); border-radius: 999px; background: var(--warning-light); color: #8b5600; font-size: 11px; font-weight: 700; }
 .text-date { color: var(--text-sub) !important; }
+.task-tabs { margin-bottom: 18px; }
+.history-card { min-width: 0; }
+.history-change { margin-top: 5px; color: var(--text-sub); font-size: 13px; overflow-wrap: anywhere; }
+.history-author { display: inline-flex; align-items: center; gap: 8px; }
+.history-avatar { width: 28px; height: 28px; }
+.history-empty { padding: 20px 4px; color: var(--text-muted); text-align: center; }
+.history-table { width: 100%; }
 body .ui-selectonemenu.status-select { min-width: 175px !important; }
 .btn-back-full { display: flex; min-height: 46px; align-items: center; justify-content: center; gap: 9px; margin-top: 6px; padding: 11px 14px; border: 1px solid var(--border); border-radius: 12px; background: var(--surface-raised); color: var(--text-sub); font-size: 13px; font-weight: 600; text-decoration: none; transition: border-color .18s ease, color .18s ease, background .18s ease; }
 .btn-back-full:hover { border-color: var(--border-strong); background: var(--surface-hover); color: var(--text-main); }

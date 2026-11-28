@@ -16,6 +16,7 @@
 		<class>io.github.Leandro208.projetoESIG.dominio.RegistroAcesso</class>
 		<class>io.github.Leandro208.projetoESIG.dominio.LogDB</class>
 		<class>io.github.Leandro208.projetoESIG.dominio.Comentario</class>
+		<class>io.github.Leandro208.projetoESIG.dominio.HistoricoTarefa</class>
 
 		<properties>
 			<property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect" />

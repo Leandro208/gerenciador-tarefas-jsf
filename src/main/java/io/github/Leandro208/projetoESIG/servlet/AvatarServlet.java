@@ -28,7 +28,7 @@ public class AvatarServlet extends HttpServlet {
         try {
             idUsuario = Long.valueOf(request.getParameter("id"));
         } catch (Exception e) {
-            response.sendError(HttpServletResponse.SC_NOT_FOUND);
+            enviarPlaceholder(request, response);
             return;
         }
 
@@ -36,7 +36,7 @@ public class AvatarServlet extends HttpServlet {
         try {
             FotoPerfilDTO foto = service.buscarFoto(idUsuario);
             if (foto == null) {
-                response.sendError(HttpServletResponse.SC_NOT_FOUND);
+                enviarPlaceholder(request, response);
                 return;
             }
             response.setContentType(foto.getTipoMime());
@@ -48,5 +48,10 @@ public class AvatarServlet extends HttpServlet {
             getServletContext().log("Falha ao carregar foto de perfil", e);
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         }
+    }
+
+    private void enviarPlaceholder(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        response.sendRedirect(response.encodeRedirectURL(
+                request.getContextPath() + "/resources/img/profile-placeholder.svg"));
     }
 }

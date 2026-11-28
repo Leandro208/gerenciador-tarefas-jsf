@@ -40,6 +40,8 @@
                     </h:form>
                 </div>
 
+                <p:tabView id="task-tabs" styleClass="task-tabs">
+                    <p:tab title="Detalhes">
                 <div class="view-grid">
                     <div class="view-main">
                         <div class="detail-card">
@@ -93,6 +95,43 @@
                         </a>
                     </div>
                 </div>
+                    </p:tab>
+
+                    <p:tab title="Histórico">
+                        <div class="detail-card history-card">
+                            <p:dataTable value="#{tarefaBean.historicoTarefa}" var="evento"
+                                         rendered="#{not empty tarefaBean.historicoTarefa}"
+                                         styleClass="history-table" emptyMessage="Nenhuma alteração registrada.">
+                                <p:column headerText="Quando">
+                                    <h:outputText value="#{evento.dataAlteracao}">
+                                        <f:convertDateTime pattern="dd/MM/yyyy HH:mm"/>
+                                    </h:outputText>
+                                </p:column>
+                                <p:column headerText="Quem">
+                                    <span class="history-author">
+                                        <h:panelGroup rendered="#{evento.usuario != null}">
+                                            <img class="profile-avatar history-avatar"
+                                                 src="#{request.contextPath}/avatar?id=#{evento.usuario.id}"
+                                                 onerror="this.onerror=null;this.src='#{request.contextPath}/resources/img/profile-placeholder.svg';"
+                                                 alt="" />
+                                        </h:panelGroup>
+                                        <h:outputText value="#{evento.autorNome}"/>
+                                    </span>
+                                </p:column>
+                                <p:column headerText="O que mudou">
+                                    <strong><h:outputText value="#{evento.campo}"/></strong>
+                                    <div class="history-change">
+                                        <h:outputText value="#{evento.valorAnterior}"/> →
+                                        <h:outputText value="#{evento.valorNovo}"/>
+                                    </div>
+                                </p:column>
+                            </p:dataTable>
+                            <h:panelGroup rendered="#{empty tarefaBean.historicoTarefa}" layout="block" styleClass="history-empty">
+                                Nenhuma alteração registrada até o momento.
+                            </h:panelGroup>
+                        </div>
+                    </p:tab>
+                </p:tabView>
             </h:panelGroup>
 
             <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">

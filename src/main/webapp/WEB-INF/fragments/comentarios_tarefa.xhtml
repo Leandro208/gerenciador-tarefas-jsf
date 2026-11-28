@@ -17,7 +17,7 @@
                                  icon="fa fa-plus"
                                  action="#{tarefaBean.abrirFormComentario}"
                                  process="@this"
-                                 update=":commentsWrapper"
+                                 update=":task-tabs:commentsWrapper"
                                  rendered="#{tarefaBean.podeComentar and !tarefaBean.exibindoFormComentario}"
                                  styleClass="btn-new-comment" />
             </div>
@@ -33,13 +33,13 @@
                     <p:commandButton value="Cancelar"
                                      action="#{tarefaBean.cancelarComentario}"
                                      process="@this"
-                                     update=":commentsWrapper"
+                                     update=":task-tabs:commentsWrapper"
                                      styleClass="btn-cancel-comment" />
                     <p:commandButton value="#{tarefaBean.modoEdicao ? 'Salvar' : 'Publicar'}"
                                      icon="fa fa-paper-plane"
                                      action="#{tarefaBean.comentar}"
                                      process="@form"
-                                     update=":commentsWrapper"
+                                     update=":task-tabs:commentsWrapper"
                                      styleClass="btn-submit-comment" />
                 </div>
             </h:panelGroup>
@@ -75,14 +75,14 @@
                                                      title="Editar comentário"
                                                      action="#{tarefaBean.editarComentario(c)}"
                                                      process="@this"
-                                                     update=":commentsWrapper"
+                                                     update=":task-tabs:commentsWrapper"
                                                      styleClass="btn-comment-action" />
                                     <p:commandButton rendered="#{tarefaBean.podeExcluir(c)}"
                                                      icon="fa fa-trash"
                                                      title="Excluir comentário"
                                                      action="#{tarefaBean.removerComentario(c)}"
                                                      process="@this"
-                                                     update=":commentsWrapper"
+                                                     update=":task-tabs:commentsWrapper"
                                                      styleClass="btn-comment-action btn-comment-danger">
                                         <p:confirm header="Excluir comentário"
                                                    message="Deseja excluir este comentário?" />
