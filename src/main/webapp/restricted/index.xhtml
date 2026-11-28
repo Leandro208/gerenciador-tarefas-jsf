@@ -13,7 +13,7 @@
 		<main class="main-content">
 			<div class="page-header">
 				<h1>Gerenciador de Tarefas</h1>
-				<p style="color: #6b7280;">Acompanhe o progresso da sua equipe em tempo real.</p>
+				<p>Acompanhe o progresso da sua equipe em tempo real.</p>
 			</div>
 
 			<h:panelGroup id="monitor" layout="block" styleClass="dashboard-grid">
@@ -41,13 +41,14 @@
 
 
 			<div class="actions-panel">
-				<h3 style="margin-top: 0; margin-bottom: 20px; font-size: 16px;">Ações Rápidas</h3>
+				<h3>Ações Rápidas</h3>
 				<h:form id="formInicio" styleClass="actions-grid">
 					<p:commandButton action="#{tarefaBean.entrarCadastro}" value="Nova Tarefa"
 									 icon="fa fa-plus" rendered="#{loginBean.logado.adm}" />
 
-					<p:linkButton href="adm/formEquipe.jsf" value="Criar Equipe"
-								  icon="fa fa-users" rendered="#{loginBean.logado.adm}" />
+					<p:commandButton action="#{equipeBean.entrarCadastro}" value="Criar Equipe"
+									 icon="fa fa-users" ajax="false" process="@this"
+									 rendered="#{loginBean.logado.adm}" />
 
 					<p:commandButton action="#{tarefaBean.visualizarMeuQuadro}" value="Minha Equipe"
 									 icon="fa fa-th-large" rendered="#{loginBean.logado.equipe != null}"
@@ -69,7 +70,7 @@
 			<p:dataTable var="equipe" value="#{equipeBean.listaEquipes}" size="small">
 				<p:column headerText="Equipe">
 					<p:commandLink value="#{equipe.nome}" action="#{tarefaBean.visualizarQuadro}"
-								   style="color: var(--primary); font-weight: 500;" >
+								   styleClass="team-link">
 							<f:setPropertyActionListener target="#{tarefaBean.equipe}"
 														 value="#{equipe}"/>
 					</p:commandLink>

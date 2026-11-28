@@ -55,7 +55,7 @@
 
                                 <div class="comments-header">
                                     <div class="comments-title-group">
-                                        <label class="field-label-min" style="margin-bottom: 0;">Comentários</label>
+                                        <label class="field-label-min comments-label">Comentários</label>
                                         <span class="comments-count">#{fn:length(tarefaBean.comentarios)}</span>
                                     </div>
 
@@ -97,7 +97,7 @@
                             <h:form id="formAcoesComentario">
                                 <div class="comments-list">
                                     <h:panelGroup rendered="#{empty tarefaBean.comentarios}">
-                                        <p style="color: var(--text-sub); font-size: 13px; text-align: center; margin: 10px 0;">
+                                        <p class="empty-comments">
                                             Nenhum comentário registrado até o momento.
                                         </p>
                                     </h:panelGroup>

@@ -27,6 +27,13 @@ public class EquipeBean extends AbstractBean {
 		service = new EquipeService();
 		equipe = new Equipe();
 	}
+
+	public String entrarCadastro() {
+		AccessControl.requireAdmin();
+		limpar();
+		setConfirmButton(BOTAO_CADASTRAR);
+		return navegar("/restricted/adm/formEquipe.jsf");
+	}
 	
 	public String cadastrar() throws DAOException {
 		AccessControl.requireAdmin();

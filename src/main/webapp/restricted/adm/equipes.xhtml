@@ -6,20 +6,21 @@
                 xmlns:p="http://primefaces.org/ui">
 
     <ui:define name="conteudo">
+        <h:outputStylesheet library="css" name="inicio.css" />
         <main class="main-content">
             <div class="page-header">
                 <h1>Equipes</h1>
-                <p style="color: var(--text-sub);">Selecione uma equipe para ver suas tarefas.</p>
+                <p>Selecione uma equipe para ver suas tarefas.</p>
             </div>
 
-            <div style="background: white; border-radius: var(--card-radius); padding: 24px; box-shadow: var(--card-shadow);">
+            <div class="team-list-card">
                 <h:form id="form">
                     <p:dataList value="#{equipeBean.listaEquipes}" var="equipe" type="definition">
                         <f:facet name="header">
                             Equipes Registradas
                         </f:facet>
                         <p:commandLink value="#{equipe.nome}" 
-                                        style="text-decoration: none; color: var(--primary); font-weight: 500;"
+                                        styleClass="team-link"
                                         action="#{tarefaBean.visualizarQuadro}">
                             <f:setPropertyActionListener
                                     target="#{tarefaBean.equipe}"

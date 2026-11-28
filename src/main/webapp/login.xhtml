@@ -6,23 +6,34 @@
       xmlns:p="http://primefaces.org/ui">
 <h:head>
     <title>Login | Gerenciador de Tarefas</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet" />
+    <h:outputStylesheet library="css" name="global.css" />
     <h:outputStylesheet library="css" name="login.css" />
 </h:head>
 
-<h:body>
-    <div class="brand-side">
+<h:body styleClass="auth-page">
+    <main class="login-layout">
+      <section class="brand-side" aria-label="Sobre o Gerenciador de Tarefas">
         <div class="brand-logo">
             <h:graphicImage library="img" name="icon.png" width="36" height="36" />
+            <span>Gerenciador de Tarefas</span>
         </div>
         <h2 class="brand-title">Gerencie seus projetos com <br/><strong>eficiência e simplicidade.</strong></h2>
         <p class="brand-desc">Organize tarefas, acompanhe prazos e colabore com sua equipe em tempo real.</p>
-    </div>
+        <div class="brand-highlights" aria-hidden="true">
+            <span><i class="fa fa-check-circle"></i> Acompanhe o progresso</span>
+            <span><i class="fa fa-users"></i> Colabore com sua equipe</span>
+        </div>
+      </section>
 
-    <div class="form-side">
+      <section class="form-side" aria-labelledby="loginTitle">
+        <div class="auth-mobile-brand">
+            <h:graphicImage library="img" name="icon.png" width="34" height="34" alt="" />
+            <span>Gerenciador de Tarefas</span>
+        </div>
         <div class="login-header">
-            <h1>Entrar na conta</h1>
+            <h1 id="loginTitle">Entrar na conta</h1>
             <p>Informe seus dados de acesso abaixo.</p>
         </div>
 
@@ -34,8 +45,8 @@
                          placeholder="nome@empresa.com" />
 
             <div class="field-header-row">
-                <h:outputLabel for="password" value="Senha" styleClass="field-label" style="margin: 0;" />
-                <p:commandLink value="Esqueceu?" style="font-size: 13px; color: #6b7280; text-decoration: none;" />
+                <h:outputLabel for="password" value="Senha" styleClass="field-label" />
+                <p:commandLink value="Esqueceu?" styleClass="forgot-link" />
             </div>
             <p:password id="password" value="#{loginBean.senha}" required="true"
                         placeholder="••••••••" toggleMask="true" />
@@ -55,6 +66,7 @@
         <p class="footer-text">
             Ao continuar, você concorda com nossos Termos de Serviço.
         </p>
-    </div>
+      </section>
+    </main>
 </h:body>
 </html>

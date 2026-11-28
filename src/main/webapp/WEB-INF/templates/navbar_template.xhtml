@@ -7,22 +7,25 @@
       xmlns:p="http://primefaces.org/ui">
 <h:head>
     <title><ui:insert name="titulo">Gerenciador de Tarefas</ui:insert></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&amp;display=swap" rel="stylesheet" />
-
-    <link rel="stylesheet" type="text/css" href="#{request.contextPath}/resources/css/global.css" />
+    <h:outputStylesheet library="css" name="global.css" />
 </h:head>
 <h:body>
     <header class="navbar">
+        <h:link outcome="/restricted/index" styleClass="brand-lockup">
+            <h:graphicImage library="img" name="icon.png" width="38" height="38" alt="" />
+            <span class="brand-wordmark">Gerenciador de Tarefas</span>
+        </h:link>
         <div class="user-profile">
-            <h:link outcome="/restricted/index">
-                <h:graphicImage library="img" name="icon.png" width="32" height="32" />
-            </h:link>
-            <div>
-                <h:outputText value="#{loginBean.logado.nome}" style="font-weight: 600;" />
+            <div class="user-identity">
+                <h:outputText value="#{loginBean.logado.nome}" styleClass="user-name" />
                 <span class="role-badge">#{loginBean.logado.funcao}</span>
             </div>
         </div>
-        <h:form><p:commandButton action="#{loginBean.logout}" icon="fa fa-sign-out" styleClass="btn-logout" /></h:form>
+        <h:form styleClass="logout-form">
+            <p:commandButton action="#{loginBean.logout}" icon="fa fa-sign-out" styleClass="btn-logout" title="Sair" />
+        </h:form>
     </header>
 
     <div class="container-principal">

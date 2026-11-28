@@ -17,8 +17,8 @@
                         <p:autoUpdate />
                     </p:messages>
 
-                    <h:outputLabel value="Nome da Equipe" styleClass="field-label" />
-                    <p:inputText value="#{equipeBean.equipe.nome}" required="true"
+                    <h:outputLabel for="nomeEquipe" value="Nome da Equipe" styleClass="field-label" />
+                    <p:inputText id="nomeEquipe" value="#{equipeBean.equipe.nome}" required="true"
                                  placeholder="Ex: Desenvolvimento" />
 
                     <p:commandButton value="Salvar"

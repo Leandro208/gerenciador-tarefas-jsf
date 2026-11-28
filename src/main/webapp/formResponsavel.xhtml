@@ -8,11 +8,12 @@
 <h:head>
 	<title>Criar Conta | Gerenciador de Tarefas</title>
 	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet" />
+	<h:outputStylesheet library="css" name="global.css" />
 	<h:outputStylesheet library="css" name="cadastro.css" />
 	<h:outputStylesheet library="css" name="form.css" />
 </h:head>
 
-<h:body styleClass="autocadastro-bg">
+<h:body styleClass="auth-page autocadastro-bg">
 
 	<div class="autocadastro-container">
 		<div class="logo-header">
@@ -29,8 +30,7 @@
 				<p:inputText id="nome" value="#{responsavelBean.responsavel.nome}"
 							 required="true"
 							 requiredMessage="O nome é obrigatório."
-							 placeholder="Como quer ser chamado?"
-							 style="width: 100%"/>
+							 placeholder="Como quer ser chamado?" />
 
 				<h:outputLabel for="email" value="E-mail" styleClass="field-label" />
 				<p:inputText id="email" value="#{responsavelBean.responsavel.usuario.email}"
@@ -38,8 +38,7 @@
 							 requiredMessage="O e-mail é obrigatório."
 							 validatorMessage="Informe um e-mail válido."
 							 type="email"
-							 placeholder="exemplo@email.com"
-							 style="width: 100%"/>
+							 placeholder="exemplo@email.com" />
 
 				<h:outputLabel for="dataNascimento" value="Data de Nascimento" styleClass="field-label" />
 				<p:calendar value="#{responsavelBean.responsavel.dataNascimento}"
@@ -49,7 +48,7 @@
 							pattern="dd/MM/yyyy"
 							mask="true"
 							placeholder="DD/MM/AAAA"
-							inputStyle="width: 100%"/>
+							styleClass="registration-date" />
 
 				<div class="password-grid">
 					<h:panelGroup>
@@ -79,9 +78,8 @@
 
 				<p:commandButton action="#{responsavelBean.salvar}"
 								 value="Criar minha conta"
-								 styleClass="btn-primary"
+								 styleClass="btn-primary register-submit"
 								 update="@form"
-								 style="width: 100%; margin-top: 25px; padding: 12px;"
 								 icon="fa fa-rocket" />
 			</h:form>
 		</div>

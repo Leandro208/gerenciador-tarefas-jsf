@@ -10,6 +10,10 @@
 		<h:outputScript library="js" name="kanban-dnd.js" target="head" />
 
 		<main class="main-content">
+			<div class="page-header">
+				<h1>Quadro da equipe</h1>
+				<p>Organize as tarefas por etapa e acompanhe o andamento.</p>
+			</div>
 			<div class="search-bar-card">
 				<h:form id="formBusca">
 					<p:messages id="messages" closable="true"><p:autoUpdate /></p:messages>
@@ -36,6 +40,7 @@
 											 icon="fa fa-search"
 											 update="messages :kanbanBoard"
 											 process="@form"
+												 title="Buscar tarefas"
 											 styleClass="btn-circle" />
 						</div>
 					</div>
@@ -52,10 +57,10 @@
 				<h2 class="equipe-title">#{tarefaBean.formConsulta.equipe.nome}</h2>
 			</div>
 
-			<h:panelGroup id="kanbanBoard" layout="block">
-				<div class="kanban-wrapper">
-					<div class="kanban-col" data-status="3">
-						<div class="col-header">
+							<h:panelGroup id="kanbanBoard" layout="block">
+								<div class="kanban-wrapper" role="region" aria-label="Tarefas organizadas por status" tabindex="0">
+									<div class="kanban-col" data-status="3" role="group" aria-label="Backlog">
+										<div class="col-header">
 							<span class="dot backlog-dot"></span> Backlog
 						</div>
 						<ui:repeat value="#{tarefaBean.getObjectsForKey(3)}" var="t">
@@ -75,7 +80,7 @@
 						</ui:repeat>
 					</div>
 
-					<div class="kanban-col" data-status="1">
+					<div class="kanban-col" data-status="1" role="group" aria-label="Em Andamento">
 						<div class="col-header">
 							<span class="dot andamento-dot"></span> Em Andamento
 						</div>
@@ -96,7 +101,7 @@
 						</ui:repeat>
 					</div>
 
-					<div class="kanban-col" data-status="2">
+					<div class="kanban-col" data-status="2" role="group" aria-label="Concluído">
 						<div class="col-header">
 							<span class="dot concluido-dot"></span> Concluído
 						</div>
